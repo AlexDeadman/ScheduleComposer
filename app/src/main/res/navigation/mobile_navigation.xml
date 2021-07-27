@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_lecturers">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.auddistandroid.ui.home.LecturersFragment"
-        android:label="@string/title_home"
+        android:id="@+id/navigation_lecturers"
+        android:name="com.example.auddistandroid.ui.lecturers.LecturersFragment"
+        android:label="@string/title_lecturers"
         tools:layout="@layout/fragment_lecturers" />
 
     <fragment

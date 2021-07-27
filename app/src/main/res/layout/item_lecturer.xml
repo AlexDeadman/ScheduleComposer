@@ -14,16 +14,22 @@
 
         <TextView
             android:id="@+id/lecturer_item_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
             android:textColor="?android:attr/textColorPrimaryNoDisable"
             android:textSize="20sp"
+            app:drawableStartCompat="@drawable/ic_baseline_person_24"
+            android:drawablePadding="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/full_names" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="@tools:sample/full_names"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
