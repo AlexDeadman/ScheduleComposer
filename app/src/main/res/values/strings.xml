@@ -3,4 +3,5 @@
     <string name="title_lecturers">Lecturers</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="could_not_be_loaded">Could not be loaded</string>
 </resources>

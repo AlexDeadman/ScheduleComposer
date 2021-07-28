@@ -14,9 +14,13 @@ class LecturersViewModel @Inject constructor(
 ) : ViewModel() {
 
     val lecturers = liveData(Dispatchers.IO) {
-        val list = repository.getLecturers()
-        list.data = list.data.sortedBy { it.attributes.surname }
-        emit(list)
+        try {
+            val list = repository.getLecturers()
+            list.data = list.data.sortedBy { it.attributes.surname }
+            emit(list)
+        } catch (e: Exception) {
+            emit(LecturersList(data = listOf()))
+        }
     }
 
 }

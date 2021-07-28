@@ -35,11 +35,18 @@ class LecturersFragment : Fragment() {
         _binding = FragmentLecturersBinding.bind(view)
 
         viewModel.lecturers.observe(viewLifecycleOwner) {
+
             val adapter = LecturersAdapter(it)
+
             binding.apply {
-                recyclerLecturersList.setHasFixedSize(true)
-                recyclerLecturersList.adapter = adapter
-                progressBar.visibility = View.GONE
+                if (adapter.itemCount == 0) {
+                    progressBar.visibility = View.GONE
+                    lecturersErrorText.visibility = View.VISIBLE
+                } else {
+                    recyclerLecturersList.setHasFixedSize(true)
+                    recyclerLecturersList.adapter = adapter
+                    progressBar.visibility = View.GONE
+                }
             }
         }
     }
