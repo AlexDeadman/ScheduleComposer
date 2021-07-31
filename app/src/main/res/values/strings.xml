@@ -3,5 +3,8 @@
     <string name="title_lecturers">Lecturers</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="could_not_be_loaded">Could not be loaded</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="server_is_not_responding">Server is not responding</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="list_is_empty">List is empty</string>
 </resources>
