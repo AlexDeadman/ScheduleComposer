@@ -6,7 +6,7 @@ import retrofit2.http.Headers
 
 interface AudDistApi {
     companion object {
-        const val BASE_URL = "http://192.168.0.5:8000/api/"
+        const val BASE_URL = "http://192.168.0.9:8000/api/"
         const val AUTH_TOKEN = "0e807cdb657c25b0ff2fffb50d7c4a849c3d38e0" // tempo
     }
 

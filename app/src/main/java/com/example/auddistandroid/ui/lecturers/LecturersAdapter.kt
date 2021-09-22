@@ -13,11 +13,8 @@ class LecturersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LecturersViewHolder {
         val binding = ItemLecturerBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
-
        return LecturersViewHolder(binding)
     }
 

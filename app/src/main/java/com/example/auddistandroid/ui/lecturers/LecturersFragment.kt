@@ -40,7 +40,7 @@ class LecturersFragment : Fragment() {
                 if (adapter.itemCount == 0) {
                     when (viewModel.queryStatus) {
                         QueryStatus.NO_INTERNET -> noInternetTextView.visibility = View.VISIBLE
-                        QueryStatus.NO_SERVER_RESPONSE -> noResponseTextView.visibility = View.VISIBLE
+                        QueryStatus.NO_RESPONSE -> noResponseTextView.visibility = View.VISIBLE
                         QueryStatus.UNKNOWN_ERROR -> unknownErrorTextView.visibility = View.VISIBLE
                         else -> emptyListTextView.visibility = View.VISIBLE
                     }
