@@ -7,6 +7,7 @@ import com.example.auddistandroid.data.model.LecturersList
 import com.example.auddistandroid.ui.QueryStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -26,6 +27,7 @@ class LecturersViewModel @Inject constructor(
         } catch (e: Exception) {
             queryStatus = when (e) {
                 is ConnectException -> QueryStatus.NO_INTERNET // TODO ConnectException не подходит
+                is HttpException -> QueryStatus.UNAUTHORIZED // // TODO HttpException возможно тоже не подходит
                 is SocketTimeoutException -> QueryStatus.NO_RESPONSE
                 else -> QueryStatus.UNKNOWN_ERROR
             }

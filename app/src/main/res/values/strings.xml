@@ -7,4 +7,5 @@
     <string name="server_is_not_responding">Server is not responding</string>
     <string name="unknown_error">Unknown error</string>
     <string name="list_is_empty">List is empty</string>
+    <string name="unauthorized">Unauthorized</string>
 </resources>

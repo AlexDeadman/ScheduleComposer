@@ -4,5 +4,6 @@ enum class QueryStatus {
     SUCCESS,
     NO_INTERNET,
     NO_RESPONSE,
+    UNAUTHORIZED,
     UNKNOWN_ERROR
 }
