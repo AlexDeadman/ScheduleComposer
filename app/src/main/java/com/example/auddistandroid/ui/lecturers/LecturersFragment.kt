@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.FragmentLecturersBinding
 import com.example.auddistandroid.ui.QueryStatus
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,11 +39,11 @@ class LecturersFragment : Fragment() {
 
             binding.apply {
                 if (adapter.itemCount == 0) {
-                    when (viewModel.queryStatus) {
-                        QueryStatus.NO_INTERNET -> noInternetTextView.visibility = View.VISIBLE
-                        QueryStatus.NO_RESPONSE -> noResponseTextView.visibility = View.VISIBLE
-                        QueryStatus.UNKNOWN_ERROR -> unknownErrorTextView.visibility = View.VISIBLE
-                        else -> emptyListTextView.visibility = View.VISIBLE
+                    errorTextView.text = when (viewModel.queryStatus) {
+                        QueryStatus.NO_INTERNET -> getString(R.string.no_internet_connection)
+                        QueryStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
+                        QueryStatus.UNKNOWN_ERROR -> getString(R.string.unknown_error)
+                        else -> getString(R.string.list_is_empty)
                     }
                 } else {
                     recyclerView.setHasFixedSize(true)

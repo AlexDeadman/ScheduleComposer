@@ -25,7 +25,7 @@ class LecturersViewModel @Inject constructor(
             queryStatus = QueryStatus.SUCCESS
         } catch (e: Exception) {
             queryStatus = when (e) {
-                is ConnectException -> QueryStatus.NO_INTERNET
+                is ConnectException -> QueryStatus.NO_INTERNET // TODO ConnectException не подходит
                 is SocketTimeoutException -> QueryStatus.NO_RESPONSE
                 else -> QueryStatus.UNKNOWN_ERROR
             }
