@@ -1,11 +1,13 @@
 package com.example.auddistandroid.ui.lecturers
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.auddistandroid.ui.login.LoginActivity
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.FragmentLecturersBinding
 import com.example.auddistandroid.ui.QueryStatus
@@ -47,6 +49,10 @@ class LecturersFragment : Fragment() {
                         else -> getString(R.string.list_is_empty)
                     }
                     errorTextView.visibility = View.VISIBLE
+                    if(viewModel.queryStatus == QueryStatus.UNAUTHORIZED) {
+                        val intent = Intent(activity, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
                 } else {
                     recyclerView.setHasFixedSize(true)
                     recyclerView.adapter = adapter
