@@ -27,7 +27,7 @@ class LecturersViewModel @Inject constructor(
         } catch (e: Exception) {
             queryStatus = when (e) {
                 is ConnectException -> QueryStatus.NO_INTERNET // TODO ConnectException не подходит
-                is HttpException -> QueryStatus.UNAUTHORIZED // // TODO HttpException возможно тоже не подходит
+                is HttpException -> QueryStatus.UNAUTHORIZED // TODO HttpException возможно тоже не подходит
                 is SocketTimeoutException -> QueryStatus.NO_RESPONSE
                 else -> QueryStatus.UNKNOWN_ERROR
             }

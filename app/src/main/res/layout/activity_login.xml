@@ -5,29 +5,39 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageViewCalendarClock"
+        android:id="@+id/image_view_calendar_clock"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/calendar_clock" />
+    <TextView
+        android:id="@+id/text_view_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"
+        android:text="@string/welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_view_calendar_clock" />
 
     <EditText
-        android:id="@+id/editTextUsername"
+        android:id="@+id/edit_text_username"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="@string/username"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewCalendarClock" />
+        app:layout_constraintTop_toBottomOf="@+id/text_view_welcome" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/edit_text_password"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="25dp"
@@ -36,26 +46,41 @@
         android:hint="@string/password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_username" />
 
-    <CheckBox
-        android:id="@+id/checkBoxStayLoggedIn"
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="@string/stay_logged_in"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
+
+    <TextView
+        android:id="@+id/text_view_log_in_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:visibility="gone"
+        android:textColor="#F44336"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
 
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/button_log_in"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="@string/log_in"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxStayLoggedIn" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_password" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

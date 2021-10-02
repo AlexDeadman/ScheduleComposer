@@ -41,14 +41,14 @@ class LecturersFragment : Fragment() {
 
             binding.apply {
                 if (adapter.itemCount == 0) {
-                    errorTextView.text = when (viewModel.queryStatus) {
+                    textViewLecturersError.text = when (viewModel.queryStatus) {
                         QueryStatus.NO_INTERNET -> getString(R.string.no_internet_connection)
                         QueryStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
                         QueryStatus.UNAUTHORIZED -> getString(R.string.unauthorized)
                         QueryStatus.UNKNOWN_ERROR -> getString(R.string.unknown_error)
                         else -> getString(R.string.list_is_empty)
                     }
-                    errorTextView.visibility = View.VISIBLE
+                    textViewLecturersError.visibility = View.VISIBLE
                     if(viewModel.queryStatus == QueryStatus.UNAUTHORIZED) {
                         val intent = Intent(activity, LoginActivity::class.java)
                         startActivity(intent)
