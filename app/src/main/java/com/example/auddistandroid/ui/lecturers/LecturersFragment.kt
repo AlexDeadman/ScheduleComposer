@@ -1,5 +1,6 @@
 package com.example.auddistandroid.ui.lecturers
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,6 +36,10 @@ class LecturersFragment : Fragment() {
 
         _binding = FragmentLecturersBinding.bind(view)
 
+        val sharedPref = this.activity!!.getSharedPreferences("authorization", Context.MODE_PRIVATE)
+
+        viewModel.authToken = sharedPref.getString("authToken", null)!!
+
         viewModel.lecturers.observe(viewLifecycleOwner) {
 
             val adapter = LecturersAdapter(it)
@@ -49,7 +54,7 @@ class LecturersFragment : Fragment() {
                         else -> getString(R.string.list_is_empty)
                     }
                     textViewLecturersError.visibility = View.VISIBLE
-                    if(viewModel.queryStatus == QueryStatus.UNAUTHORIZED) {
+                    if (viewModel.queryStatus == QueryStatus.UNAUTHORIZED) {
                         val intent = Intent(activity, LoginActivity::class.java)
                         startActivity(intent)
                     }

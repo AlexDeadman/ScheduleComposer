@@ -1,5 +1,6 @@
 package com.example.auddistandroid.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -13,7 +14,7 @@ import com.example.auddistandroid.ui.QueryStatus
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginActivity: AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +43,18 @@ class LoginActivity: AppCompatActivity() {
                         textViewLogInError.visibility = View.VISIBLE
                     } else {
 //                        Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
+
+                        val sharedPref = this@LoginActivity
+                            .getSharedPreferences("authorization", Context.MODE_PRIVATE)
+
+                        val editor = sharedPref.edit()
+                        editor.putString("authToken", "Token $it")
+                        editor.apply()
+
                         startActivity(
                             Intent(this@LoginActivity, MainActivity::class.java)
                         )
+                        finish()
                     }
                     progressBar.visibility = View.GONE
                 }

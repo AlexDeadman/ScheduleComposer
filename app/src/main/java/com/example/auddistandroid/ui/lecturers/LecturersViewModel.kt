@@ -3,6 +3,7 @@ package com.example.auddistandroid.ui.lecturers
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.auddistandroid.data.AudDistRepository
+import com.example.auddistandroid.data.model.AuthToken
 import com.example.auddistandroid.data.model.LecturersList
 import com.example.auddistandroid.ui.QueryStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,11 +19,14 @@ class LecturersViewModel @Inject constructor(
 ) : ViewModel() {
 
     lateinit var queryStatus: QueryStatus
+    lateinit var authToken: String
 
     val lecturers = liveData(Dispatchers.IO) {
         val list = LecturersList(listOf())
         try {
-            list.data = repository.getLecturers().data.sortedBy { it.attributes.surname }
+            list.data = repository
+                .getLecturers(authToken)
+                .data.sortedBy { it.attributes.surname }
             queryStatus = QueryStatus.SUCCESS
         } catch (e: Exception) {
             queryStatus = when (e) {
