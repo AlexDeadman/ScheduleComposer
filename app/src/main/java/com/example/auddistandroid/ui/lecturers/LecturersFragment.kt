@@ -36,7 +36,7 @@ class LecturersFragment : Fragment() {
 
         _binding = FragmentLecturersBinding.bind(view)
 
-        val sharedPref = this.activity!!.getSharedPreferences("authorization", Context.MODE_PRIVATE)
+        val sharedPref = this.requireActivity().getSharedPreferences("authorization", Context.MODE_PRIVATE)
 
         viewModel.authToken = sharedPref.getString("authToken", null)!!
 

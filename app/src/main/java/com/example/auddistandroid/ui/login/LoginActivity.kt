@@ -17,6 +17,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
+    fun goMain() {
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,9 +30,20 @@ class LoginActivity : AppCompatActivity() {
 
         val viewModel: LoginViewModel by viewModels()
 
+        val sharedPref = this.getSharedPreferences("authorization", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+
         binding.apply {
+
+            if (sharedPref.getString("authToken", null) == null) {
+                container.visibility = View.VISIBLE
+                progressBar.visibility = View.INVISIBLE
+            } else {
+                goMain()
+            }
+
             buttonLogIn.setOnClickListener {
-                progressBar.visibility = View.VISIBLE
+                progressBarLogIn.visibility = View.VISIBLE
 
                 viewModel.username = editTextUsername.text.toString()
                 viewModel.password = editTextPassword.text.toString()
@@ -44,19 +60,12 @@ class LoginActivity : AppCompatActivity() {
                     } else {
 //                        Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
 
-                        val sharedPref = this@LoginActivity
-                            .getSharedPreferences("authorization", Context.MODE_PRIVATE)
-
-                        val editor = sharedPref.edit()
                         editor.putString("authToken", "Token $it")
                         editor.apply()
 
-                        startActivity(
-                            Intent(this@LoginActivity, MainActivity::class.java)
-                        )
-                        finish()
+                        goMain()
                     }
-                    progressBar.visibility = View.GONE
+                    progressBarLogIn.visibility = View.INVISIBLE
                 }
             }
         }

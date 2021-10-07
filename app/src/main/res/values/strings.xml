@@ -13,4 +13,5 @@
     <string name="unauthorized">Unauthorized</string>
     <string name="stay_logged_in">Stay logged in</string>
     <string name="welcome">Welcome</string>
+    <string name="log_out">Log out</string>
 </resources>

@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_main.xml" value="0.3671875" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/fragment_dashboard.xml" value="0.3671875" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/fragment_lecturers.xml" value="0.3671875" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/item_lecturer.xml" value="0.3671875" />
         <entry key="app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.334" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.334" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.334" />
