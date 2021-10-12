@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
-    fun goMain() {
+    private fun goMain() {
         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         finish()
     }
@@ -30,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
 
         val viewModel: LoginViewModel by viewModels()
 
+        // TODO возможно стоит засинглтонить sharedPref и editor
         val sharedPref = this.getSharedPreferences("authorization", Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
 

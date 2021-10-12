@@ -16,6 +16,6 @@ interface AudDistApi {
     suspend fun getToken(@Body requestBody: RequestBody): AuthToken
 
     @Headers(CONTENT_TYPE)
-    @GET("api/lecturers")
+    @GET("api/lecturers/")
     suspend fun getLecturers(@Header("Authorization") authToken: String): LecturersList
 }

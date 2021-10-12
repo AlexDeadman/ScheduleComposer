@@ -36,6 +36,8 @@ class DashboardFragment : Fragment() {
 
         binding.button2.setOnClickListener {
 
+            // TODO возможно стоит засинглтонить sharedPref и editor
+
             val sharedPref = requireActivity()
                 .getSharedPreferences("authorization", Context.MODE_PRIVATE)
 

@@ -27,6 +27,7 @@ class LoginViewModel @Inject constructor(
     lateinit var queryStatus: QueryStatus
 
     val token = liveData(Dispatchers.IO) {
+        // TODO избавится от этого кринжа
         val jsonObject = JSONObject(
             """
             {
@@ -52,7 +53,7 @@ class LoginViewModel @Inject constructor(
             ).data.attributes.authToken
             queryStatus = QueryStatus.SUCCESS
         } catch (e: Exception) {
-            queryStatus = when (e) {
+            queryStatus = when (e) { // TODO изменить способ обратоки ошибок, возможно нужен MVI
                 is ConnectException -> QueryStatus.NO_INTERNET // TODO ConnectException не подходит
                 is HttpException -> QueryStatus.UNAUTHORIZED // TODO HttpException возможно тоже не подходит
                 is SocketTimeoutException -> QueryStatus.NO_RESPONSE

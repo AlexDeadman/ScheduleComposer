@@ -28,7 +28,7 @@ class LecturersViewModel @Inject constructor(
                 .getLecturers(authToken)
                 .data.sortedBy { it.attributes.surname }
             queryStatus = QueryStatus.SUCCESS
-        } catch (e: Exception) {
+        } catch (e: Exception) { // TODO изменить способ обратоки ошибок, возможно нужен MVI
             queryStatus = when (e) {
                 is ConnectException -> QueryStatus.NO_INTERNET // TODO ConnectException не подходит
                 is HttpException -> QueryStatus.UNAUTHORIZED // TODO HttpException возможно тоже не подходит
