@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auddistandroid.ui.login.LoginActivity
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.FragmentLecturersBinding
