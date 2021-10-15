@@ -1,6 +1,6 @@
 package com.example.auddistandroid.ui
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
@@ -14,10 +14,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Timer
+import java.util.*
 import kotlin.concurrent.schedule
 
 @AndroidEntryPoint
@@ -72,8 +71,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu, menu)
+
+        val settingsItem = menu.findItem(R.id.settings)
+        settingsItem.setOnMenuItemClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+            return@setOnMenuItemClickListener true
+        }
         return true
     }
 
