@@ -24,9 +24,7 @@ class LecturersViewModel @Inject constructor(
     val lecturers = liveData(Dispatchers.IO) {
         val list = LecturersList(listOf())
         try {
-            list.data = repository
-                .getLecturers(authToken)
-                .data.sortedBy { it.attributes.surname }
+            list.data = repository.getLecturers(authToken).data.sortedBy { it.attributes.surname }
             queryStatus = QueryStatus.SUCCESS
         } catch (e: Exception) { // TODO изменить способ обратоки ошибок, возможно нужен MVI
             queryStatus = when (e) {

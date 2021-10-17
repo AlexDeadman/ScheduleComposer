@@ -19,8 +19,6 @@ class DashboardFragment : Fragment() {
     private lateinit var dashboardViewModel: DashboardViewModel
     private var _binding: FragmentDashboardBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -45,8 +43,7 @@ class DashboardFragment : Fragment() {
             editor.remove("authToken")
             editor.apply()
 
-            val intent = Intent(activity, LoginActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(activity, LoginActivity::class.java))
             requireActivity().finish()
         }
 

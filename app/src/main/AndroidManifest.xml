@@ -22,9 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.SettingsActivity"
-            android:theme="@style/Theme.AudDistAndroid.ActionBar"
-            android:parentActivityName=".ui.MainActivity"> <!-- TODO check SettingsActivity -->
-        </activity>
+            android:theme="@style/EnableActionBar"/>
     </application>
 
 </manifest>

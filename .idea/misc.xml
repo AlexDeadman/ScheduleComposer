@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/drawable/nav_header_gradient.xml" value="0.275" />
         <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_login.xml" value="0.29583333333333334" />
         <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_main.xml" value="0.29583333333333334" />
         <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_settings.xml" value="0.29583333333333334" />
@@ -14,6 +15,7 @@
         <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/menu/menu.xml" value="0.29583333333333334" />
         <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/menu/nav_menu.xml" value="0.29583333333333334" />
         <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/xml/preferences.xml" value="0.29583333333333334" />
+        <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/xml/root_preferences.xml" value="0.29583333333333334" />
         <entry key="app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.334" />
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.334" />
         <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.334" />

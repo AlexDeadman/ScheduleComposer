@@ -1,16 +1,8 @@
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Fuck">
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="fuckable"
-            android:title="Fuckable"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="suckable"
-            android:title="Suckable"/>
-
+    <PreferenceCategory android:title="Account">
+        <Preference
+            android:title="@string/log_out"
+            android:key="logout" />
     </PreferenceCategory>
-
 </androidx.preference.PreferenceScreen>

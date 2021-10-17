@@ -20,7 +20,7 @@
 
     <style name="Theme.AudDistAndroid.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.AudDistAndroid.ActionBar" parent="Theme.AudDistAndroid">
+    <style name="EnableActionBar" parent="Theme.AudDistAndroid">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
     </style>
