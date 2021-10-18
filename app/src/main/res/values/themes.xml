@@ -14,6 +14,8 @@
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="floatingActionButtonStyle">@style/FloatingButton</item>
     </style>
 
     <style name="Theme.AudDistAndroid.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -23,5 +25,9 @@
     <style name="EnableActionBar" parent="Theme.AudDistAndroid">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">false</item>
+    </style>
+
+    <style name="FloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/white</item>
     </style>
 </resources>

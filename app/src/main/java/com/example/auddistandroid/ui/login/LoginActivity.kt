@@ -52,7 +52,6 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.token.observe(this@LoginActivity) {
                     if (viewModel.queryStatus != QueryStatus.SUCCESS) {
                         textViewLogInError.text = when (viewModel.queryStatus) {
-                            QueryStatus.NO_INTERNET -> getString(R.string.no_internet_connection)
                             QueryStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
                             QueryStatus.UNAUTHORIZED -> getString(R.string.unauthorized)
                             else -> getString(R.string.unknown_error)

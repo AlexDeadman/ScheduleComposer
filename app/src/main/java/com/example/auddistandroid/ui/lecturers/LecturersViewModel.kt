@@ -28,8 +28,7 @@ class LecturersViewModel @Inject constructor(
             queryStatus = QueryStatus.SUCCESS
         } catch (e: Exception) { // TODO изменить способ обратоки ошибок, возможно нужен MVI
             queryStatus = when (e) {
-                is ConnectException -> QueryStatus.NO_INTERNET // TODO ConnectException не подходит
-                is HttpException -> QueryStatus.UNAUTHORIZED // TODO HttpException возможно тоже не подходит
+                is HttpException -> QueryStatus.UNAUTHORIZED // TODO HttpException возможно не подходит
                 is SocketTimeoutException -> QueryStatus.NO_RESPONSE
                 else -> QueryStatus.UNKNOWN_ERROR
             }
