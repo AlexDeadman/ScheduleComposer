@@ -1,5 +1,15 @@
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="General">
+        <SwitchPreferenceCompat
+            android:title="COVID-19 adaptation mode"
+            android:icon="@drawable/ic_virus"
+            android:key="" />
+        <Preference
+            android:title="Theme"
+            android:icon="@drawable/ic_theme"
+            android:key="" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="Account">
         <Preference
             android:title="@string/log_out"

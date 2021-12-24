@@ -1,15 +1,13 @@
-package com.example.auddistandroid.ui.lecturers
+package com.example.auddistandroid.ui.lecturers.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.auddistandroid.data.AudDistRepository
-import com.example.auddistandroid.data.model.AuthToken
 import com.example.auddistandroid.data.model.LecturersList
 import com.example.auddistandroid.ui.QueryStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import retrofit2.HttpException
-import java.net.ConnectException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 

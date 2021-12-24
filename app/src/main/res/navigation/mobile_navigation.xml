@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_lecturers"
-        android:name="com.example.auddistandroid.ui.lecturers.LecturersFragment"
+        android:name="com.example.auddistandroid.ui.lecturers.list.LecturersFragment"
         android:label="@string/title_lecturers"
         tools:layout="@layout/fragment_lecturers" />
 

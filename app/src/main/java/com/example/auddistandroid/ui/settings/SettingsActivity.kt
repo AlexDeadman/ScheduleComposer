@@ -1,14 +1,12 @@
-package com.example.auddistandroid.ui
+package com.example.auddistandroid.ui.settings
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.auddistandroid.R
-import com.example.auddistandroid.databinding.ActivitySettingsBinding
 
 class SettingsActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +18,7 @@ class SettingsActivity: AppCompatActivity() {
                 .replace(R.id.settings, SettingsFragment())
                 .commit()
         }
-        supportActionBar?.run {
+        supportActionBar?.apply {
             setTitle(R.string.settings)
             setDisplayHomeAsUpEnabled(true)
         }

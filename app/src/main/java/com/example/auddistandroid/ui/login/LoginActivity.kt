@@ -7,10 +7,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.auddistandroid.App
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.ActivityLoginBinding
 import com.example.auddistandroid.ui.MainActivity
 import com.example.auddistandroid.ui.QueryStatus
+import com.example.auddistandroid.ui.ipsettings.IpSettingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,13 +32,12 @@ class LoginActivity : AppCompatActivity() {
 
         val viewModel: LoginViewModel by viewModels()
 
-        // TODO возможно стоит засинглтонить sharedPref и editor
-        val sharedPref = this.getSharedPreferences("authorization", Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
+        val preferences = App.preferences
+        val editor = preferences.edit()
 
         binding.apply {
 
-            if (sharedPref.getString("authToken", null) == null) {
+            if (preferences.getString("authToken", null) == null) {
                 container.visibility = View.VISIBLE
                 progressBar.visibility = View.INVISIBLE
             } else {
@@ -61,12 +62,18 @@ class LoginActivity : AppCompatActivity() {
 //                        Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
 
                         editor.putString("authToken", "Token $it")
+                        editor.putString("username", viewModel.username)
+
                         editor.apply()
 
                         goMain()
                     }
                     progressBarLogIn.visibility = View.INVISIBLE
                 }
+            }
+
+            buttonIpSettings.setOnClickListener {
+                startActivity(Intent(this@LoginActivity, IpSettingActivity::class.java))
             }
         }
     }

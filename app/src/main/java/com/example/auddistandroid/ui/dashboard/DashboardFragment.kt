@@ -1,16 +1,13 @@
 package com.example.auddistandroid.ui.dashboard
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.auddistandroid.R
+import com.example.auddistandroid.App
 import com.example.auddistandroid.databinding.FragmentDashboardBinding
 import com.example.auddistandroid.ui.login.LoginActivity
 
@@ -34,14 +31,10 @@ class DashboardFragment : Fragment() {
 
         binding.button2.setOnClickListener {
 
-            // TODO возможно стоит засинглтонить sharedPref и editor
-
-            val sharedPref = requireActivity()
-                .getSharedPreferences("authorization", Context.MODE_PRIVATE)
-
-            val editor = sharedPref.edit()
-            editor.remove("authToken")
-            editor.apply()
+            App.preferences
+                .edit()
+                .remove("authToken")
+                .apply()
 
             startActivity(Intent(activity, LoginActivity::class.java))
             requireActivity().finish()

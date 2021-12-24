@@ -1,5 +1,6 @@
 package com.example.auddistandroid.di
 
+import com.example.auddistandroid.App
 import com.example.auddistandroid.api.AudDistApi
 import dagger.Module
 import dagger.Provides
@@ -19,12 +20,10 @@ object AppModule {
     fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(AudDistApi.BASE_URL)
+            .baseUrl("http://${App.preferences.getString("ip", "")!!}/")
             .build()
 
     @Provides
     @Singleton
-    fun provideAudDistApi(retrofit: Retrofit): AudDistApi =
-        retrofit.create(AudDistApi::class.java)
-
+    fun provideAudDistApi(retrofit: Retrofit): AudDistApi = retrofit.create(AudDistApi::class.java)
 }

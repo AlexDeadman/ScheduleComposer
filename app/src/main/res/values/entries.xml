@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="disciplineNames">
+        <item>Системное программирование</item>
+        <item>Системное программирование</item>
+        <item>Системное программирование</item>
+        <item>Системное программирование</item>
+        <item>Системное программирование</item>
+        <item>Системное программирование</item>
+    </string-array>
+</resources>

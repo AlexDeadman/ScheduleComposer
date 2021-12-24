@@ -3,6 +3,7 @@ package com.example.auddistandroid.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -12,8 +13,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.auddistandroid.App
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.ActivityMainBinding
+import com.example.auddistandroid.databinding.NavHeaderMainBinding
+import com.example.auddistandroid.ui.lecturers.add.AddLecturerActivity
+import com.example.auddistandroid.ui.settings.SettingsActivity
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -68,6 +73,17 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        binding.apply {
+            navView
+                .getHeaderView(0)
+                .findViewById<TextView>(R.id.text_view_nav_header_subtitle)
+                .text = App.preferences.getString("username", "unknown")
+
+            appBarMain.content.floatingActionButton.setOnClickListener {
+                startActivity(Intent(this@MainActivity, AddLecturerActivity::class.java))
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
