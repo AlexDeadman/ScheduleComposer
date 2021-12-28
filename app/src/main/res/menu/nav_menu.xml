@@ -6,6 +6,14 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:icon="@drawable/ic_audience_24"
+            android:title="Directions" />
+
+        <item
+            android:icon="@drawable/ic_syllabus"
+            android:title="Syllabuses" />
+
+        <item
             android:icon="@drawable/ic_schedule_24"
             android:title="@string/schedule" />
 
@@ -25,8 +33,8 @@
             android:title="@string/groups" />
 
         <item
-            android:icon="@drawable/ic_audience_24"
-            android:title="@string/audience" />
+            android:icon="@drawable/ic_baseline_sensor_door_24"
+            android:title="@string/audiences" />
     </group>
 
 </menu>

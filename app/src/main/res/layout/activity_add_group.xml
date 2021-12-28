@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:layout_marginHorizontal="25dp"
         android:ems="10"
-        android:hint="Surname*"
+        android:hint="Number*"
         android:inputType="textPersonName"
         android:padding="15dp" />
 
@@ -20,16 +20,7 @@
         android:layout_height="50dp"
         android:layout_marginHorizontal="25dp"
         android:ems="10"
-        android:hint="Name*"
-        android:inputType="textPersonName"
-        android:padding="15dp" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="25dp"
-        android:ems="10"
-        android:hint="Patronymic"
+        android:hint="Students count*"
         android:inputType="textPersonName"
         android:padding="15dp" />
 
@@ -39,7 +30,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="39dp"
         android:textSize="18sp"
-        android:text="Disciplines*"/>
+        android:text="Syllabus*"/>
 
     <Spinner
         android:entries="@array/entries1"

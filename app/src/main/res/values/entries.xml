@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="disciplineNames">
-        <item>Системное программирование</item>
-        <item>Системное программирование</item>
-        <item>Системное программирование</item>
-        <item>Системное программирование</item>
-        <item>Системное программирование</item>
+    <string-array name="entries1">
+        <item>Крюков Григорий Васильевич</item>
+    </string-array>
+    <string-array name="entries2">
         <item>Системное программирование</item>
     </string-array>
+    <string-array name="entries3">
+        <item>К2837</item>
+    </string-array>
+    <string-array name="entries4">
+        <item>148</item>
+    </string-array>
+    <string-array name="entries5">
+        <item>Лекция</item>
+    </string-array>
+    <string-array name="entries6">
+        <item>Понедельник</item>
+    </string-array>
+    <string-array name="entries7">
+        <item>10:00</item>
+    </string-array>
+
 </resources>

@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:layout_marginHorizontal="25dp"
         android:ems="10"
-        android:hint="Surname*"
+        android:hint="Code* (xx.xx.xx)"
         android:inputType="textPersonName"
         android:padding="15dp" />
 
@@ -23,31 +23,6 @@
         android:hint="Name*"
         android:inputType="textPersonName"
         android:padding="15dp" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="25dp"
-        android:ems="10"
-        android:hint="Patronymic"
-        android:inputType="textPersonName"
-        android:padding="15dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="39dp"
-        android:textSize="18sp"
-        android:text="Disciplines*"/>
-
-    <Spinner
-        android:entries="@array/entries1"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="28dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/spinner_background"/>
 
     <TextView
         android:layout_width="wrap_content"
