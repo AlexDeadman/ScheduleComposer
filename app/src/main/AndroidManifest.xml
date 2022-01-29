@@ -25,7 +25,10 @@
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:theme="@style/EnableActionBar" />
-        <activity android:name=".ui.ipsettings.IpSettingActivity" />
+        <activity
+            android:parentActivityName=".ui.login.LoginActivity"
+            android:name=".ui.ipsettings.IpSettingActivity"
+            android:theme="@style/EnableActionBar" />
         <activity
             android:name=".ui.lecturers.add.AddLecturerActivity"
             android:theme="@style/EnableActionBar" />

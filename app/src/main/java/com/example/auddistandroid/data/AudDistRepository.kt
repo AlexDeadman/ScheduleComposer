@@ -11,9 +11,12 @@ import javax.inject.Singleton
 class AudDistRepository @Inject constructor(
     private val audDistApi: AudDistApi
 ) {
+    suspend fun getToken(@Body requestBody: RequestBody) =
+        audDistApi.getToken(requestBody)
+
     suspend fun getLecturers(@Header("Authorization") authToken: String) =
         audDistApi.getLecturers(authToken)
 
-    suspend fun getToken(@Body requestBody: RequestBody) =
-        audDistApi.getToken(requestBody)
+    suspend fun getDisciplines(@Header("Authorization") authToken: String) =
+        audDistApi.getDisciplines(authToken)
 }

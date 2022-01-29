@@ -1,6 +1,5 @@
 package com.example.auddistandroid.ui.lecturers.list
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.auddistandroid.App
-import com.example.auddistandroid.ui.login.LoginActivity
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.FragmentLecturersBinding
-import com.example.auddistandroid.ui.QueryStatus
+import com.example.auddistandroid.utils.ResponseStatus
+import com.example.auddistandroid.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -45,14 +44,14 @@ class LecturersFragment : Fragment() {
 
             binding.apply {
                 if (adapter.itemCount == 0) {
-                    textViewLecturersError.text = when (viewModel.queryStatus) {
-                        QueryStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
-                        QueryStatus.UNAUTHORIZED -> getString(R.string.unauthorized)
-                        QueryStatus.UNKNOWN_ERROR -> getString(R.string.unknown_error)
+                    textViewLecturersError.text = when (viewModel.responseStatus) {
+                        ResponseStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
+                        ResponseStatus.UNAUTHORIZED -> getString(R.string.unauthorized)
+                        ResponseStatus.UNKNOWN_ERROR -> getString(R.string.unknown_error)
                         else -> getString(R.string.list_is_empty)
                     }
                     textViewLecturersError.visibility = View.VISIBLE
-                    if (viewModel.queryStatus == QueryStatus.UNAUTHORIZED) {
+                    if (viewModel.responseStatus == ResponseStatus.UNAUTHORIZED) {
                         val intent = Intent(activity, LoginActivity::class.java)
                         startActivity(intent)
                     }

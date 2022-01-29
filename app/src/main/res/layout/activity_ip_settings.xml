@@ -3,23 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_vertical">
+    android:gravity="center">
 
-    <EditText
-        android:id="@+id/edit_text_ip"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginBottom="50dp"
-        android:ems="10"
-        android:hint="@string/ip"
-        android:padding="15dp" />
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="30dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ip"
+            android:inputType="textShortMessage" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/button_save"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
         android:text="@string/save" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

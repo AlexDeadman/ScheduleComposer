@@ -8,6 +8,7 @@ import com.example.auddistandroid.R
 import com.example.auddistandroid.data.model.LecturersList
 import com.example.auddistandroid.data.model.LecturersList.Lecturer
 import com.example.auddistandroid.databinding.ItemLecturerBinding
+import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
 
 class LecturersAdapter(
     private val lecturersList: LecturersList
@@ -25,6 +26,10 @@ class LecturersAdapter(
     }
 
     override fun getItemCount(): Int = lecturersList.data.size
+
+    override fun getItemViewType(position: Int): Int = position
+
+    override fun getItemId(position: Int): Long = position.toLong()
 
     inner class LecturersViewHolder(
         private val binding: ItemLecturerBinding

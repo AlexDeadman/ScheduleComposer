@@ -1,6 +1,7 @@
 package com.example.auddistandroid.ui
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.widget.TextView
@@ -16,8 +17,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.auddistandroid.App
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.ActivityMainBinding
-import com.example.auddistandroid.databinding.NavHeaderMainBinding
 import com.example.auddistandroid.ui.lecturers.add.AddLecturerActivity
+import com.example.auddistandroid.ui.login.LoginActivity
 import com.example.auddistandroid.ui.settings.SettingsActivity
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,12 +26,15 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var exitToast: Toast
     private lateinit var navController: NavController
+
+    private val preferences = App.preferences
+
     private var backPressedOnce = false
 
     override fun onBackPressed() {
@@ -50,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
+
+        preferences.registerOnSharedPreferenceChangeListener(this)
 
         exitToast = Toast.makeText(
             applicationContext,
@@ -78,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             navView
                 .getHeaderView(0)
                 .findViewById<TextView>(R.id.text_view_nav_header_subtitle)
-                .text = App.preferences.getString("username", "unknown")
+                .text = preferences.getString("username", "unknown")
 
             appBarMain.content.floatingActionButton.setOnClickListener {
                 startActivity(Intent(this@MainActivity, AddLecturerActivity::class.java))
@@ -89,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
 
-        val settingsItem = menu.findItem(R.id.settings)
+        val settingsItem = menu.findItem(R.id.settings_button)
         settingsItem.setOnMenuItemClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
             return@setOnMenuItemClickListener true
@@ -105,5 +111,17 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         exitToast.cancel()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key == "authToken") {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+    }
+
+    override fun onDestroy() {
+        preferences.unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroy()
     }
 }

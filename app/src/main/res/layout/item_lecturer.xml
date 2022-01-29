@@ -3,36 +3,69 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    app:cardCornerRadius="@dimen/corner_radius"
-    android:layout_marginTop="6dp"
-    android:layout_marginHorizontal="3dp"
-    app:cardElevation="5dp">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.github.florent37.expansionpanel.ExpansionHeader
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="60dp"
+        app:expansion_headerIndicator="@id/headerIndicator"
+        app:expansion_layout="@id/expansionLayout"
+        app:expansion_toggleOnClick="true">
+
+        <!-- HEADER -->
 
         <TextView
             android:id="@+id/lecturer_item_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="50dp"
+            android:drawablePadding="15dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="?android:attr/textColorPrimaryNoDisable"
             android:textSize="20sp"
-            app:drawableStartCompat="@drawable/ic_syllabus"
-            android:drawablePadding="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:maxLines="1"
-            android:ellipsize="end"
-            tools:text="2020/2021 Программист"/>
-<!--            tools:text="@tools:sample/full_names"/>-->
+            app:drawableStartCompat="@drawable/ic_lecturer_24"
+            tools:text="@tools:sample/full_names" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- HEADER INDICATOR -->
+
+        <ImageView
+            android:id="@+id/headerIndicator"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="15dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+
+    </com.github.florent37.expansionpanel.ExpansionHeader>
+
+    <com.github.florent37.expansionpanel.ExpansionLayout
+        android:id="@+id/expansionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        tools:expansion_expanded="true"
+        android:layout_marginHorizontal="10dp"
+        app:layout_anchor="@+id/cardView"
+        app:layout_anchorGravity="center">
+
+        <!-- CONTENT -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="закрой, холодно"
+            android:paddingVertical="50dp"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+    </com.github.florent37.expansionpanel.ExpansionLayout>
 
 </androidx.cardview.widget.CardView>

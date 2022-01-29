@@ -6,8 +6,7 @@ data class LecturersList(
     var data: List<Lecturer>,
 ) {
     data class Lecturer(
-        var type: String,
-        var id: String,
+        var id: Int,
         var attributes: Attributes,
         var relationships: Relationships
     ) {
@@ -24,8 +23,7 @@ data class LecturersList(
                 var data: List<Data>
             ) {
                 data class Data(
-                    var type: String,
-                    var id: String
+                    var id: Int
                 )
             }
         }

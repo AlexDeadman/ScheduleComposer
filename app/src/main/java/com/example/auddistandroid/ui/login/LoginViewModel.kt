@@ -4,15 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.auddistandroid.api.AudDistApi
 import com.example.auddistandroid.data.AudDistRepository
-import com.example.auddistandroid.data.model.AuthToken
-import com.example.auddistandroid.ui.QueryStatus
+import com.example.auddistandroid.utils.ResponseStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.HttpException
-import java.net.ConnectException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -24,7 +22,7 @@ class LoginViewModel @Inject constructor(
     lateinit var username: String
     lateinit var password: String
 
-    lateinit var queryStatus: QueryStatus
+    lateinit var responseStatus: ResponseStatus
 
     val token = liveData(Dispatchers.IO) {
         // TODO избавится от этого кринжа
@@ -51,12 +49,12 @@ class LoginViewModel @Inject constructor(
                     jsonObject.toString()
                 )
             ).data.attributes.authToken
-            queryStatus = QueryStatus.SUCCESS
+            responseStatus = ResponseStatus.SUCCESS
         } catch (e: Exception) {
-            queryStatus = when (e) { // TODO изменить способ обратоки ошибок, возможно нужен MVI
-                is HttpException -> QueryStatus.UNAUTHORIZED // TODO HttpException возможно не подходит
-                is SocketTimeoutException -> QueryStatus.NO_RESPONSE
-                else -> QueryStatus.UNKNOWN_ERROR
+            responseStatus = when (e) { // TODO изменить способ обратоки ошибок, возможно нужен MVI
+                is HttpException -> ResponseStatus.UNAUTHORIZED // TODO HttpException возможно не подходит
+                is SocketTimeoutException -> ResponseStatus.NO_RESPONSE
+                else -> ResponseStatus.UNKNOWN_ERROR
             }
         } finally {
             emit(authToken)

@@ -1,19 +1,19 @@
 package com.example.auddistandroid.ui.login
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auddistandroid.App
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.ActivityLoginBinding
 import com.example.auddistandroid.ui.MainActivity
-import com.example.auddistandroid.ui.QueryStatus
+import com.example.auddistandroid.utils.ResponseStatus
 import com.example.auddistandroid.ui.ipsettings.IpSettingActivity
+import com.example.auddistandroid.utils.UiUtils
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
@@ -35,6 +35,8 @@ class LoginActivity : AppCompatActivity() {
         val preferences = App.preferences
         val editor = preferences.edit()
 
+        UiUtils.updateTheme()
+
         binding.apply {
 
             if (preferences.getString("authToken", null) == null) {
@@ -51,10 +53,10 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.password = editTextPassword.text.toString()
 
                 viewModel.token.observe(this@LoginActivity) {
-                    if (viewModel.queryStatus != QueryStatus.SUCCESS) {
-                        textViewLogInError.text = when (viewModel.queryStatus) {
-                            QueryStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
-                            QueryStatus.UNAUTHORIZED -> getString(R.string.unauthorized)
+                    if (viewModel.responseStatus != ResponseStatus.SUCCESS) {
+                        textViewLogInError.text = when (viewModel.responseStatus) {
+                            ResponseStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
+                            ResponseStatus.UNAUTHORIZED -> getString(R.string.unauthorized)
                             else -> getString(R.string.unknown_error)
                         }
                         textViewLogInError.visibility = View.VISIBLE

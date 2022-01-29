@@ -10,7 +10,7 @@
             android:title="Directions" />
 
         <item
-            android:icon="@drawable/ic_syllabus"
+            android:icon="@drawable/ic_clipboard"
             android:title="Syllabuses" />
 
         <item

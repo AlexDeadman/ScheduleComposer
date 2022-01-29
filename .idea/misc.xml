@@ -6,12 +6,16 @@
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_audience_24.xml" value="0.305" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" value="0.3055" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.3055" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_baseline_search.xml" value="0.195" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_baseline_sensor_door_24.xml" value="0.305" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.195" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_clipboard.xml" value="0.243" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_group_24.xml" value="0.305" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_lecturer_24.xml" value="0.305" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_syllabus.xml" value="0.305" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_theme.xml" value="0.3055" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_virus.xml" value="0.3055" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/nav_header_gradient.xml" value="0.3095" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/drawable/spinner_background.xml" value="0.3055" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_account_request.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_add_audience.xml" value="0.275390625" />
@@ -22,16 +26,19 @@
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_add_schedule.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_add_syllabus.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_ip_settings.xml" value="0.274609375" />
-        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_login.xml" value="0.275390625" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_main.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/activity_settings.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/app_bar_main.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/content_main.xml" value="0.275390625" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/fragment_dashboard.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/fragment_lecturers.xml" value="0.275390625" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/fragment_notifications.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/item_lecturer.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/item_schedule.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/nav_header_main.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/layout/syllabus.xml" value="0.275390625" />
+        <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/menu/menu.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/menu/nav_menu.xml" value="0.275390625" />
         <entry key="..\:/Users/Alexus/StudioProjects/AudDistAndroid/app/src/main/res/xml/root_preferences.xml" value="0.275390625" />
         <entry key="..\:/Users/alexo/StudioProjects/AudDistAndroid/app/src/main/res/drawable/ic_audience_24.xml" value="0.275" />

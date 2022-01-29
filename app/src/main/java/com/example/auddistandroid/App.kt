@@ -10,12 +10,10 @@ class App : Application() {
 
     companion object {
         lateinit var preferences: SharedPreferences
-
     }
 
     override fun onCreate() {
         super.onCreate()
-
         preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }
 }
