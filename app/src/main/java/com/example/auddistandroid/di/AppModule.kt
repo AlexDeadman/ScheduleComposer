@@ -20,7 +20,7 @@ object AppModule {
     fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://${App.preferences.getString("ip", "")!!}/")
+            .baseUrl("http://${App.preferences.getString("ip", "")}/")
             .build()
 
     @Provides

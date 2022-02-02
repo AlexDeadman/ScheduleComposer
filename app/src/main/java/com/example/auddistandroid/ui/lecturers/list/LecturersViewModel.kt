@@ -3,7 +3,7 @@ package com.example.auddistandroid.ui.lecturers.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.example.auddistandroid.data.AudDistRepository
-import com.example.auddistandroid.data.model.LecturersList
+import com.example.auddistandroid.data.model.LecturerList
 import com.example.auddistandroid.utils.ResponseStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ class LecturersViewModel @Inject constructor(
     lateinit var authToken: String
 
     val lecturers = liveData(Dispatchers.IO) {
-        val list = LecturersList(listOf())
+        val list = LecturerList(listOf())
         try {
             list.data = repository.getLecturers(authToken).data.sortedBy { it.attributes.surname }
             responseStatus = ResponseStatus.SUCCESS

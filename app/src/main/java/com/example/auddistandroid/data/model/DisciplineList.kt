@@ -2,14 +2,15 @@ package com.example.auddistandroid.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class DisciplinesList(
-    var data: List<Discipline>
-) {
+data class DisciplineList(var data: List<Discipline>) {
+
     data class Discipline(
+        var type: String,
         var id: Int,
         var attributes: Attributes,
         var relationships: Relationships
     ) {
+
         data class Attributes(
             var name: String,
             var code: String,
@@ -22,17 +23,12 @@ data class DisciplinesList(
             @SerializedName("hours_cons") var hoursCons: Int
         )
 
-        data class Relationships(
-            var syllabus: Syllabus
-        ) {
-            data class Syllabus(
-                var data: Data
-            ) {
-                data class Data(
-                    var id: Int
-                )
-            }
+        data class Relationships(var syllabus: Syllabus) {
 
+            data class Syllabus(var data: Data) {
+
+                data class Data(var id: Int)
+            }
         }
     }
 }

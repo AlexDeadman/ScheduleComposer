@@ -5,24 +5,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.auddistandroid.App
+import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.ActivityLoginBinding
 import com.example.auddistandroid.ui.MainActivity
-import com.example.auddistandroid.utils.ResponseStatus
 import com.example.auddistandroid.ui.ipsettings.IpSettingActivity
+import com.example.auddistandroid.utils.ResponseStatus
 import com.example.auddistandroid.utils.UiUtils
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
 
-    private fun goMain() {
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-        finish()
-    }
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +26,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel: LoginViewModel by viewModels()
-
-        val preferences = App.preferences
-        val editor = preferences.edit()
 
         UiUtils.updateTheme()
 
@@ -61,12 +53,11 @@ class LoginActivity : AppCompatActivity() {
                         }
                         textViewLogInError.visibility = View.VISIBLE
                     } else {
-//                        Toast.makeText(this@LoginActivity, it, Toast.LENGTH_SHORT).show()
-
-                        editor.putString("authToken", "Token $it")
-                        editor.putString("username", viewModel.username)
-
-                        editor.apply()
+                        preferences.edit().apply {
+                            putString("authToken", "Token $it")
+                            putString("username", viewModel.username)
+                            apply()
+                        }
 
                         goMain()
                     }
@@ -78,5 +69,10 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this@LoginActivity, IpSettingActivity::class.java))
             }
         }
+    }
+
+    private fun goMain() {
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
     }
 }

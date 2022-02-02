@@ -19,4 +19,7 @@ class AudDistRepository @Inject constructor(
 
     suspend fun getDisciplines(@Header("Authorization") authToken: String) =
         audDistApi.getDisciplines(authToken)
+
+    suspend fun getSchedules(@Header("Authorization") authToken: String) =
+        audDistApi.getSchedules(authToken)
 }

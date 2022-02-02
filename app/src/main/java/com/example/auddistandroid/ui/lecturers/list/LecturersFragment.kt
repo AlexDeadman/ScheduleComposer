@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.auddistandroid.App
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.FragmentLecturersBinding
-import com.example.auddistandroid.utils.ResponseStatus
 import com.example.auddistandroid.ui.login.LoginActivity
+import com.example.auddistandroid.utils.ResponseStatus
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,7 +37,7 @@ class LecturersFragment : Fragment() {
 
         _binding = FragmentLecturersBinding.bind(view)
 
-        viewModel.authToken = App.preferences.getString("authToken", null)!!
+        viewModel.authToken = preferences.getString("authToken", null)!!
 
         viewModel.lecturers.observe(viewLifecycleOwner) {
 
@@ -52,10 +53,11 @@ class LecturersFragment : Fragment() {
                     }
                     textViewLecturersError.visibility = View.VISIBLE
                     if (viewModel.responseStatus == ResponseStatus.UNAUTHORIZED) {
-                        val intent = Intent(activity, LoginActivity::class.java)
-                        startActivity(intent)
+                        startActivity(Intent(context, LoginActivity::class.java))
+                        requireActivity().finish()
                     }
                 } else {
+                    recyclerView.layoutManager = LinearLayoutManager(context)
                     recyclerView.setHasFixedSize(true)
                     recyclerView.adapter = adapter
                 }

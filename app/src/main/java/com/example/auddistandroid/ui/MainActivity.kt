@@ -14,7 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.auddistandroid.App
+import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.ActivityMainBinding
 import com.example.auddistandroid.ui.lecturers.add.AddLecturerActivity
@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var exitToast: Toast
     private lateinit var navController: NavController
-
-    private val preferences = App.preferences
 
     private var backPressedOnce = false
 
@@ -95,11 +93,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
 
-        val settingsItem = menu.findItem(R.id.settings_button)
-        settingsItem.setOnMenuItemClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            return@setOnMenuItemClickListener true
-        }
+        menu.findItem(R.id.settings_button)
+            .setOnMenuItemClickListener {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                return@setOnMenuItemClickListener true
+            }
         return true
     }
 

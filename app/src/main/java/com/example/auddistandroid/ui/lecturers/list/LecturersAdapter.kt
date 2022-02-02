@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auddistandroid.R
-import com.example.auddistandroid.data.model.LecturersList
-import com.example.auddistandroid.data.model.LecturersList.Lecturer
+import com.example.auddistandroid.data.model.LecturerList
+import com.example.auddistandroid.data.model.LecturerList.Lecturer
 import com.example.auddistandroid.databinding.ItemLecturerBinding
-import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
 
 class LecturersAdapter(
-    private val lecturersList: LecturersList
+    private val lecturerList: LecturerList
 ) : RecyclerView.Adapter<LecturersAdapter.LecturersViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LecturersViewHolder {
@@ -22,10 +21,10 @@ class LecturersAdapter(
     }
 
     override fun onBindViewHolder(holder: LecturersViewHolder, position: Int) {
-        holder.bind(lecturersList.data[position], holder.itemView.context)
+        holder.bind(lecturerList.data[position], holder.itemView.context)
     }
 
-    override fun getItemCount(): Int = lecturersList.data.size
+    override fun getItemCount(): Int = lecturerList.data.size
 
     override fun getItemViewType(position: Int): Int = position
 
