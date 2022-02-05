@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.auddistandroid.R
-import com.example.auddistandroid.data.model.LecturerList
-import com.example.auddistandroid.data.model.LecturerList.Lecturer
+import com.example.auddistandroid.data.model.DataList
+import com.example.auddistandroid.data.model.Lecturer
 import com.example.auddistandroid.databinding.ItemLecturerBinding
 
 class LecturersAdapter(
-    private val lecturerList: LecturerList
+    private val lecturerList: DataList<Lecturer>
 ) : RecyclerView.Adapter<LecturersAdapter.LecturersViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LecturersViewHolder {

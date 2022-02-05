@@ -1,11 +1,11 @@
-package com.example.auddistandroid.ui
+package com.example.auddistandroid.ui.base
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auddistandroid.R
 
-open class BaseActivity(private val titleId: Int = R.string.app_name): AppCompatActivity() {
+open class BaseActivity(private val titleId: Int = R.string.app_name) : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

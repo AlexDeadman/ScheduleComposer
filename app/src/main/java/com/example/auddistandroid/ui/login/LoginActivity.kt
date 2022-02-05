@@ -10,7 +10,6 @@ import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.ActivityLoginBinding
 import com.example.auddistandroid.ui.MainActivity
 import com.example.auddistandroid.ui.ipsettings.IpSettingActivity
-import com.example.auddistandroid.utils.ResponseStatus
 import com.example.auddistandroid.utils.UiUtils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel: LoginViewModel by viewModels()
+//        val viewModel: LoginViewModel by viewModels()
 
         UiUtils.updateTheme()
 
@@ -39,31 +38,31 @@ class LoginActivity : AppCompatActivity() {
             }
 
             buttonLogIn.setOnClickListener {
-                progressBarLogIn.visibility = View.VISIBLE
-
-                viewModel.username = editTextUsername.text.toString()
-                viewModel.password = editTextPassword.text.toString()
-
-                viewModel.token.observe(this@LoginActivity) {
-                    if (viewModel.responseStatus != ResponseStatus.SUCCESS) {
-                        textViewLogInError.text = when (viewModel.responseStatus) {
-                            ResponseStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
-                            ResponseStatus.UNAUTHORIZED -> getString(R.string.unauthorized)
-                            else -> getString(R.string.unknown_error)
-                        }
-                        textViewLogInError.visibility = View.VISIBLE
-                    } else {
-                        preferences.edit().apply {
-                            putString("authToken", "Token $it")
-                            putString("username", viewModel.username)
-                            apply()
-                        }
+//                progressBarLogIn.visibility = View.VISIBLE
+//
+//                viewModel.username = editTextUsername.text.toString()
+//                viewModel.password = editTextPassword.text.toString()
+//
+//                viewModel.token.observe(this@LoginActivity) {
+//                    if (viewModel.responseStatus != ResponseStatus.SUCCESS) {
+//                        textViewLogInError.text = when (viewModel.responseStatus) {
+//                            ResponseStatus.NO_RESPONSE -> getString(R.string.server_is_not_responding)
+//                            ResponseStatus.UNAUTHORIZED -> getString(R.string.unauthorized)
+//                            else -> getString(R.string.unknown_error)
+//                        }
+//                        textViewLogInError.visibility = View.VISIBLE
+//                    } else {
+//                        preferences.edit().apply {
+//                            putString("authToken", "Token $it")
+//                            putString("username", viewModel.username)
+//                            apply()
+//                        }
 
                         goMain()
                     }
-                    progressBarLogIn.visibility = View.INVISIBLE
-                }
-            }
+//                    progressBarLogIn.visibility = View.INVISIBLE
+//                }
+//            }
 
             buttonIpSettings.setOnClickListener {
                 startActivity(Intent(this@LoginActivity, IpSettingActivity::class.java))

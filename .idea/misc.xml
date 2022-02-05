@@ -75,6 +75,11 @@
       </map>
     </option>
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/auddistandroid/ui/dashboard/DashboardViewModel.kt" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/auddistandroid/ui/lecturers/list/LecturersViewModel.kt" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/auddistandroid/ui/login/LoginViewModel.kt" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

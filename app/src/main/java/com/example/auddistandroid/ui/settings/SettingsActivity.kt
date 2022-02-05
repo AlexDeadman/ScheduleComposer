@@ -6,7 +6,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
-import com.example.auddistandroid.ui.BaseActivity
+import com.example.auddistandroid.ui.base.BaseActivity
 import com.example.auddistandroid.ui.LogoutConfirmDialogFragment
 import com.example.auddistandroid.utils.UiUtils
 
