@@ -7,11 +7,11 @@
 
         <item
             android:icon="@drawable/ic_audience_24"
-            android:title="Directions" />
+            android:title="@string/directions" />
 
         <item
             android:icon="@drawable/ic_clipboard"
-            android:title="Syllabuses" />
+            android:title="@string/syllabuses" />
 
         <item
             android:icon="@drawable/ic_schedule_24"

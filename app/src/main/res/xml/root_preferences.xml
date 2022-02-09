@@ -24,7 +24,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="About">
-        <Preference android:title="Audience distribution v0.0.1" />
+        <Preference android:title="Audience distribution v1.0" />
         <Preference
             android:title="Help"
             android:icon="@drawable/ic_baseline_help_outline_24"

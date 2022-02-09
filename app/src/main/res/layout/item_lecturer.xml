@@ -27,7 +27,7 @@
             android:drawablePadding="15dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textColor="?android:attr/textColorPrimaryNoDisable"
+            android:textColor="?android:textColorPrimary"
             android:textSize="20sp"
             app:drawableStartCompat="@drawable/ic_lecturer_24"
             tools:text="@tools:sample/full_names" />

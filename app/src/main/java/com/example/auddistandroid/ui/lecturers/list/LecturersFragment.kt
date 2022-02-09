@@ -10,10 +10,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auddistandroid.R
 import com.example.auddistandroid.data.model.DataList
-import com.example.auddistandroid.data.model.Lecturer
+import com.example.auddistandroid.data.model.entities.Lecturer
 import com.example.auddistandroid.databinding.FragmentLecturersBinding
+import com.example.auddistandroid.ui.base.BaseAdapter
 import com.example.auddistandroid.ui.base.BaseViewModel
-import com.example.auddistandroid.utils.State
+import com.example.auddistandroid.utils.state.ListState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,34 +44,36 @@ class LecturersFragment : Fragment() {
             binding.apply {
 
                 when (it) {
-                    is State.LoadingState -> {
+                    is ListState.Loading -> {
                         progressBar.visibility = View.VISIBLE
                     }
-                    is State.LoadedState<*> -> {
+                    is ListState.Loaded<*> -> {
                         progressBar.visibility = View.GONE
 
                         recyclerView.apply {
                             layoutManager = LinearLayoutManager(context)
                             setHasFixedSize(true)
-                            adapter = LecturersAdapter(it.data as DataList<Lecturer>)
+                            adapter = BaseAdapter(it.data as DataList<Lecturer>)
                         } // TODO fix cast
                     }
-                    is State.NoItemsState -> {
+                    is ListState.NoItems -> {
                         progressBar.visibility = View.GONE
 
-                        textViewLecturersError.apply {
+                        textViewError.apply {
                             visibility = View.VISIBLE
                             text = getString(R.string.list_is_empty)
                         }
                     }
-                    is State.ErrorState -> {
+                    is ListState.Error -> {
                         progressBar.visibility = View.GONE
 
-                        textViewLecturersError.apply {
+                        textViewError.apply {
                             visibility = View.VISIBLE
                             text = getString(R.string.unknown_error)
-                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         }
+
+                        // TODO TEMPO
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

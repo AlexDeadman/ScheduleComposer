@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Audience distribution</string>
+    <string name="app_name">Audience Distribution</string>
     <string name="title_lecturers">Lecturers</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -34,5 +34,7 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
+    <string name="directions">Directions</string>
+    <string name="syllabuses">Syllabuses</string>
 
 </resources>

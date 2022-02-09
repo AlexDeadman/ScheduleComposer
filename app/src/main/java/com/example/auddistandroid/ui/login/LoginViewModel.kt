@@ -1,64 +1,59 @@
-//package com.example.auddistandroid.ui.login
-//
-//import androidx.lifecycle.ViewModel
-//import androidx.lifecycle.liveData
-//import com.example.auddistandroid.api.AudDistApi
-//import com.example.auddistandroid.data.AudDistRepository
-//import com.example.auddistandroid.utils.ResponseStatus
-//import dagger.hilt.android.lifecycle.HiltViewModel
-//import kotlinx.coroutines.Dispatchers
-//import okhttp3.MediaType
-//import okhttp3.RequestBody
-//import org.json.JSONObject
-//import retrofit2.HttpException
-//import java.net.SocketTimeoutException
-//import javax.inject.Inject
-//
-//@HiltViewModel
-//class LoginViewModel @Inject constructor(
-//    private val repository: AudDistRepository,
-//) : ViewModel() {
-//
-//    lateinit var username: String
-//    lateinit var password: String
-//
-//    lateinit var responseStatus: ResponseStatus
-//
-//    val token = liveData(Dispatchers.IO) {
-//        // TODO избавится от этого кринжа
-//        val jsonObject = JSONObject(
-//            """
-//            {
-//                "data": {
-//                    "type": "TokenCreateView",
-//                    "attributes": {
-//                        "username": "$username",
-//                        "password": "$password"
-//                    }
-//                }
-//            }
-//            """.trimIndent()
-//        )
-//
-//        var authToken = ""
-//
-//        try {
-//            authToken = repository.getToken(
-//                RequestBody.create(
-//                    MediaType.parse(AudDistApi.CONTENT_TYPE),
-//                    jsonObject.toString()
-//                )
-//            ).data.attributes.authToken
-//            responseStatus = ResponseStatus.SUCCESS
-//        } catch (e: Exception) {
-//            responseStatus = when (e) {
-//                is HttpException -> ResponseStatus.UNAUTHORIZED
-//                is SocketTimeoutException -> ResponseStatus.NO_RESPONSE
-//                else -> ResponseStatus.UNKNOWN_ERROR
-//            }
-//        } finally {
-//            emit(authToken)
-//        }
-//
-//    }
-//}
+package com.example.auddistandroid.ui.login
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.auddistandroid.App.Companion.preferences
+import com.example.auddistandroid.api.AudDistApi
+import com.example.auddistandroid.data.AudDistRepository
+import com.example.auddistandroid.data.model.LoginData
+import com.example.auddistandroid.utils.state.LoginState
+import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import javax.inject.Inject
+
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val repository: AudDistRepository,
+) : ViewModel() {
+
+    private val _state = MutableLiveData<LoginState>()
+    val state: LiveData<LoginState> get() = _state
+
+    fun fetchToken(username: String, password: String) {
+        _state.value = LoginState.Sending
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val loginData = LoginData(
+                    LoginData.Data(
+                        "TokenCreateView",
+                        LoginData.Data.Attributes(username, password)
+                    )
+                )
+                val authToken = repository.getToken(
+                    RequestBody.create(
+                        MediaType.parse(AudDistApi.CONTENT_TYPE),
+                        Gson().toJson(loginData)
+                    )
+                ).data.attributes.authToken
+
+                preferences.edit().apply {
+                    putString("authToken", "Token $authToken")
+                    putString("username", username)
+                    apply()
+                }
+
+                _state.postValue(LoginState.Success)
+
+            } catch (e: Exception) {
+                _state.postValue(LoginState.Error(e.message.toString()))
+            }
+        }
+    }
+}

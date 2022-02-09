@@ -3,15 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        tools:visibility="invisible" />
+    android:layout_height="match_parent"
+    tools:context=".ui.login.LoginFragment">
 
     <Button
         android:id="@+id/button_ip_settings"
@@ -19,8 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_margin="5dp"
         android:text="@string/ip_settings" />
 
     <Button
@@ -28,24 +20,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_margin="5dp"
         android:text="@string/request_account" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/container"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginVertical="55dp"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        tools:visibility="visible">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/image_view_calendar_clock"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             app:srcCompat="@drawable/calendar_clock" />
 
         <TextView
@@ -54,6 +42,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:text="@string/welcome"
+            android:layout_marginTop="20dp"
             android:textSize="30sp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +89,7 @@
             android:textSize="12sp" />
 
         <ProgressBar
-            android:id="@+id/progress_bar_log_in"
+            android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,6 +1,8 @@
 package com.example.auddistandroid.api
 
 import com.example.auddistandroid.data.model.*
+import com.example.auddistandroid.data.model.DataList
+import com.example.auddistandroid.data.model.entities.Lecturer
 import okhttp3.RequestBody
 import retrofit2.http.*
 

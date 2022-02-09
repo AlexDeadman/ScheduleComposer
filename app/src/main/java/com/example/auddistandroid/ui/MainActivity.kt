@@ -16,9 +16,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
-import com.example.auddistandroid.databinding.ActivityMainBinding
+import com.example.auddistandroid.databinding.FragmentMainBinding
 import com.example.auddistandroid.ui.lecturers.add.AddLecturerActivity
-import com.example.auddistandroid.ui.login.LoginActivity
+import com.example.auddistandroid.ui.login.LoginFragment
 import com.example.auddistandroid.ui.settings.SettingsActivity
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +28,7 @@ import kotlin.concurrent.schedule
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: FragmentMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var exitToast: Toast
     private lateinit var navController: NavController
@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = FragmentMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.appBarMain.toolbar)
+        setSupportActionBar(binding.contentMain.toolbar)
 
         preferences.registerOnSharedPreferenceChangeListener(this)
 
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 .findViewById<TextView>(R.id.text_view_nav_header_subtitle)
                 .text = preferences.getString("username", "unknown")
 
-            appBarMain.content.floatingActionButton.setOnClickListener {
+            contentMain.floatingActionButton.setOnClickListener {
                 startActivity(Intent(this@MainActivity, AddLecturerActivity::class.java))
             }
         }
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == "authToken") {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, LoginFragment::class.java))
             finish()
         }
     }

@@ -1,4 +1,4 @@
-package com.example.auddistandroid.data.model
+package com.example.auddistandroid.data.model.entities
 
 import com.bin.david.form.annotation.ColumnType
 import com.bin.david.form.annotation.SmartColumn
