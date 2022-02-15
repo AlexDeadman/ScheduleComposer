@@ -1,33 +1,29 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory android:title="General">
+    <PreferenceCategory>
         <SwitchPreferenceCompat
-            android:title="COVID-19 adaptation mode"
             android:icon="@drawable/ic_virus"
-            android:key="" />
+            android:key=""
+            android:title="@string/covid_adaptation_mode" />
 
         <ListPreference
-            android:defaultValue="sys_theme"
+            android:defaultValue="system"
             android:entries="@array/theme_entries"
             android:entryValues="@array/theme_values"
+            android:icon="@drawable/ic_theme"
             app:key="theme"
-            app:title="Theme"
-            app:useSimpleSummaryProvider="true"
-            android:icon="@drawable/ic_theme"/>
+            app:title="@string/theme"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Account">
+    <PreferenceCategory>
         <Preference
-            android:title="@string/log_out"
             android:icon="@drawable/ic_baseline_exit_to_app_24"
-            android:key="logout" />
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="About">
-        <Preference android:title="Audience distribution v1.0" />
+            android:key="logout"
+            android:title="@string/log_out" />
         <Preference
-            android:title="Help"
             android:icon="@drawable/ic_baseline_help_outline_24"
-            android:key="help" />
+            android:key="help"
+            android:title="@string/help" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

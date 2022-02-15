@@ -1,6 +1,5 @@
 package com.example.auddistandroid.data.model.entities
 
-import com.example.auddistandroid.data.model.Entity
 import com.google.gson.annotations.SerializedName
 
 

@@ -21,12 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:theme="@style/EnableActionBar" />
-        <activity
-            android:name=".ui.lecturers.add.AddLecturerActivity"
-            android:theme="@style/EnableActionBar" />
     </application>
 
 </manifest>

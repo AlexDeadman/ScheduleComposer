@@ -1,7 +1,8 @@
 package com.example.auddistandroid.di
 
-import com.example.auddistandroid.App
+import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.api.AudDistApi
+import com.example.auddistandroid.utils.Keys
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ object AppModule {
     fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://${App.preferences.getString("ip", "")}/")
+            .baseUrl(preferences.getString(Keys.BASE_URL, "http://template/")!!)
             .build()
 
     @Provides

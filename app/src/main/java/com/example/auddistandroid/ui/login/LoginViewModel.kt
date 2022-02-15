@@ -7,9 +7,11 @@ import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.api.AudDistApi
 import com.example.auddistandroid.data.AudDistRepository
 import com.example.auddistandroid.data.model.LoginData
+import com.example.auddistandroid.utils.Keys
 import com.example.auddistandroid.utils.state.LoginState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,8 +46,8 @@ class LoginViewModel @Inject constructor(
                 ).data.attributes.authToken
 
                 preferences.edit().apply {
-                    putString("authToken", "Token $authToken")
-                    putString("username", username)
+                    putString(Keys.AUTH_TOKEN, "Token $authToken")
+                    putString(Keys.USERNAME, username)
                     apply()
                 }
 

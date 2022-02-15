@@ -16,7 +16,7 @@ data class Schedule(
 
     @SmartColumn(type = ColumnType.Child)
     var relationships: Relationships
-) {
+) : Entity {
 
     data class Attributes(
         @SmartColumn

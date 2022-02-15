@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/drawer_group_1"
+        android:checkableBehavior="single">
 
         <item
             android:icon="@drawable/ic_audience_24"
@@ -18,23 +20,30 @@
             android:title="@string/schedule" />
 
         <item
-            android:id="@+id/navigation_dashboard"
             android:icon="@drawable/ic_baseline_auto_stories_24"
             android:title="@string/disciplines" />
 
         <item
-            android:id="@+id/navigation_lecturers"
+            android:id="@+id/listFragment"
             android:icon="@drawable/ic_lecturer_24"
             android:title="@string/title_lecturers" />
 
         <item
-            android:id="@+id/navigation_notifications"
             android:icon="@drawable/ic_group_24"
             android:title="@string/groups" />
 
         <item
             android:icon="@drawable/ic_baseline_sensor_door_24"
             android:title="@string/audiences" />
+    </group>
+
+    <group
+        android:id="@+id/drawer_group_2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/settingsFragment"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="@string/title_settings"/>
     </group>
 
 </menu>

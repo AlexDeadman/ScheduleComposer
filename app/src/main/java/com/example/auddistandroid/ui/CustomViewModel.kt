@@ -1,19 +1,21 @@
-package com.example.auddistandroid.ui.base
+package com.example.auddistandroid.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.data.AudDistRepository
+import com.example.auddistandroid.utils.Keys
 import com.example.auddistandroid.utils.state.ListState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BaseViewModel @Inject constructor(
+class CustomViewModel @Inject constructor(
     private val repository: AudDistRepository
 ) : ViewModel() {
 
@@ -25,7 +27,7 @@ class BaseViewModel @Inject constructor(
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val token = preferences.getString("authToken", null)!!
+                val token = preferences.getString(Keys.AUTH_TOKEN, null)!!
                 val dataList = repository.getLecturers(token) // TODO TEMPO
 
                 _state.postValue(

@@ -7,7 +7,7 @@ data class Audience(
     var type: String,
     var id: Int,
     var attributes: Attributes,
-) {
+) : Entity {
 
     data class Attributes(
         var number: String,

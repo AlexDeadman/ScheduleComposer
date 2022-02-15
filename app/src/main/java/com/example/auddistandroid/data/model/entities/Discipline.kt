@@ -8,7 +8,7 @@ data class Discipline(
     var id: Int,
     var attributes: Attributes,
     var relationships: Relationships
-) {
+) : Entity {
 
     data class Attributes(
         var name: String,
