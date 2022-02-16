@@ -34,7 +34,7 @@ class ConnectionFragment : Fragment() {
 
             buttonContinue.setOnClickListener {
 
-                if (editTextUrl.text!!.isNotBlank()) {
+                if (editTextUrl.text!!.isNotBlank()) { // TODO validation
 
                     val url = editTextUrl.text.toString()
 

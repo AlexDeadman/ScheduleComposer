@@ -7,7 +7,7 @@
             android:title="@string/covid_adaptation_mode" />
 
         <ListPreference
-            android:defaultValue="system"
+            android:defaultValue="light"
             android:entries="@array/theme_entries"
             android:entryValues="@array/theme_values"
             android:icon="@drawable/ic_theme"

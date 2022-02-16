@@ -26,12 +26,4 @@ interface AudDistApi {
         @Header("Authorization") authToken: String,
         @Url url: String = "$BASE_URL/api/lecturers/"
     ): DataList<Lecturer>
-
-//    @Headers(CONTENT_TYPE)
-//    @GET("api/disciplines/")
-//    suspend fun getDisciplines(@Header("Authorization") authToken: String): DataList<Discipline>
-//
-//    @Headers(CONTENT_TYPE)
-//    @GET("api/schedules/")
-//    suspend fun getSchedules(@Header("Authorization") authToken: String): DataList<Schedule>
 }

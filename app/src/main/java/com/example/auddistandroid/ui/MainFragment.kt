@@ -14,30 +14,15 @@ import androidx.navigation.ui.NavigationUI
 import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.FragmentMainBinding
+import com.example.auddistandroid.utils.Keys
 import dagger.hilt.android.AndroidEntryPoint
 
 class MainFragment : Fragment() {
-
-//    private lateinit var appBarConfiguration: AppBarConfiguration
-//    private lateinit var exitToast: Toast
-//    private lateinit var navController: NavController
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var drawer: DrawerLayout
-
-//    private var backPressedOnce = false
-
-//    override fun onBackPressed() {
-//        if (navController.currentDestination?.id != R.id.navigation_lecturers || backPressedOnce) {
-//            super.onBackPressed()
-//        } else {
-//            backPressedOnce = true
-//            Timer().schedule(2000) { backPressedOnce = false }
-//            exitToast.show()
-//        }
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +46,8 @@ class MainFragment : Fragment() {
 
             val navController = contentMain.mainFragmentContainerView
                 .getFragment<NavHostFragment>().navController
-            val appCompatActivity = (activity as AppCompatActivity)
-
-            appCompatActivity.apply {
-                setSupportActionBar(binding.contentMain.toolbar)
-                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            val appCompatActivity = (requireActivity() as AppCompatActivity).apply {
+                setSupportActionBar(binding.contentMain.appbar.toolbar)
             }
 
             NavigationUI.apply {
@@ -80,9 +62,10 @@ class MainFragment : Fragment() {
                 )
             }
 
-            navView.getHeaderView(0)
+            navView
+                .getHeaderView(0)
                 .findViewById<TextView>(R.id.text_view_nav_header_subtitle)
-                .text = preferences.getString("username", "unknown")
+                .text = preferences.getString(Keys.USERNAME, "unknown")
         }
     }
 
@@ -92,55 +75,4 @@ class MainFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    //    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//
-//        preferences.registerOnSharedPreferenceChangeListener(this)
-//
-//        exitToast = Toast.makeText(
-//            applicationContext,
-//            getString(R.string.press_again_to_exit),
-//            Toast.LENGTH_SHORT
-//        )
-//
-//        val navView: NavigationView = binding.navView
-//        val drawerLayout: DrawerLayout = binding.drawerLayout
-//
-//        navController = findNavController(R.id.nav_host_fragment_content_main)
-//
-//        appBarConfiguration = AppBarConfiguration(
-//            setOf(
-//                R.id.navigation_lecturers,
-//                R.id.navigation_dashboard,
-//                R.id.navigation_notifications
-//            ),
-//            drawerLayout
-//        )
-//
-//        setupActionBarWithNavController(navController, appBarConfiguration)
-//        navView.setupWithNavController(navController)
-//
-
-//    }
-//
-//
-//
-//    override fun onStop() {
-//        super.onStop()
-//        exitToast.cancel()
-//    }
-//
-//    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-//        if (key == "authToken") {
-//            startActivity(Intent(this, LoginFragment::class.java))
-//            finish()
-//        }
-//    }
-//
-//    override fun onDestroy() {
-//        preferences.unregisterOnSharedPreferenceChangeListener(this)
-//        super.onDestroy()
-//    }
 }

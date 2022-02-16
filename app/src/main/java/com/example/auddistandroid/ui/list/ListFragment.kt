@@ -1,4 +1,4 @@
-package com.example.auddistandroid.ui.lecturers
+package com.example.auddistandroid.ui.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,15 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auddistandroid.R
-import com.example.auddistandroid.data.model.DataList
 import com.example.auddistandroid.databinding.FragmentListBinding
-import com.example.auddistandroid.ui.CustomAdapter
 import com.example.auddistandroid.ui.CustomViewModel
 import com.example.auddistandroid.utils.state.ListState
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LecturersFragment : Fragment() {
+class ListFragment : Fragment() {
 
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
@@ -34,24 +35,21 @@ class LecturersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel: CustomViewModel by viewModels()
+        binding.apply {
 
-        viewModel.state.observe(viewLifecycleOwner) {
+            val itemAdapter = ItemAdapter<ListItem>()
+            initRecyclerView(itemAdapter)
 
-            binding.apply {
+            val viewModel: CustomViewModel by viewModels()
 
+            viewModel.state.observe(viewLifecycleOwner) {
                 when (it) {
                     is ListState.Loading -> {
                         progressBar.visibility = View.VISIBLE
                     }
-                    is ListState.Loaded<*> -> {
+                    is ListState.Loaded -> {
                         progressBar.visibility = View.GONE
-
-                        recyclerView.apply {
-                            layoutManager = LinearLayoutManager(context)
-                            setHasFixedSize(true)
-                            adapter = CustomAdapter(it.data as DataList<*>)
-                        }
+                        FastAdapterDiffUtil[itemAdapter] = it.result
                     }
                     is ListState.NoItems -> {
                         progressBar.visibility = View.GONE
@@ -74,9 +72,19 @@ class LecturersFragment : Fragment() {
                     }
                 }
             }
-        }
 
-        viewModel.fetchEntities()
+            viewModel.fetchEntities()
+        }
+    }
+
+    private fun initRecyclerView(itemAdapter: ItemAdapter<ListItem>) {
+        binding.recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+
+            val fastAdapter = FastAdapter.with(itemAdapter)
+            adapter = fastAdapter
+        }
     }
 
     override fun onDestroyView() {

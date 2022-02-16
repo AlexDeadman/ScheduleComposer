@@ -16,11 +16,10 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit =
-        Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(preferences.getString(Keys.BASE_URL, "http://template/")!!)
-            .build()
+    fun provideRetrofit(): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl("http://template/") // required
+        .build()
 
     @Provides
     @Singleton

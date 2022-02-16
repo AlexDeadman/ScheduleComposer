@@ -8,10 +8,9 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@android:color/holo_blue_light</item>
         <item name="colorSecondaryVariant">@android:color/holo_blue_light</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="colorOnSecondary">#ecedf0</item>
         <!-- Customize your theme here. -->
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 

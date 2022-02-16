@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(
                 val loginData = LoginData(
                     LoginData.Data(
                         "TokenCreateView",
-                        LoginData.Data.Attributes(username, password)
+                        LoginData.Data.Attributes(username, password) // TODO validation
                     )
                 )
                 val authToken = repository.getToken(
