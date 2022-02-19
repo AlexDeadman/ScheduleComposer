@@ -7,12 +7,12 @@ data class Group(
     var type: String,
     var id: Int,
     var attributes: Attributes,
-    var relationships: Relationships
+    var relationships: Relationships,
 ) : Entity {
 
     data class Attributes(
         var number: String,
-        @SerializedName("students_count") var studentsCount: Int
+        @SerializedName("students_count") var studentsCount: Int,
     )
 
     data class Relationships(var syllabus: Syllabus) {

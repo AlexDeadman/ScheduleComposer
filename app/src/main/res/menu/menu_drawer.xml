@@ -41,7 +41,7 @@
         android:id="@+id/drawer_group_2"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/settingsFragment"
+            android:id="@+id/drawer_item_settings"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="@string/title_settings"/>
     </group>

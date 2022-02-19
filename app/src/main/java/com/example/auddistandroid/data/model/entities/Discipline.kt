@@ -7,7 +7,7 @@ data class Discipline(
     var type: String,
     var id: Int,
     var attributes: Attributes,
-    var relationships: Relationships
+    var relationships: Relationships,
 ) : Entity {
 
     data class Attributes(
@@ -15,11 +15,11 @@ data class Discipline(
         var code: String,
         var cycle: String,
         @SerializedName("hours_total") var hoursTotal: Int,
-        @SerializedName("hours_lec") var hoursLec: Int,
-        @SerializedName("hours_pr") var hoursPr: Int,
-        @SerializedName("hours_la") var hoursLa: Int,
-        @SerializedName("hours_isw") var hoursIsw: Int,
-        @SerializedName("hours_cons") var hoursCons: Int
+        @SerializedName("hours_lec") var hoursLec: Int?,
+        @SerializedName("hours_pr") var hoursPr: Int?,
+        @SerializedName("hours_la") var hoursLa: Int?,
+        @SerializedName("hours_isw") var hoursIsw: Int?,
+        @SerializedName("hours_cons") var hoursCons: Int?,
     )
 
     data class Relationships(var syllabus: Syllabus) {

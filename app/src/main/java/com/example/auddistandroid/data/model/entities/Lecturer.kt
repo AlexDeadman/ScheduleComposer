@@ -7,13 +7,13 @@ data class Lecturer(
     var type: String,
     var id: Int,
     var attributes: Attributes,
-    var relationships: Relationships
+    var relationships: Relationships,
 ) : Entity {
 
     data class Attributes(
         @SerializedName("first_name") var firstName: String,
         var surname: String,
-        var patronymic: String
+        var patronymic: String?,
     )
 
     data class Relationships(var disciplines: Disciplines) {

@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.auddistandroid.R
 import com.example.auddistandroid.databinding.FragmentListBinding
-import com.example.auddistandroid.ui.CustomViewModel
+import com.example.auddistandroid.ui.AbstractViewModel
 import com.example.auddistandroid.utils.state.ListState
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -40,7 +40,7 @@ class ListFragment : Fragment() {
             val itemAdapter = ItemAdapter<ListItem>()
             initRecyclerView(itemAdapter)
 
-            val viewModel: CustomViewModel by viewModels()
+            val viewModel: AbstractViewModel by viewModels()
 
             viewModel.state.observe(viewLifecycleOwner) {
                 when (it) {
@@ -72,8 +72,6 @@ class ListFragment : Fragment() {
                     }
                 }
             }
-
-            viewModel.fetchEntities()
         }
     }
 

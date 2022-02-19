@@ -7,10 +7,6 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.auddistandroid.ui.list.ListFragment"
-        android:label="List"
+        android:label="@string/title_lecturers"
         tools:layout="@layout/fragment_list" />
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.auddistandroid.ui.settings.SettingsFragment"
-        android:label="@string/title_settings" />
 </navigation>

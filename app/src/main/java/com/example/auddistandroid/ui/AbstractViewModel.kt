@@ -15,12 +15,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CustomViewModel @Inject constructor(
+class AbstractViewModel @Inject constructor(
     private val repository: AudDistRepository
 ) : ViewModel() {
 
     private val _state = MutableLiveData<ListState>()
     val state: LiveData<ListState> get() = _state
+
+    init {
+        fetchEntities()
+    }
 
     fun fetchEntities() {
         _state.value = ListState.Loading

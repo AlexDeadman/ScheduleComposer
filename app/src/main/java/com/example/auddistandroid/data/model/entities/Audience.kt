@@ -11,7 +11,7 @@ data class Audience(
 
     data class Attributes(
         var number: String,
-        @SerializedName("aud_type") var audType: String,
-        @SerializedName("seats_count") var seatsCount: Int
+        @SerializedName("aud_type") var audType: String?,
+        @SerializedName("seats_count") var seatsCount: Int,
     )
 }

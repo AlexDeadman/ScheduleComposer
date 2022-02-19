@@ -1,35 +1,58 @@
 package com.example.auddistandroid.ui.settings
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import com.example.auddistandroid.App.Companion.preferences
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.auddistandroid.R
-import com.example.auddistandroid.ui.MainActivity
-import com.example.auddistandroid.ui.dialog.LogoutConfirm
-import com.example.auddistandroid.utils.Keys
+import com.example.auddistandroid.databinding.FragmentSettingsBinding
 
+class SettingsFragment : Fragment() {
 
-class SettingsFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preference_screen, rootKey)
-
-        preferences.registerOnSharedPreferenceChangeListener(this)
-
-        val dialog = LogoutConfirm()
-
-        preferenceManager.findPreference<Preference>("logout")?.setOnPreferenceClickListener {
-            dialog.show(parentFragmentManager, "")
-            return@setOnPreferenceClickListener true
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == Keys.THEME) {
-            MainActivity.updateTheme()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.apply {
+            (requireActivity() as AppCompatActivity).apply {
+                setSupportActionBar(appbar.toolbar)
+                supportActionBar?.apply {
+                    setDisplayHomeAsUpEnabled(true)
+                    title = getString(R.string.title_settings)
+                }
+            }
+
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(frameLayoutSettings.id, CustomPreferenceFragment())
+                .commit()
         }
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            requireActivity().onBackPressed()
+        }
+        return true
     }
 }

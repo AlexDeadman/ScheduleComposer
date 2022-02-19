@@ -15,7 +15,7 @@ data class Schedule(
     var attributes: Attributes,
 
     @SmartColumn(type = ColumnType.Child)
-    var relationships: Relationships
+    var relationships: Relationships,
 ) : Entity {
 
     data class Attributes(
@@ -36,7 +36,7 @@ data class Schedule(
 
         @SmartColumn
         @SerializedName("lecture_begin")
-        var lectureBegin: Int
+        var lectureBegin: Int,
     )
 
     data class Relationships(

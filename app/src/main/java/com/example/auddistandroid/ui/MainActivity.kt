@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     companion object {
         fun updateTheme() {
-            val theme: String? = preferences.getString(Keys.THEME, Keys.SYSTEM)
+            val theme: String? = preferences.getString(Keys.THEME, Keys.LIGHT)
 
             AppCompatDelegate.setDefaultNightMode(
                 when (theme) {
