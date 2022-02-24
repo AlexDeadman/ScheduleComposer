@@ -22,7 +22,7 @@
             android:key="logout"
             android:title="@string/log_out" />
         <Preference
-            android:icon="@drawable/ic_baseline_help_outline_24"
+            android:icon="@drawable/ic_question_mark"
             android:key="help"
             android:title="@string/help" />
     </PreferenceCategory>

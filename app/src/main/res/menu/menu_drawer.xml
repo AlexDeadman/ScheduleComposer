@@ -8,11 +8,11 @@
         android:checkableBehavior="single">
 
         <item
-            android:icon="@drawable/ic_audience_24"
+            android:icon="@drawable/ic_direction"
             android:title="@string/directions" />
 
         <item
-            android:icon="@drawable/ic_clipboard"
+            android:icon="@drawable/ic_syllabus"
             android:title="@string/syllabuses" />
 
         <item
@@ -20,20 +20,21 @@
             android:title="@string/schedule" />
 
         <item
-            android:icon="@drawable/ic_baseline_auto_stories_24"
+            android:id="@+id/disciplinesList"
+            android:icon="@drawable/ic_discipline"
             android:title="@string/disciplines" />
 
         <item
-            android:id="@+id/listFragment"
-            android:icon="@drawable/ic_lecturer_24"
-            android:title="@string/title_lecturers" />
+            android:id="@+id/lecturersList"
+            android:icon="@drawable/ic_lecturer"
+            android:title="@string/lecturers" />
 
         <item
-            android:icon="@drawable/ic_group_24"
+            android:icon="@drawable/ic_group"
             android:title="@string/groups" />
 
         <item
-            android:icon="@drawable/ic_baseline_sensor_door_24"
+            android:icon="@drawable/ic_audience"
             android:title="@string/audiences" />
     </group>
 

@@ -1,4 +1,4 @@
-package com.example.auddistandroid.data.model.entities
+package com.example.auddistandroid.data.model.entity
 
 import com.google.gson.annotations.SerializedName
 

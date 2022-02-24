@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
-import com.example.auddistandroid.api.AudDistApi
 import com.example.auddistandroid.ui.MainActivity
 import com.example.auddistandroid.utils.Keys
 

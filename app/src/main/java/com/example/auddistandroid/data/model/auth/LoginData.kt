@@ -1,6 +1,4 @@
-package com.example.auddistandroid.data.model
-
-import com.google.gson.annotations.SerializedName
+package com.example.auddistandroid.data.model.auth
 
 data class LoginData(
     var data: Data

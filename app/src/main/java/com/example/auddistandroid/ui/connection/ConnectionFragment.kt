@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
-import com.example.auddistandroid.api.AudDistApi
+import com.example.auddistandroid.api.ApiService
 import com.example.auddistandroid.databinding.FragmentConnectionBinding
 import com.example.auddistandroid.utils.Keys
 
@@ -43,7 +43,7 @@ class ConnectionFragment : Fragment() {
                         .putString(Keys.BASE_URL, url)
                         .apply()
 
-                    AudDistApi.BASE_URL = url
+                    ApiService.BASE_URL = url
 
                     findNavController().navigate(R.id.action_connectionFragment_to_loginFragment)
                 } else {

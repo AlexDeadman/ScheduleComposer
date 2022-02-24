@@ -39,11 +39,12 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            val childNavController = contentMain.mainFragmentContainerView
-                .getFragment<NavHostFragment>().navController
             val appCompatActivity = (requireActivity() as AppCompatActivity).apply {
                 setSupportActionBar(contentMain.appbar.toolbar)
             }
+
+            val childNavController = contentMain.mainFragmentContainerView
+                .getFragment<NavHostFragment>().navController
 
             NavigationUI.apply {
                 setupActionBarWithNavController(
@@ -62,13 +63,10 @@ class MainFragment : Fragment() {
                     .findViewById<TextView>(R.id.text_view_nav_header_subtitle)
                     .text = preferences.getString(Keys.USERNAME, "unknown")
 
-                setNavigationItemSelectedListener {
-                    if (it.itemId == R.id.drawer_item_settings) {
-                        findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
-                        drawerLayout.close()
-                    }
-
-                    return@setNavigationItemSelectedListener false
+                menu.findItem(R.id.drawer_item_settings)?.setOnMenuItemClickListener {
+                    findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
+                    drawerLayout.close()
+                    return@setOnMenuItemClickListener false
                 }
             }
 
@@ -78,6 +76,7 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             binding.drawerLayout.open()
+            return true
         }
         return super.onOptionsItemSelected(item)
     }

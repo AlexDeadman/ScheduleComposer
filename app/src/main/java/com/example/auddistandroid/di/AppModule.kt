@@ -1,12 +1,11 @@
 package com.example.auddistandroid.di
 
-import com.example.auddistandroid.App.Companion.preferences
-import com.example.auddistandroid.api.AudDistApi
-import com.example.auddistandroid.utils.Keys
+import com.example.auddistandroid.api.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -16,12 +15,28 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl("http://template/") // required
-        .build()
+    fun provideHttpClient(): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor {
+                return@addInterceptor it.proceed(
+                    it.request().newBuilder()
+                        .header("Content-Type", "application/vnd.api+json")
+                        .build()
+                )
+            }.build()
 
     @Provides
     @Singleton
-    fun provideAudDistApi(retrofit: Retrofit): AudDistApi = retrofit.create(AudDistApi::class.java)
+    fun provideRetrofit(httpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://template/") // required
+            .client(httpClient)
+            .build()
+
+
+    @Provides
+    @Singleton
+    fun provideAudDistApi(retrofit: Retrofit): ApiService =
+        retrofit.create(ApiService::class.java)
 }

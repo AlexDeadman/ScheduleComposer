@@ -15,6 +15,7 @@ import com.example.auddistandroid.utils.state.ListState
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import com.mikepenz.fastadapter.expandable.getExpandableExtension
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,8 +38,15 @@ class ListFragment : Fragment() {
 
         binding.apply {
 
-            val itemAdapter = ItemAdapter<ListItem>()
-            initRecyclerView(itemAdapter)
+            val itemAdapter = ItemAdapter<ListItem>().apply {
+                fastAdapter?.getExpandableExtension()
+            }
+
+            binding.recyclerView.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(context)
+                adapter = FastAdapter.with(itemAdapter)
+            }
 
             val viewModel: AbstractViewModel by viewModels()
 
@@ -72,16 +80,6 @@ class ListFragment : Fragment() {
                     }
                 }
             }
-        }
-    }
-
-    private fun initRecyclerView(itemAdapter: ItemAdapter<ListItem>) {
-        binding.recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-
-            val fastAdapter = FastAdapter.with(itemAdapter)
-            adapter = fastAdapter
         }
     }
 

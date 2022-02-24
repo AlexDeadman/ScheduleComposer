@@ -58,8 +58,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // Dagger Core
-    implementation "com.google.dagger:dagger:2.38"
-    kapt "com.google.dagger:dagger-compiler:2.37"
+    implementation 'com.google.dagger:dagger:2.38'
+    kapt 'com.google.dagger:dagger-compiler:2.37'
 
     // Dagger Android
     api 'com.google.dagger:dagger-android:2.37'
@@ -67,8 +67,8 @@ dependencies {
     kapt 'com.google.dagger:dagger-android-processor:2.37'
 
     // Dagger - Hilt
-    implementation "com.google.dagger:hilt-android:2.38"
-    kapt "com.google.dagger:hilt-android-compiler:2.37"
+    implementation 'com.google.dagger:hilt-android:2.38'
+    kapt 'com.google.dagger:hilt-android-compiler:2.37'
 
     // FullDraggableDrawer
     implementation 'com.drakeet.drawer:drawer:1.0.3'
@@ -77,9 +77,10 @@ dependencies {
     implementation 'com.github.florent37:expansionpanel:1.2.4'
 
     // FastAdapter
-    implementation "com.mikepenz:fastadapter:5.6.0"
-    implementation "com.mikepenz:fastadapter-extensions-binding:5.6.0"
-    implementation "com.mikepenz:fastadapter-extensions-diff:5.6.0"
+    implementation 'com.mikepenz:fastadapter:5.6.0'
+    implementation 'com.mikepenz:fastadapter-extensions-binding:5.6.0'
+    implementation 'com.mikepenz:fastadapter-extensions-diff:5.6.0'
+    implementation 'com.mikepenz:fastadapter-extensions-expandable:5.6.0'
 
     // SmartTable
     implementation 'com.github.huangyanbin:SmartTable:2.2.0'

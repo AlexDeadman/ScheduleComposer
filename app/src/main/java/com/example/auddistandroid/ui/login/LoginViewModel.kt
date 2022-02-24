@@ -4,18 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.auddistandroid.App.Companion.preferences
-import com.example.auddistandroid.api.AudDistApi
 import com.example.auddistandroid.data.AudDistRepository
-import com.example.auddistandroid.data.model.LoginData
+import com.example.auddistandroid.data.model.auth.LoginData
 import com.example.auddistandroid.utils.Keys
 import com.example.auddistandroid.utils.state.LoginState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
 import okhttp3.RequestBody
 import javax.inject.Inject
 
@@ -39,10 +36,7 @@ class LoginViewModel @Inject constructor(
                     )
                 )
                 val authToken = repository.getToken(
-                    RequestBody.create(
-                        MediaType.parse(AudDistApi.CONTENT_TYPE),
-                        Gson().toJson(loginData)
-                    )
+                    RequestBody.create(null, Gson().toJson(loginData))
                 ).data.attributes.authToken
 
                 preferences.edit().apply {
