@@ -1,6 +1,9 @@
 package com.example.auddistandroid.di
 
-import com.example.auddistandroid.api.ApiService
+import com.example.auddistandroid.service.AudDistApi
+import com.example.auddistandroid.service.HeadersInterceptor
+import com.example.auddistandroid.service.UrlInterceptor
+import com.pluto.plugins.network.PlutoInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,30 +16,37 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    @Provides
-    @Singleton
-    fun provideHttpClient(): OkHttpClient =
-        OkHttpClient.Builder()
-            .addInterceptor {
-                return@addInterceptor it.proceed(
-                    it.request().newBuilder()
-                        .header("Content-Type", "application/vnd.api+json")
-                        .build()
-                )
-            }.build()
 
     @Provides
     @Singleton
-    fun provideRetrofit(httpClient: OkHttpClient): Retrofit =
+    fun provideUrlInterceptor(): UrlInterceptor = UrlInterceptor()
+
+    @Provides
+    @Singleton
+    fun provideHeadersInterceptor(): HeadersInterceptor = HeadersInterceptor()
+
+    @Provides
+    @Singleton
+    fun provideHttpClient(
+        urlInterceptor: UrlInterceptor,
+        headersInterceptor: HeadersInterceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(urlInterceptor)
+            .addInterceptor(headersInterceptor)
+            .addInterceptor(PlutoInterceptor())
+            .build()
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("http://template/") // required
-            .client(httpClient)
+            .client(client)
             .build()
-
 
     @Provides
     @Singleton
-    fun provideAudDistApi(retrofit: Retrofit): ApiService =
-        retrofit.create(ApiService::class.java)
+    fun provideAudDistApi(retrofit: Retrofit): AudDistApi = retrofit.create(AudDistApi::class.java)
 }

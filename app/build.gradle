@@ -82,6 +82,10 @@ dependencies {
     implementation 'com.mikepenz:fastadapter-extensions-diff:5.6.0'
     implementation 'com.mikepenz:fastadapter-extensions-expandable:5.6.0'
 
+    // Pluto
+    implementation 'com.plutolib:pluto:2.0.0'
+    implementation 'com.plutolib.plugins:network:2.0.0'
+
     // SmartTable
     implementation 'com.github.huangyanbin:SmartTable:2.2.0'
 

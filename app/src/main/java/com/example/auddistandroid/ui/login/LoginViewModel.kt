@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.data.AudDistRepository
 import com.example.auddistandroid.data.model.auth.LoginData
+import com.example.auddistandroid.service.HeadersInterceptor
 import com.example.auddistandroid.utils.Keys
 import com.example.auddistandroid.utils.state.LoginState
 import com.google.gson.Gson
@@ -13,12 +14,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repository: AudDistRepository,
+    private val headersInterceptor: HeadersInterceptor
 ) : ViewModel() {
 
     private val _state = MutableLiveData<LoginState>()
@@ -35,15 +37,18 @@ class LoginViewModel @Inject constructor(
                         LoginData.Data.Attributes(username, password) // TODO validation
                     )
                 )
+
                 val authToken = repository.getToken(
-                    RequestBody.create(null, Gson().toJson(loginData))
+                    Gson().toJson(loginData).toRequestBody()
                 ).data.attributes.authToken
 
                 preferences.edit().apply {
-                    putString(Keys.AUTH_TOKEN, "Token $authToken")
+                    putString(Keys.AUTH_TOKEN, authToken)
                     putString(Keys.USERNAME, username)
                     apply()
                 }
+
+                headersInterceptor.authToken = authToken
 
                 _state.postValue(LoginState.Success)
 

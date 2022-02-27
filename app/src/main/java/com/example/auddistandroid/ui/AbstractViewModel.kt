@@ -3,10 +3,8 @@ package com.example.auddistandroid.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.data.AudDistRepository
 import com.example.auddistandroid.ui.list.ListItem
-import com.example.auddistandroid.utils.Keys
 import com.example.auddistandroid.utils.state.ListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -26,15 +24,13 @@ class AbstractViewModel @Inject constructor(
         fetchEntities()
     }
 
-    fun fetchEntities() {
+    private fun fetchEntities() {
         _state.value = ListState.Loading
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val token = preferences.getString(Keys.AUTH_TOKEN, null)!!
-
                 // TODO                     TEMPO
-                val result = repository.getLecturers(token).data.map(::ListItem)
+                val result = repository.getLecturers().data.map(::ListItem)
 
                 _state.postValue(
                     if (result.isEmpty()) ListState.NoItems

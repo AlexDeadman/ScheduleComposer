@@ -8,14 +8,21 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.auddistandroid.App.Companion.preferences
 import com.example.auddistandroid.R
-import com.example.auddistandroid.api.ApiService
 import com.example.auddistandroid.databinding.FragmentConnectionBinding
+import com.example.auddistandroid.service.UrlInterceptor
 import com.example.auddistandroid.utils.Keys
+import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ConnectionFragment : Fragment() {
 
     private var _binding: FragmentConnectionBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var urlInterceptor: UrlInterceptor
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +37,7 @@ class ConnectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            editTextUrl.setText(preferences.getString(Keys.BASE_URL, ""))
+            editTextUrl.setText(preferences.getString(Keys.URL, ""))
 
             buttonContinue.setOnClickListener {
 
@@ -40,10 +47,10 @@ class ConnectionFragment : Fragment() {
 
                     preferences
                         .edit()
-                        .putString(Keys.BASE_URL, url)
+                        .putString(Keys.URL, url)
                         .apply()
 
-                    ApiService.BASE_URL = url
+                    urlInterceptor.httpUrl = url.toHttpUrlOrNull()
 
                     findNavController().navigate(R.id.action_connectionFragment_to_loginFragment)
                 } else {

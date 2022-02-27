@@ -1,17 +1,17 @@
 package com.example.auddistandroid.data
 
-import com.example.auddistandroid.api.ApiService
+import com.example.auddistandroid.service.AudDistApi
 import okhttp3.RequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AudDistRepository @Inject constructor(
-    private val apiService: ApiService
+    private val audDistApi: AudDistApi
 ) {
-    suspend fun getToken(requestBody: RequestBody) = apiService.getToken(requestBody)
+    suspend fun getToken(requestBody: RequestBody) = audDistApi.getToken(requestBody)
 
-    suspend fun getLecturers(authToken: String) = apiService.getLecturers(authToken)
+    suspend fun getLecturers() = audDistApi.getLecturers()
 
-    suspend fun getDisciplines(authToken: String) = apiService.getDisciplines(authToken)
+//    suspend fun getDisciplines(authToken: String) = audDistApi.getDisciplines()
 }
