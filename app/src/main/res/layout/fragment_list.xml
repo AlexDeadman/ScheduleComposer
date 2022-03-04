@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorOnSecondary"
-    tools:context=".ui.list.ListFragment">
+    tools:context=".fragments.ListFragment">
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -43,6 +43,7 @@
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/editTextSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="10dp"

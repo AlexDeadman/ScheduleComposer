@@ -3,15 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/lecturersList">
+    app:startDestination="@id/schedule">
     <fragment
-        android:id="@+id/disciplinesList"
-        android:name="com.example.auddistandroid.ui.list.ListFragment"
-        android:label="@string/disciplines"
+        android:id="@+id/groups"
+        android:name="com.alexdeadman.auddistandroid.fragments.ListFragment"
+        android:label="@string/title_groups"
         tools:layout="@layout/fragment_list" />
     <fragment
-        android:id="@+id/lecturersList"
-        android:name="com.example.auddistandroid.ui.list.ListFragment"
-        android:label="@string/lecturers"
+        android:id="@+id/audiences"
+        android:name="com.alexdeadman.auddistandroid.fragments.ListFragment"
+        android:label="@string/title_audiences"
         tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/lecturers"
+        android:name="com.alexdeadman.auddistandroid.fragments.ListFragment"
+        android:label="@string/title_lecturers"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/directions"
+        android:name="com.alexdeadman.auddistandroid.fragments.ListFragment"
+        android:label="@string/title_directions"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/syllabuses"
+        android:name="com.alexdeadman.auddistandroid.fragments.ListFragment"
+        android:label="@string/title_syllabuses"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/disciplines"
+        android:name="com.alexdeadman.auddistandroid.fragments.ListFragment"
+        android:label="@string/title_disciplines"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.alexdeadman.auddistandroid.fragments.SettingsFragment"
+        android:label="@string/title_settings" />
+    <fragment
+        android:id="@+id/schedule"
+        android:name="com.alexdeadman.auddistandroid.fragments.ScheduleFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_schedule" />
 </navigation>

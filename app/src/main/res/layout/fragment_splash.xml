@@ -7,7 +7,7 @@
     android:background="@drawable/bg_gradient"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.splash.SplashFragment">
+    tools:context=".fragments.SplashFragment">
 
     <ImageView
         android:layout_width="match_parent"

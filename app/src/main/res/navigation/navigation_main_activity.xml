@@ -2,62 +2,53 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation"
+    android:id="@+id/navigation_main_activity"
     app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.auddistandroid.ui.splash.SplashFragment"
+        android:name="com.alexdeadman.auddistandroid.fragments.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_mainFragment"
             app:destination="@id/mainFragment"
-            app:popUpTo="@+id/navigation"
+            app:popUpTo="@+id/navigation_main_activity"
             app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_splashFragment_to_connectionFragment"
             app:destination="@id/connectionFragment"
-            app:popUpTo="@+id/navigation"
+            app:popUpTo="@+id/navigation_main_activity"
             app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.auddistandroid.ui.login.LoginFragment"
+        android:name="com.alexdeadman.auddistandroid.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_mainFragment"
             app:destination="@id/mainFragment"
-            app:popUpTo="@+id/navigation"
+            app:popUpTo="@+id/navigation_main_activity"
             app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.auddistandroid.ui.MainFragment"
+        android:name="com.alexdeadman.auddistandroid.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
-            android:id="@+id/action_mainFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            android:id="@+id/action_mainFragment_to_connectionFragment"
+            app:destination="@id/connectionFragment"
+            app:popUpTo="@+id/navigation_main_activity"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/connectionFragment"
-        android:name="com.example.auddistandroid.ui.connection.ConnectionFragment"
+        android:name="com.alexdeadman.auddistandroid.fragments.ConnectionFragment"
         android:label="fragment_connection"
         tools:layout="@layout/fragment_connection" >
         <action
             android:id="@+id/action_connectionFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.auddistandroid.ui.settings.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_connectionFragment"
-            app:destination="@id/connectionFragment"
-            app:popUpTo="@+id/navigation"
-            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
