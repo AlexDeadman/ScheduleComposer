@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.alexdeadman.auddistandroid.R
 import com.alexdeadman.auddistandroid.databinding.FragmentLoginBinding
-import com.alexdeadman.auddistandroid.utils.state.LoginState
+import com.alexdeadman.auddistandroid.utils.state.LoginState.*
 import com.alexdeadman.auddistandroid.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,16 +37,16 @@ class LoginFragment : Fragment() {
 
             viewModel.state.observe(viewLifecycleOwner) {
                 when(it) {
-                    is LoginState.Sending -> {
+                    is Sending -> {
                         editTextUsername.isEnabled = false
                         editTextPassword.isEnabled = false
                         progressBar.visibility = View.VISIBLE
                         textViewError.visibility = View.INVISIBLE
                     }
-                    is LoginState.Success -> {
+                    is Success -> {
                         findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }
-                    is LoginState.Error -> {
+                    is Error -> {
                         editTextUsername.isEnabled = true
                         editTextPassword.isEnabled = true
                         progressBar.visibility = View.INVISIBLE

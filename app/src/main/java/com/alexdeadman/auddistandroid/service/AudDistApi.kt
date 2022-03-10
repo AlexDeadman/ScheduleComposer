@@ -13,11 +13,11 @@ interface AudDistApi {
     @POST("/auth/token/login/")
     suspend fun getToken(@Body requestBody: RequestBody): AuthToken
 
-    @GET("/api/lecturers/")
-    suspend fun getLecturers(): DataList<Lecturer>
+    @GET("/api/audiences/")
+    suspend fun getAudiences(): DataList<Audience>
 
-    @GET("/api/schedules/")
-    suspend fun getSchedule(): DataList<Schedule>
+    @GET("/api/directions/")
+    suspend fun getDirections(): DataList<Direction>
 
     @GET("/api/disciplines/")
     suspend fun getDisciplines(): DataList<Discipline>
@@ -25,11 +25,11 @@ interface AudDistApi {
     @GET("/api/groups/")
     suspend fun getGroups(): DataList<Group>
 
-    @GET("/api/audiences/")
-    suspend fun getAudiences(): DataList<Audience>
+    @GET("/api/lecturers/")
+    suspend fun getLecturers(): DataList<Lecturer>
 
-    @GET("/api/directions/")
-    suspend fun getDirections(): DataList<Direction>
+    @GET("/api/schedules/")
+    suspend fun getSchedule(): DataList<Schedule>
 
     @GET("/api/syllabuses/")
     suspend fun getSyllabuses(): DataList<Syllabus>

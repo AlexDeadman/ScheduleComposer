@@ -15,8 +15,9 @@ import com.alexdeadman.auddistandroid.R
 import com.alexdeadman.auddistandroid.databinding.FragmentMainBinding
 import com.alexdeadman.auddistandroid.databinding.NavHeaderBinding
 import com.alexdeadman.auddistandroid.utils.Keys
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
     companion object {

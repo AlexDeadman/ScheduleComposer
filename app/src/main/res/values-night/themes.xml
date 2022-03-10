@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.AudDistAndroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -12,6 +12,10 @@
         <!-- Customize your theme here. -->
         <item name="actionBarTheme">@style/MyActionBar</item>
         <item name="floatingActionButtonStyle">@style/FloatingButton</item>
+    </style>
+
+    <style name="Theme.AudDistAndroid.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:background">?attr/colorOnPrimary</item>
     </style>
 
     <style name="MyActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">

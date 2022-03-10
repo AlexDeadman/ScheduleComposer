@@ -17,14 +17,14 @@
         android:checkableBehavior="single">
 
         <item
+            android:id="@+id/audiences"
+            android:icon="@drawable/ic_audience"
+            android:title="@string/title_audiences" />
+
+        <item
             android:id="@+id/directions"
             android:icon="@drawable/ic_direction"
             android:title="@string/title_directions" />
-
-        <item
-            android:id="@+id/syllabuses"
-            android:icon="@drawable/ic_syllabus"
-            android:title="@string/title_syllabuses" />
 
         <item
             android:id="@+id/disciplines"
@@ -32,19 +32,19 @@
             android:title="@string/title_disciplines" />
 
         <item
-            android:id="@+id/lecturers"
-            android:icon="@drawable/ic_lecturer"
-            android:title="@string/title_lecturers" />
-
-        <item
             android:id="@+id/groups"
             android:icon="@drawable/ic_group"
             android:title="@string/title_groups" />
 
         <item
-            android:id="@+id/audiences"
-            android:icon="@drawable/ic_audience"
-            android:title="@string/title_audiences" />
+            android:id="@+id/lecturers"
+            android:icon="@drawable/ic_lecturer"
+            android:title="@string/title_lecturers" />
+
+        <item
+            android:id="@+id/syllabuses"
+            android:icon="@drawable/ic_syllabus"
+            android:title="@string/title_syllabuses" />
     </group>
 
     <group
@@ -52,7 +52,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/settings"
-            android:icon="@drawable/ic_baseline_settings_24"
+            android:icon="@drawable/ic_settings"
             android:title="@string/title_settings"/>
     </group>
 

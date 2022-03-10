@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.alexdeadman.auddistandroid.App.Companion.preferences
 import com.alexdeadman.auddistandroid.R
 import com.alexdeadman.auddistandroid.utils.Keys
+import com.alexdeadman.auddistandroid.utils.requireGrandParentFragment
 
 class LogoutConfirm : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -20,7 +21,7 @@ class LogoutConfirm : DialogFragment() {
                     remove(Keys.USERNAME)
                     apply()
                 }
-                requireParentFragment().requireParentFragment()
+                requireGrandParentFragment()
                     .findNavController()
                     .navigate(R.id.action_mainFragment_to_connectionFragment)
             }

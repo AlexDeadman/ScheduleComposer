@@ -11,8 +11,8 @@ data class Syllabus(
 
     data class Attributes(
         var year: String,
-        @SerializedName("specialty_code") var specialtyCode: String,
-        @SerializedName("specialty_name") var specialtyName: String,
+        @SerializedName("specialty_code") var code: String,
+        @SerializedName("specialty_name") var name: String,
     )
 
     data class Relationships(var direction: Direction) {

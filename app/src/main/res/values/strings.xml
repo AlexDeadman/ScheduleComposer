@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Audience Distribution</string>
+    <string name="app_name" translatable="false">Audience Distribution</string>
     <string name="title_lecturers">Lecturers</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="server_is_not_responding">Server is not responding</string>
@@ -17,9 +17,7 @@
     <string name="title_disciplines">Disciplines</string>
     <string name="title_groups">Groups</string>
     <string name="title_audiences">Audiences</string>
-    <string name="search">Search</string>
-    <string name="save">Save</string>
-    <string name="fullname_ph">%1$s %2$s %3$s</string>
+    <string name="search">Search…</string>
     <string name="request_account">Request account</string>
     <string name="restore_password">Restore password</string>
     <string name="add">Add</string>
@@ -32,13 +30,21 @@
     <string name="cancel">Cancel</string>
     <string name="title_directions">Directions</string>
     <string name="title_syllabuses">Syllabuses</string>
-    <string name="sort">sort</string>
-    <string name="url">URL</string>
+    <string name="url" translatable="false">URL</string>
     <string name="button_continue_text">Continue</string>
     <string name="server_connection">Server connection</string>
     <string name="incorrect_url">Incorrect URL</string>
     <string name="help">Help</string>
-    <string name="covid_adaptation_mode">COVID-19 adaptation mode</string>
     <string name="theme">Theme</string>
+
+    <string name="ph_audience_details">Type: %1$s\nSeats count: %2$d</string>
+    <string name="ph_direction_details">Name: %s</string>
+
+    <string name="ph_discipline_details">
+        Code: %1$s\nCycle: %2$s\nHours total: %3$d\nLectures: %4$s\nPractices: %5$s\nLab assignments: %6$s\nISW: %7$s\nConsultations: %8$s
+    </string>
+
+    <string name="ph_group_details">Students count: %d</string>
+    <string name="ph_syllabus_details">Code: %s</string>
 
 </resources>

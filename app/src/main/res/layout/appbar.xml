@@ -9,7 +9,6 @@
         android:id="@+id/toolbar"
         app:popupTheme="@style/Theme.AudDistAndroid.PopupOverlay"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary" />
+        android:layout_height="?attr/actionBarSize" />
 
 </com.google.android.material.appbar.AppBarLayout>

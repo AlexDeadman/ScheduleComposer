@@ -52,6 +52,9 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -81,6 +84,7 @@ dependencies {
     implementation 'com.mikepenz:fastadapter-extensions-binding:5.6.0'
     implementation 'com.mikepenz:fastadapter-extensions-diff:5.6.0'
     implementation 'com.mikepenz:fastadapter-extensions-expandable:5.6.0'
+    implementation 'com.mikepenz:fastadapter-extensions-ui:5.6.0'
 
     // Pluto
     implementation 'com.plutolib:pluto:2.0.0'

@@ -1,11 +1,6 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory>
-        <SwitchPreferenceCompat
-            android:icon="@drawable/ic_virus"
-            android:key=""
-            android:title="@string/covid_adaptation_mode" />
-
         <ListPreference
             android:defaultValue="light"
             android:entries="@array/theme_entries"
