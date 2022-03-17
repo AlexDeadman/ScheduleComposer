@@ -83,7 +83,6 @@ dependencies {
     implementation 'com.mikepenz:fastadapter:5.6.0'
     implementation 'com.mikepenz:fastadapter-extensions-binding:5.6.0'
     implementation 'com.mikepenz:fastadapter-extensions-diff:5.6.0'
-    implementation 'com.mikepenz:fastadapter-extensions-expandable:5.6.0'
     implementation 'com.mikepenz:fastadapter-extensions-ui:5.6.0'
 
     // Pluto

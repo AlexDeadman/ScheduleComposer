@@ -10,16 +10,6 @@
         <item name="colorSecondaryVariant">@android:color/holo_blue_dark</item>
         <item name="colorOnSecondary">#0a0a0a</item>
         <!-- Customize your theme here. -->
-        <item name="actionBarTheme">@style/MyActionBar</item>
         <item name="floatingActionButtonStyle">@style/FloatingButton</item>
     </style>
-
-    <style name="Theme.AudDistAndroid.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:background">?attr/colorOnPrimary</item>
-    </style>
-
-    <style name="MyActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
-        <item name="colorPrimary">@android:color/holo_blue_light</item>
-    </style>
-
 </resources>

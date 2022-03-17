@@ -34,7 +34,7 @@ object AppModule {
         OkHttpClient.Builder()
             .addInterceptor(urlInterceptor)
             .addInterceptor(headersInterceptor)
-            .addInterceptor(PlutoInterceptor())
+//            .addInterceptor(PlutoInterceptor())
             .build()
 
     @Provides

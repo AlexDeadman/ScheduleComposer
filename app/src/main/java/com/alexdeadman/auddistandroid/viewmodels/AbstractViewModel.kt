@@ -5,17 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexdeadman.auddistandroid.data.model.DataList
+import com.alexdeadman.auddistandroid.data.model.entity.Attributes
 import com.alexdeadman.auddistandroid.data.model.entity.Entity
+import com.alexdeadman.auddistandroid.data.model.entity.Relationships
 import com.alexdeadman.auddistandroid.utils.state.ListState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 abstract class AbstractViewModel(
-    private val get: suspend () -> DataList<out Entity>
+    private val get: suspend () -> DataList<out Entity<out Attributes, out Relationships>>
 ) : ViewModel() {
 
     private val _state = MutableLiveData<ListState>()
-    val state: LiveData<ListState> get() = _state
+    val state: LiveData<ListState> = _state
 
     init {
         fetchEntities()

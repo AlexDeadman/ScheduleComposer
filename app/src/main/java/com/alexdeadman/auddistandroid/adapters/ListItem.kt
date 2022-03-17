@@ -1,76 +1,43 @@
 package com.alexdeadman.auddistandroid.adapters
 
-import android.view.View
-import androidx.core.view.ViewCompat
-import androidx.recyclerview.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.alexdeadman.auddistandroid.R
-import com.alexdeadman.auddistandroid.data.model.entity.*
+import com.alexdeadman.auddistandroid.data.model.entity.Attributes
+import com.alexdeadman.auddistandroid.data.model.entity.Entity
+import com.alexdeadman.auddistandroid.data.model.entity.Relationships
 import com.alexdeadman.auddistandroid.databinding.ListItemBinding
-import com.mikepenz.fastadapter.expandable.ExpandableExtension.Companion.PAYLOAD_COLLAPSE
-import com.mikepenz.fastadapter.expandable.ExpandableExtension.Companion.PAYLOAD_EXPAND
-import com.mikepenz.fastadapter.expandable.items.AbstractExpandableItem
+import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
-class ListItem(private val entity: Entity) : AbstractExpandableItem<ListItem.ViewHolder>() {
+class ListItem(
+    private val entity: Entity<out Attributes, out Relationships>
+) : AbstractBindingItem<ListItemBinding>() {
 
+    @Suppress("UNUSED_PARAMETER")
     override var identifier: Long
-        get() = entity.hashCode().toLong()
-        set(value) {
-            super.identifier = value
-        }
+        get() = entity.id.toLong()
+        set(value) {}
 
     override val type: Int
         get() = R.id.list_item_id
 
-    override val layoutRes: Int
-        get() = R.layout.list_item
+    val entityTitle = entity.title
 
-    var title: String = ""
-    private var angle = -180f
+    override fun createBinding(inflater: LayoutInflater, parent: ViewGroup?): ListItemBinding =
+        ListItemBinding.inflate(inflater, parent, false)
 
-    override fun bindView(holder: ViewHolder, payloads: List<Any>) {
-        super.bindView(holder, payloads)
-
-        ListItemBinding.bind(holder.view).apply {
-
-            val p = payloads.mapNotNull { it as? String }.lastOrNull()
-            if (p == PAYLOAD_EXPAND || p == PAYLOAD_COLLAPSE) {
-                ViewCompat.animate(imageViewArrow).rotationBy(angle).start()
-                angle *= -1
-            }
-
-            val titleWithIcon = when (entity) {
-                is Audience -> entity.attributes.number to R.drawable.ic_audience
-                is Direction -> entity.attributes.code to R.drawable.ic_direction
-                is Discipline -> entity.attributes.name to R.drawable.ic_discipline
-                is Group -> entity.attributes.number to R.drawable.ic_group
-
-                is Lecturer -> entity.attributes.run {
-                    "$surname $firstName ${patronymic.orEmpty()}"
-                } to R.drawable.ic_lecturer
-
-                is Syllabus -> entity.attributes.run {
-                    "$year $name"
-                } to R.drawable.ic_syllabus
-
-                else -> throw IllegalStateException()
-            }
-
-            textViewItem.apply {
-                text = titleWithIcon.first
-                setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    titleWithIcon.second, 0, 0, 0
+    override fun bindView(binding: ListItemBinding, payloads: List<Any>) {
+        binding.apply {
+            entity.run {
+                textViewTitle.apply {
+                    setCompoundDrawablesRelativeWithIntrinsicBounds(iconId, 0, 0, 0)
+                    text = title
+                }
+                textViewDetails.text = root.resources.getString(
+                    detailsPhId,
+                    *details.toTypedArray()
                 )
             }
-            title = titleWithIcon.first
         }
     }
-
-    fun withSubItem(listSubItem: ListSubItem): ListItem {
-        subItems.add(listSubItem)
-        return this
-    }
-
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
-
-    override fun getViewHolder(v: View): ViewHolder = ViewHolder(v)
 }

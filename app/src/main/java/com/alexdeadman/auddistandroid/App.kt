@@ -17,9 +17,9 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Pluto.Installer(this)
-            .addPlugin(PlutoNetworkPlugin("network"))
-            .install()
+//        Pluto.Installer(this)
+//            .addPlugin(PlutoNetworkPlugin("network"))
+//            .install()
 
         preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
     }

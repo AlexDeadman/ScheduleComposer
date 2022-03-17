@@ -43,4 +43,9 @@
         android:name="com.alexdeadman.auddistandroid.fragments.ScheduleFragment"
         android:label="@string/title_schedule"
         tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/createUpdate"
+        android:name="com.alexdeadman.auddistandroid.fragments.CreateUpdateFragment"
+        android:label="create/update"
+        tools:layout="@layout/fragment_create_update" />
 </navigation>

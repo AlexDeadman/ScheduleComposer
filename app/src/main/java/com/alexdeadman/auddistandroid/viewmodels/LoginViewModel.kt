@@ -3,6 +3,7 @@ package com.alexdeadman.auddistandroid.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.alexdeadman.auddistandroid.App.Companion.preferences
 import com.alexdeadman.auddistandroid.data.model.auth.LoginData
 import com.alexdeadman.auddistandroid.service.AudDistApi
@@ -10,7 +11,6 @@ import com.alexdeadman.auddistandroid.utils.Keys
 import com.alexdeadman.auddistandroid.utils.state.LoginState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -22,12 +22,12 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableLiveData<LoginState>()
-    val state: LiveData<LoginState> get() = _state
+    val state: LiveData<LoginState> = _state
 
     fun fetchToken(username: String, password: String) {
         _state.value = LoginState.Sending
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val loginData = LoginData(
                     LoginData.Data(

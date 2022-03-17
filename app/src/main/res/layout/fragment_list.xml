@@ -14,86 +14,80 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?colorOnPrimary"
         android:elevation="5dp"
+        android:paddingVertical="10dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        <ImageButton
+            android:layout_weight="10"
+            android:id="@+id/image_button_expand_all"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scrollbars="none"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginTop="1dp"
-            app:boxBackgroundMode="none"
-            app:endIconMode="clear_text"
-            app:hintEnabled="false"
-            app:startIconDrawable="@drawable/ic_search">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/material_edit_text_search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/search"
-                android:imeOptions="actionDone"
-                android:inputType="textFilter"
-                android:maxLines="1" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginHorizontal="10dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_expand" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginVertical="10dp"
             android:background="?android:attr/listDivider" />
 
         <ImageButton
-            android:id="@+id/image_button_collapse_expand"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/image_button_collapse_all"
+            android:layout_weight="10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="10dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_maximize" />
+            android:src="@drawable/ic_collapse" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginVertical="10dp"
+            android:background="?android:attr/listDivider" />
+
+        <Space
+            android:layout_weight="6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
             android:background="?android:attr/listDivider" />
 
         <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
+            android:id="@+id/image_button_sort_asc"
+            android:layout_width="match_parent"
+            android:layout_weight="10"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="10dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_sort" />
+            android:src="@drawable/ic_sort_asc" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
+
+        <ImageButton
+            android:id="@+id/image_button_sort_desc"
+            android:layout_weight="10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_sort_desc" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center" />
-
-    <TextView
-        android:id="@+id/text_view_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="10dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:visibility="gone"
-        tools:visibility="visible" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -104,6 +98,25 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/text_view_massage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:visibility="gone"
+        tools:text="@string/unknown_error"
+        tools:visibility="visible" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"
@@ -112,6 +125,5 @@
         android:layout_margin="16dp"
         app:maxImageSize="35dp"
         app:srcCompat="@drawable/ic_add" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

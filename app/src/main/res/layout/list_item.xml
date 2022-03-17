@@ -1,35 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
+    android:orientation="vertical"
     android:background="?attr/colorOnPrimary"
-    android:orientation="horizontal"
-    android:paddingHorizontal="18dp"
-    android:paddingVertical="10dp">
+    tools:ignore="ContentDescription">
 
-    <TextView
-        android:id="@+id/text_view_item"
+    <com.github.florent37.expansionpanel.ExpansionHeader
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="10dp"
-        android:layout_weight="1"
-        android:drawablePadding="15dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="19sp"
-        tools:drawableStart="@drawable/ic_lecturer"
-        tools:text="@tools:sample/full_names" />
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        app:expansion_headerIndicator="@id/headerIndicator"
+        app:expansion_layout="@id/expansionLayout"
+        app:expansion_toggleOnClick="true">
 
-    <ImageView
-        android:id="@+id/image_view_arrow"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_arrow_drop_down"
-        tools:ignore="ContentDescription" />
+        <!-- HEADER -->
+        <TextView
+            android:id="@+id/text_view_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="30dp"
+            android:layout_weight="1"
+            android:drawablePadding="15dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="19sp"
+            tools:drawableStart="@drawable/ic_lecturer"
+            tools:text="@tools:sample/full_names" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+        <!-- HEADER INDICATOR -->
+        <ImageView
+            android:id="@+id/headerIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+
+    </com.github.florent37.expansionpanel.ExpansionHeader>
+
+    <com.github.florent37.expansionpanel.ExpansionLayout
+        android:id="@+id/expansionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:expansion_expanded="true">
+
+        <!-- CONTENT -->
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="18dp"
+            android:paddingBottom="18dp"
+            android:paddingTop="5dp"
+            tools:ignore="ContentDescription">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/text_view_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="17sp"
+                tools:text="@tools:sample/full_names" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_edit" />
+
+                <ImageButton
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_delete" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.github.florent37.expansionpanel.ExpansionLayout>
+
+</LinearLayout>

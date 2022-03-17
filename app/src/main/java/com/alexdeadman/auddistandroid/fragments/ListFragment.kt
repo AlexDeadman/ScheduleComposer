@@ -1,17 +1,13 @@
 package com.alexdeadman.auddistandroid.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import com.alexdeadman.auddistandroid.R
 import com.alexdeadman.auddistandroid.adapters.ListItem
-import com.alexdeadman.auddistandroid.adapters.ListSubItem
 import com.alexdeadman.auddistandroid.databinding.FragmentListBinding
 import com.alexdeadman.auddistandroid.service.AudDistApi
 import com.alexdeadman.auddistandroid.utils.requireGrandParentFragment
@@ -20,7 +16,8 @@ import com.alexdeadman.auddistandroid.viewmodels.*
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
-import com.mikepenz.fastadapter.expandable.getExpandableExtension
+import com.mikepenz.fastadapter.select.getSelectExtension
+import com.mikepenz.fastadapter.utils.ComparableItemListImpl
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,10 +27,27 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
+    private var sortingStrategy: Boolean = true
+
+    private val comparator: Comparator<ListItem> =
+        Comparator { lhs, rhs ->
+            if (sortingStrategy) {
+                lhs.entityTitle.compareTo(rhs.entityTitle)
+            } else {
+                rhs.entityTitle.compareTo(lhs.entityTitle)
+            }
+        }
+
+    private lateinit var itemAdapter: ItemAdapter<ListItem>
+    private lateinit var fastAdapter: FastAdapter<ListItem>
+
     @Inject
     lateinit var audDistApi: AudDistApi
 
-    private lateinit var fastAdapter: FastAdapter<ListItem>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,22 +63,20 @@ class ListFragment : Fragment() {
 
         binding.apply {
 
-            val itemAdapter = ItemAdapter<ListItem>().apply {
+            val itemListImpl = ComparableItemListImpl(comparator)
+
+            itemAdapter = ItemAdapter(itemListImpl).apply {
                 itemFilter.filterPredicate = { item, constraint ->
-                    item.title.lowercase().contains(constraint.toString().lowercase())
+                    item.entityTitle.lowercase().contains(constraint.toString().lowercase())
                 }
             }
 
-            materialEditTextSearch.addTextChangedListener { itemAdapter.filter(it) }
-
             fastAdapter = FastAdapter.with(itemAdapter).apply {
-                getExpandableExtension()
-//                getSelectExtension().apply { isSelectable = true }
+                getSelectExtension().apply { isSelectable = true } // TODO
             }
 
             recyclerView.apply {
                 setHasFixedSize(true)
-                layoutManager = LinearLayoutManager(context)
                 adapter = fastAdapter
             }
 
@@ -84,30 +96,29 @@ class ListFragment : Fragment() {
             ).get(viewModelClass.java)
 
             viewModel.state.observe(viewLifecycleOwner) { state ->
+                progressBar.visibility = View.GONE
+                swipeRefreshLayout.visibility = View.VISIBLE
+                swipeRefreshLayout.isRefreshing = false
                 when (state) {
                     is Loaded -> {
-                        progressBar.visibility = View.GONE
-                        swipeRefreshLayout.isRefreshing = false
-                        FastAdapterDiffUtil[itemAdapter] = state.result.data.map {
-                            ListItem(it).withSubItem(ListSubItem(it))
-                        }
+                        recyclerView.visibility = View.VISIBLE
+                        textViewMassage.visibility = View.GONE
+                        FastAdapterDiffUtil[itemAdapter] = state.result.data.map(::ListItem)
                         fastAdapter.withSavedInstanceState(savedInstanceState)
                     }
                     is NoItems -> {
-                        progressBar.visibility = View.GONE
-                        textViewError.apply {
+                        recyclerView.visibility = View.GONE
+                        textViewMassage.apply {
                             visibility = View.VISIBLE
                             text = getString(R.string.list_is_empty)
                         }
                     }
                     is Error -> {
-                        progressBar.visibility = View.GONE
-                        textViewError.apply {
+                        recyclerView.visibility = View.GONE
+                        textViewMassage.apply {
                             visibility = View.VISIBLE
-                            text = getString(R.string.unknown_error)
+                            text = state.message // TODO TEMPO
                         }
-                        // TODO TEMPO
-                        Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -115,12 +126,49 @@ class ListFragment : Fragment() {
             swipeRefreshLayout.setOnRefreshListener {
                 viewModel.fetchEntities()
             }
+
+            imageButtonExpandAll.setOnClickListener {
+                // TODO
+            }
+            imageButtonCollapseAll.setOnClickListener {
+                // TODO
+            }
+
+            imageButtonSortAsc.setOnClickListener {
+                sortingStrategy = true
+                itemListImpl.withComparator(comparator)
+            }
+            imageButtonSortDesc.setOnClickListener {
+                sortingStrategy = false
+                itemListImpl.withComparator(comparator)
+            }
+
+            floatingActionButton.setOnClickListener {
+                findNavController().navigate(R.id.createUpdate)
+            }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(
-            fastAdapter.saveInstanceState(outState)
+        super.onSaveInstanceState(fastAdapter.saveInstanceState(outState))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_search, menu)
+
+        val searchMenuItem = menu.findItem(R.id.action_search)
+
+        (searchMenuItem.actionView as SearchView).setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String): Boolean {
+                    itemAdapter.filter(newText)
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    return false
+                }
+            }
         )
     }
 }
