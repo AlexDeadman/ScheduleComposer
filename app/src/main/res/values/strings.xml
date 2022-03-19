@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Audience Distribution</string>
+    <string name="app_name" translatable="false">Schedule Composer</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="server_is_not_responding">Server is not responding</string>
     <string name="unknown_error">Unknown error</string>
@@ -16,7 +16,7 @@
     <string name="title_schedule">Schedule</string>
     <string name="title_disciplines">Disciplines</string>
     <string name="title_groups">Groups</string>
-    <string name="title_audiences">Audiences</string>
+    <string name="title_classrooms">Classrooms</string>
     <string name="title_directions">Directions</string>
     <string name="title_syllabuses">Syllabuses</string>
     <string name="search">Search…</string>
@@ -36,7 +36,7 @@
     <string name="incorrect_url">Incorrect URL</string>
     <string name="help">Help</string>
     <string name="theme">Theme</string>
-    <string name="ph_audience_details">Type: %1$s\nSeats count: %2$s</string>
+    <string name="ph_classroom_details">Type: %1$s\nSeats count: %2$s</string>
     <string name="ph_direction_details">Name: %s</string>
     <string name="ph_discipline_details">Code: %1$s\nCycle: %2$s\nHours total: %3$s\nLectures: %4$s\nPractices: %5$s\nLab assignments: %6$s\nISW: %7$s\nConsultations: %8$s</string>
     <string name="ph_lecturer_details">%s</string>

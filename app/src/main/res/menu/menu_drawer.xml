@@ -19,7 +19,7 @@
         <item
             android:id="@+id/audiences"
             android:icon="@drawable/ic_audience"
-            android:title="@string/title_audiences" />
+            android:title="@string/title_classrooms" />
 
         <item
             android:id="@+id/directions"

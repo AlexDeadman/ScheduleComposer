@@ -6,7 +6,7 @@
     app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.alexdeadman.auddistandroid.fragments.SplashFragment"
+        android:name="com.alexdeadman.schedulecomposer.fragments.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.alexdeadman.auddistandroid.fragments.LoginFragment"
+        android:name="com.alexdeadman.schedulecomposer.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.alexdeadman.auddistandroid.fragments.MainFragment"
+        android:name="com.alexdeadman.schedulecomposer.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/connectionFragment"
-        android:name="com.alexdeadman.auddistandroid.fragments.ConnectionFragment"
+        android:name="com.alexdeadman.schedulecomposer.fragments.ConnectionFragment"
         android:label="fragment_connection"
         tools:layout="@layout/fragment_connection" >
         <action

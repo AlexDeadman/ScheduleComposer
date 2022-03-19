@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alexdeadman.auddistandroid">
+    package="com.alexdeadman.schedulecomposer">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.alexdeadman.auddistandroid.App"
+        android:name="com.alexdeadman.schedulecomposer.App"
         android:allowBackup="true"
         android:icon="@drawable/calendar_clock"
         android:label="@string/app_name"
@@ -14,7 +14,7 @@
         android:theme="@style/Theme.AudDistAndroid"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.alexdeadman.auddistandroid.MainActivity"
+            android:name="com.alexdeadman.schedulecomposer.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
