@@ -7,8 +7,8 @@ import androidx.preference.PreferenceFragmentCompat
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.MainActivity
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.dialog.LogoutConfirm
-import com.alexdeadman.schedulecomposer.utils.Keys
+import com.alexdeadman.schedulecomposer.dialog.LogoutConfirmDialog
+import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
@@ -19,7 +19,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         preferences.registerOnSharedPreferenceChangeListener(this)
 
-        val dialog = LogoutConfirm()
+        val dialog = LogoutConfirmDialog()
 
         preferenceManager.findPreference<Preference>("logout")?.setOnPreferenceClickListener {
             dialog.show(parentFragmentManager, "")
@@ -28,7 +28,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == Keys.THEME) {
+        if (key == PreferenceKeys.THEME) {
             MainActivity.updateTheme()
         }
     }

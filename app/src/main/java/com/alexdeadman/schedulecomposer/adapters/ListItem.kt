@@ -13,10 +13,11 @@ class ListItem(
     private val entity: Entity<out Attributes, out Relationships>
 ) : AbstractBindingItem<ListItemBinding>() {
 
-    @Suppress("UNUSED_PARAMETER")
     override var identifier: Long
         get() = entity.id.toLong()
-        set(value) {}
+        set(value) {
+            super.identifier = value
+        }
 
     override val type: Int
         get() = R.id.list_item_id

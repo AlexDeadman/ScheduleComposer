@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
-interface AudDistApi {
+interface ScApi {
 
     @POST("/auth/token/login/")
     suspend fun getToken(@Body requestBody: RequestBody): AuthToken

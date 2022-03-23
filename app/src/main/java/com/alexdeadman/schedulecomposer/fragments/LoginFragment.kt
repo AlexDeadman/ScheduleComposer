@@ -9,9 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FragmentLoginBinding
+import com.alexdeadman.schedulecomposer.utils.launchRepeatedCollect
 import com.alexdeadman.schedulecomposer.utils.state.LoginState.*
 import com.alexdeadman.schedulecomposer.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -35,29 +37,33 @@ class LoginFragment : Fragment() {
 
             val viewModel: LoginViewModel by viewModels()
 
-            viewModel.state.observe(viewLifecycleOwner) {
-                when(it) {
-                    is Sending -> {
-                        editTextUsername.isEnabled = false
-                        editTextPassword.isEnabled = false
-                        progressBar.visibility = View.VISIBLE
-                        textViewError.visibility = View.INVISIBLE
-                    }
-                    is Success -> {
-                        findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-                    }
-                    is Error -> {
-                        editTextUsername.isEnabled = true
-                        editTextPassword.isEnabled = true
-                        progressBar.visibility = View.INVISIBLE
+            viewModel.state
+                .filterNotNull()
+                .launchRepeatedCollect(viewLifecycleOwner) { state ->
+                    when (state) {
+                        is Sending -> {
+                            editTextUsername.isEnabled = false
+                            editTextPassword.isEnabled = false
+                            progressBar.visibility = View.VISIBLE
+                            textViewError.visibility = View.INVISIBLE
+                        }
+                        is Success -> {
+                            findNavController().navigate(
+                                R.id.action_loginFragment_to_mainFragment
+                            )
+                        }
+                        is Error -> {
+                            editTextUsername.isEnabled = true
+                            editTextPassword.isEnabled = true
+                            progressBar.visibility = View.INVISIBLE
 
-                        textViewError.apply {
-                            text = it.message // TODO TEMPO
-                            visibility = View.VISIBLE
+                            textViewError.apply {
+                                text = resources.getString(state.messageStringId)
+                                visibility = View.VISIBLE
+                            }
                         }
                     }
                 }
-            }
 
             buttonLogIn.setOnClickListener {
                 viewModel.fetchToken( // TODO validation

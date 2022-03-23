@@ -1,11 +1,11 @@
 package com.alexdeadman.schedulecomposer.viewmodels
 
-import com.alexdeadman.schedulecomposer.service.AudDistApi
+import com.alexdeadman.schedulecomposer.service.ScApi
 
-class AudiencesViewModel(api: AudDistApi) : AbstractViewModel(api::getClassrooms)
-class DirectionsViewModel(api: AudDistApi) : AbstractViewModel(api::getDirections)
-class DisciplinesViewModel(api: AudDistApi) : AbstractViewModel(api::getDisciplines)
-class GroupsViewModel(api: AudDistApi) : AbstractViewModel(api::getGroups)
-class LecturersViewModel(api: AudDistApi) : AbstractViewModel(api::getLecturers)
-class ScheduleViewModel(api: AudDistApi) : AbstractViewModel(api::getSchedule)
-class SyllabusesViewModel(api: AudDistApi) : AbstractViewModel(api::getSyllabuses)
+class AudiencesViewModel(api: ScApi) : AbstractViewModel(api::getClassrooms)
+class DirectionsViewModel(api: ScApi) : AbstractViewModel(api::getDirections)
+class DisciplinesViewModel(api: ScApi) : AbstractViewModel(api::getDisciplines)
+class GroupsViewModel(api: ScApi) : AbstractViewModel(api::getGroups)
+class LecturersViewModel(api: ScApi) : AbstractViewModel(api::getLecturers)
+class ScheduleViewModel(api: ScApi) : AbstractViewModel(api::getSchedule)
+class SyllabusesViewModel(api: ScApi) : AbstractViewModel(api::getSyllabuses)

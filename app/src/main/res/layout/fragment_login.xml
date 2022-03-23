@@ -8,12 +8,12 @@
     tools:context=".fragments.LoginFragment">
 
     <ImageView
-        android:padding="5dp"
-        android:background="@drawable/bg_circle"
-        android:layout_marginTop="120dp"
-        android:layout_gravity="top|center"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/bg_circle"
+        android:padding="5dp"
         app:srcCompat="@drawable/ic_user_login"
         tools:ignore="ContentDescription" />
 
@@ -28,9 +28,9 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:orientation="vertical"
+        android:layout_marginHorizontal="40dp"
         android:gravity="center"
-        android:layout_marginHorizontal="40dp">
+        android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -50,8 +50,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_password"
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/white"
-        android:text="@string/log_in" />
+        android:text="@string/log_in"
+        android:textColor="@color/white" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

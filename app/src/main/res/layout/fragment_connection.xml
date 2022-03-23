@@ -8,14 +8,14 @@
     tools:context=".fragments.ConnectionFragment">
 
     <ImageView
-        android:paddingHorizontal="20dp"
-        android:paddingTop="3dp"
-        android:layout_marginTop="120dp"
-        android:layout_gravity="top|center"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        app:srcCompat="@drawable/server"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="120dp"
         android:background="@drawable/bg_circle"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="3dp"
+        app:srcCompat="@drawable/server"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -29,9 +29,9 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:orientation="vertical"
+        android:layout_marginHorizontal="40dp"
         android:gravity="center"
-        android:layout_marginHorizontal="40dp">
+        android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="20dp"
-        android:textColor="@color/white"
-        android:text="@string/button_continue_text" />
+        android:text="@string/button_continue_text"
+        android:textColor="@color/white" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

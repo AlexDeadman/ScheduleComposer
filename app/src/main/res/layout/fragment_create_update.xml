@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".fragments.CreateUpdateFragment">
 
-    <!-- TODO -->
+    <include layout="@layout/text_input" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="35sp"
-        android:text="@string/todo"/>
+    <include layout="@layout/text_input" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <include layout="@layout/text_input" />
+
+    <include layout="@layout/text_input" />
+
+    <include layout="@layout/text_input" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_log_in"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:text="@string/todo"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,55 +1,54 @@
 package com.alexdeadman.schedulecomposer.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
+import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.data.model.auth.LoginData
-import com.alexdeadman.schedulecomposer.service.AudDistApi
-import com.alexdeadman.schedulecomposer.utils.Keys
+import com.alexdeadman.schedulecomposer.service.ScApi
+import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
 import com.alexdeadman.schedulecomposer.utils.state.LoginState
+import com.alexdeadman.schedulecomposer.utils.state.LoginState.*
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val audDistApi: AudDistApi
+    private val scApi: ScApi
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<LoginState>()
-    val state: LiveData<LoginState> = _state
+    private val _state = MutableStateFlow<LoginState?>(null)
+    val state: StateFlow<LoginState?> = _state.asStateFlow()
 
     fun fetchToken(username: String, password: String) {
-        _state.value = LoginState.Sending
-
+        _state.value = Sending
         viewModelScope.launch(Dispatchers.IO) {
-            try {
+            _state.value = try {
                 val loginData = LoginData(
                     LoginData.Data(
                         "TokenCreateView",
                         LoginData.Data.Attributes(username, password)
                     )
                 )
-
-                val authToken = audDistApi.getToken(
+                val authToken = scApi.getToken(
                     Gson().toJson(loginData).toRequestBody()
                 ).data.attributes.authToken
 
                 preferences.edit().apply {
-                    putString(Keys.AUTH_TOKEN, authToken)
-                    putString(Keys.USERNAME, username)
+                    putString(PreferenceKeys.AUTH_TOKEN, authToken)
+                    putString(PreferenceKeys.USERNAME, username)
                     apply()
                 }
-
-                _state.postValue(LoginState.Success)
-
+                Success
             } catch (e: Exception) {
-                _state.postValue(LoginState.Error(e.message.toString()))
+                Error(R.string.unknown_error) // TODO TEMPO
             }
         }
     }

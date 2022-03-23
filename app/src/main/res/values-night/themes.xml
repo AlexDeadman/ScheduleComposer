@@ -4,11 +4,11 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@android:color/holo_blue_light</item>
         <item name="colorPrimaryVariant">@android:color/holo_blue_dark</item>
-        <item name="colorOnPrimary">#191919</item>
+        <item name="colorOnPrimary">#0a0a0a</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@android:color/holo_blue_dark</item>
         <item name="colorSecondaryVariant">@android:color/holo_blue_dark</item>
-        <item name="colorOnSecondary">#0a0a0a</item>
+        <item name="colorOnSecondary">#191919</item>
         <!-- Customize your theme here. -->
         <item name="floatingActionButtonStyle">@style/FloatingButton</item>
     </style>

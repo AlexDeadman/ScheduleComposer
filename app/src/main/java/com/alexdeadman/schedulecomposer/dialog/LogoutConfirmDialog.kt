@@ -7,18 +7,18 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.utils.Keys
+import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
 import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
 
-class LogoutConfirm : DialogFragment() {
+class LogoutConfirmDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireActivity())
             .setTitle(R.string.log_out)
             .setMessage(getString(R.string.are_you_sure))
             .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 preferences.edit().apply {
-                    remove(Keys.AUTH_TOKEN)
-                    remove(Keys.USERNAME)
+                    remove(PreferenceKeys.AUTH_TOKEN)
+                    remove(PreferenceKeys.USERNAME)
                     apply()
                 }
                 requireGrandParentFragment()

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.keyIterator
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,7 +15,7 @@ import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FragmentMainBinding
 import com.alexdeadman.schedulecomposer.databinding.NavHeaderBinding
-import com.alexdeadman.schedulecomposer.utils.Keys
+import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,20 +58,12 @@ class MainFragment : Fragment() {
 
             childNavController.addOnDestinationChangedListener { _, destination, _ ->
                 currentDestinationId = destination.id
-                drawerLayout.setDrawerLockMode(
-                    if (destination.id == R.id.createUpdate) {
-                        DrawerLayout.LOCK_MODE_LOCKED_CLOSED
-                    } else {
-                        DrawerLayout.LOCK_MODE_UNLOCKED
-                    }
-                )
             }
 
             val appBarConfiguration = AppBarConfiguration(
                 childNavController.graph.nodes
                     .keyIterator()
                     .asSequence()
-                    .filter { it != R.id.createUpdate }
                     .toSet(),
                 drawerLayout
             )
@@ -90,18 +81,13 @@ class MainFragment : Fragment() {
             }
 
             NavHeaderBinding.bind(navView.getHeaderView(0)).textViewSubtitle.text =
-                preferences.getString(Keys.USERNAME, "unknown")
+                preferences.getString(PreferenceKeys.USERNAME, "unknown")
         }
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            if (currentDestinationId != R.id.createUpdate) {
-                binding.drawerLayout.open()
-            } else {
-                requireActivity().onBackPressed()
-            }
+            binding.drawerLayout.open()
         }
         return super.onOptionsItemSelected(item)
     }

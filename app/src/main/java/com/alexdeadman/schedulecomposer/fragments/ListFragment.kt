@@ -5,20 +5,23 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapters.ListItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentListBinding
-import com.alexdeadman.schedulecomposer.service.AudDistApi
+import com.alexdeadman.schedulecomposer.utils.InstanceStateKeys
+import com.alexdeadman.schedulecomposer.utils.launchRepeatedCollect
 import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
-import com.alexdeadman.schedulecomposer.utils.state.ListState.*
+import com.alexdeadman.schedulecomposer.utils.state.ListState.Loaded
+import com.alexdeadman.schedulecomposer.utils.state.ListState.NoItems
 import com.alexdeadman.schedulecomposer.viewmodels.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.select.getSelectExtension
 import com.mikepenz.fastadapter.utils.ComparableItemListImpl
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,25 +30,38 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
-    private var sortingStrategy: Boolean = true
-
-    private val comparator: Comparator<ListItem> =
-        Comparator { lhs, rhs ->
-            if (sortingStrategy) {
-                lhs.entityTitle.compareTo(rhs.entityTitle)
-            } else {
-                rhs.entityTitle.compareTo(lhs.entityTitle)
-            }
-        }
-
+    companion object {
+        private const val SORT_ASCENDING = 0
+        private const val SORT_DESCENDING = 1
+        private const val SORT_NONE = -1
+    }
     private lateinit var itemAdapter: ItemAdapter<ListItem>
     private lateinit var fastAdapter: FastAdapter<ListItem>
 
+    private var sortingStrategy: Int = SORT_NONE
+
+    private val comparator: Comparator<ListItem> =
+        Comparator { lhs, rhs ->
+            when (sortingStrategy) {
+                SORT_ASCENDING -> lhs.entityTitle.compareTo(rhs.entityTitle)
+                SORT_DESCENDING -> rhs.entityTitle.compareTo(lhs.entityTitle)
+                SORT_NONE -> 0
+                else -> throw IllegalStateException()
+            }
+        }
+
     @Inject
-    lateinit var audDistApi: AudDistApi
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var searchView: SearchView
+    private var searchQuery: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        savedInstanceState?.apply {
+            searchQuery = getString(InstanceStateKeys.SEARCH_QUERY)
+            sortingStrategy = getInt(InstanceStateKeys.SORTING_STRATEGY)
+        }
         setHasOptionsMenu(true)
     }
 
@@ -92,73 +108,63 @@ class ListFragment : Fragment() {
 
             val viewModel = ViewModelProvider(
                 requireGrandParentFragment(),
-                ViewModelFactory(viewModelClass, audDistApi)
-            ).get(viewModelClass.java)
+                viewModelFactory.withClass(viewModelClass)
+            )[viewModelClass.java]
 
-            viewModel.state.observe(viewLifecycleOwner) { state ->
-                progressBar.visibility = View.GONE
-                swipeRefreshLayout.visibility = View.VISIBLE
-                swipeRefreshLayout.isRefreshing = false
-                when (state) {
-                    is Loaded -> {
-                        recyclerView.visibility = View.VISIBLE
-                        textViewMassage.visibility = View.GONE
-                        FastAdapterDiffUtil[itemAdapter] = state.result.data.map(::ListItem)
-                        fastAdapter.withSavedInstanceState(savedInstanceState)
+            viewModel.state
+                .filterNotNull()
+                .launchRepeatedCollect(viewLifecycleOwner) { state ->
+                    progressBar.visibility = View.GONE
+                    swipeRefreshLayout.apply {
+                        visibility = View.VISIBLE
+                        isRefreshing = false
                     }
-                    is NoItems -> {
-                        recyclerView.visibility = View.GONE
-                        textViewMassage.apply {
-                            visibility = View.VISIBLE
-                            text = getString(R.string.list_is_empty)
+                    when (state) {
+                        is Loaded -> {
+                            textViewMassage.visibility = View.GONE
+                            FastAdapterDiffUtil[itemAdapter] = state.result.data.map(::ListItem)
+                            fastAdapter.withSavedInstanceState(savedInstanceState)
                         }
-                    }
-                    is Error -> {
-                        recyclerView.visibility = View.GONE
-                        textViewMassage.apply {
-                            visibility = View.VISIBLE
-                            text = state.message // TODO TEMPO
+                        is NoItems -> {
+                            itemAdapter.clear()
+                            textViewMassage.apply {
+                                visibility = View.VISIBLE
+                                text = resources.getString(state.messageStringId)
+                            }
                         }
                     }
                 }
-            }
 
-            swipeRefreshLayout.setOnRefreshListener {
-                viewModel.fetchEntities()
-            }
+            swipeRefreshLayout.setOnRefreshListener { viewModel.fetchEntities() }
 
-            imageButtonExpandAll.setOnClickListener {
-                // TODO
-            }
-            imageButtonCollapseAll.setOnClickListener {
-                // TODO
-            }
+            imageButtonExpandAll.setOnClickListener { /*TODO*/ }
+            imageButtonCollapseAll.setOnClickListener { /*TODO*/ }
 
             imageButtonSortAsc.setOnClickListener {
-                sortingStrategy = true
-                itemListImpl.withComparator(comparator)
+                sortingStrategy = SORT_ASCENDING
+                itemListImpl.withComparator(comparator, sortNow = true)
             }
             imageButtonSortDesc.setOnClickListener {
-                sortingStrategy = false
-                itemListImpl.withComparator(comparator)
+                sortingStrategy = SORT_DESCENDING
+                itemListImpl.withComparator(comparator, sortNow = true)
             }
 
-            floatingActionButton.setOnClickListener {
-                findNavController().navigate(R.id.createUpdate)
+            val bottomSheetDialog = BottomSheetDialog(requireContext()).apply {
+                setContentView(R.layout.fragment_create_update)
+                behavior.isHideable = false
             }
+
+            floatingActionButton.setOnClickListener { bottomSheetDialog.show() }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(fastAdapter.saveInstanceState(outState))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_search, menu)
 
         val searchMenuItem = menu.findItem(R.id.action_search)
+        searchView = searchMenuItem.actionView as SearchView
 
-        (searchMenuItem.actionView as SearchView).setOnQueryTextListener(
+        searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
                     itemAdapter.filter(newText)
@@ -170,5 +176,21 @@ class ListFragment : Fragment() {
                 }
             }
         )
+
+        if (!searchQuery.isNullOrBlank()) {
+            searchMenuItem.expandActionView()
+            searchView.apply {
+                setQuery(searchQuery, false)
+                clearFocus()
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.apply {
+            putString(InstanceStateKeys.SEARCH_QUERY, searchView.query.toString())
+            putInt(InstanceStateKeys.SORTING_STRATEGY, sortingStrategy)
+        }
+        super.onSaveInstanceState(fastAdapter.saveInstanceState(outState))
     }
 }

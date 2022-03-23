@@ -2,7 +2,7 @@ package com.alexdeadman.schedulecomposer.service
 
 import android.content.SharedPreferences
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
-import com.alexdeadman.schedulecomposer.utils.Keys
+import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -12,7 +12,7 @@ class HeadersInterceptor : Interceptor, SharedPreferences.OnSharedPreferenceChan
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
-    var authToken: String? = preferences.getString(Keys.AUTH_TOKEN, null)
+    var authToken: String? = preferences.getString(PreferenceKeys.AUTH_TOKEN, null)
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
@@ -24,7 +24,7 @@ class HeadersInterceptor : Interceptor, SharedPreferences.OnSharedPreferenceChan
     }
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String?) {
-        if (key == Keys.AUTH_TOKEN) {
+        if (key == PreferenceKeys.AUTH_TOKEN) {
             authToken = sp.getString(key, null)
         }
     }

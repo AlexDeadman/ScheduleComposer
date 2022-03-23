@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FragmentConnectionBinding
-import com.alexdeadman.schedulecomposer.utils.Keys
+import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
 
 class ConnectionFragment : Fragment() {
 
@@ -29,7 +29,7 @@ class ConnectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            editTextUrl.setText(preferences.getString(Keys.URL, ""))
+            editTextUrl.setText(preferences.getString(PreferenceKeys.URL, ""))
 
             buttonContinue.setOnClickListener {
 
@@ -39,7 +39,7 @@ class ConnectionFragment : Fragment() {
 
                     preferences
                         .edit()
-                        .putString(Keys.URL, url)
+                        .putString(PreferenceKeys.URL, url)
                         .apply()
 
                     findNavController().navigate(R.id.action_connectionFragment_to_loginFragment)

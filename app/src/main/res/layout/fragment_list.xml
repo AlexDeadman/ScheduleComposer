@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorOnSecondary"
+    android:background="?attr/colorOnPrimary"
     tools:context=".fragments.ListFragment"
     tools:ignore="ContentDescription">
 
@@ -12,18 +12,17 @@
         android:id="@+id/list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?colorOnPrimary"
+        android:background="?colorOnSecondary"
         android:elevation="5dp"
-        android:paddingVertical="10dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
 
         <ImageButton
-            android:layout_weight="10"
             android:id="@+id/image_button_expand_all"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="15dp"
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_expand" />
 
@@ -34,10 +33,9 @@
 
         <ImageButton
             android:id="@+id/image_button_collapse_all"
-            android:layout_weight="10"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="15dp"
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_collapse" />
 
@@ -47,9 +45,9 @@
             android:background="?android:attr/listDivider" />
 
         <Space
-            android:layout_weight="6"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="6" />
 
         <View
             android:layout_width="1dp"
@@ -58,10 +56,9 @@
 
         <ImageButton
             android:id="@+id/image_button_sort_asc"
-            android:layout_width="match_parent"
-            android:layout_weight="10"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="15dp"
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_sort_asc" />
 
@@ -72,10 +69,9 @@
 
         <ImageButton
             android:id="@+id/image_button_sort_desc"
-            android:layout_weight="10"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="15dp"
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_sort_desc" />
 

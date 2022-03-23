@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
+    android:background="?attr/colorOnSecondary"
     android:orientation="vertical"
-    android:background="?attr/colorOnPrimary"
     tools:ignore="ContentDescription">
 
     <com.github.florent37.expansionpanel.ExpansionHeader
@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="20dp"
         android:paddingVertical="12dp"
-        app:expansion_headerIndicator="@id/headerIndicator"
-        app:expansion_layout="@id/expansionLayout"
+        app:expansion_headerIndicator="@id/header_indicator"
+        app:expansion_layout="@id/expansion_layout"
         app:expansion_toggleOnClick="true">
 
         <!-- HEADER -->
@@ -36,7 +36,7 @@
 
         <!-- HEADER INDICATOR -->
         <ImageView
-            android:id="@+id/headerIndicator"
+            android:id="@+id/header_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
@@ -47,7 +47,7 @@
     </com.github.florent37.expansionpanel.ExpansionHeader>
 
     <com.github.florent37.expansionpanel.ExpansionLayout
-        android:id="@+id/expansionLayout"
+        android:id="@+id/expansion_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:expansion_expanded="true">
@@ -59,13 +59,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="18dp"
-            android:paddingBottom="18dp"
             android:paddingTop="5dp"
+            android:paddingBottom="18dp"
             tools:ignore="ContentDescription">
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:background="?android:attr/listDivider" />
 
             <TextView

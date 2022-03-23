@@ -1,8 +1,9 @@
 package com.alexdeadman.schedulecomposer.di
 
-import com.alexdeadman.schedulecomposer.service.AudDistApi
 import com.alexdeadman.schedulecomposer.service.HeadersInterceptor
+import com.alexdeadman.schedulecomposer.service.ScApi
 import com.alexdeadman.schedulecomposer.service.UrlInterceptor
+import com.alexdeadman.schedulecomposer.viewmodels.ViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,6 +48,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAudDistApi(retrofit: Retrofit): AudDistApi =
-        retrofit.create(AudDistApi::class.java)
+    fun provideScApi(retrofit: Retrofit): ScApi = retrofit.create(ScApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideViewModelFactory(scApi: ScApi): ViewModelFactory = ViewModelFactory(scApi)
 }
