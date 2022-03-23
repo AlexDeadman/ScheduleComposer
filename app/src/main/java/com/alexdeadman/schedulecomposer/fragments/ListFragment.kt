@@ -30,15 +30,22 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
+    private var itemListImpl: ComparableItemListImpl<ListItem>? = null
+
+    private lateinit var itemAdapter: ItemAdapter<ListItem>
+    private lateinit var fastAdapter: FastAdapter<ListItem>
+
     companion object {
         private const val SORT_ASCENDING = 0
         private const val SORT_DESCENDING = 1
         private const val SORT_NONE = -1
     }
-    private lateinit var itemAdapter: ItemAdapter<ListItem>
-    private lateinit var fastAdapter: FastAdapter<ListItem>
 
     private var sortingStrategy: Int = SORT_NONE
+        set(value) {
+            field = value
+            itemListImpl?.withComparator(comparator, sortNow = true)
+        }
 
     private val comparator: Comparator<ListItem> =
         Comparator { lhs, rhs ->
@@ -79,9 +86,9 @@ class ListFragment : Fragment() {
 
         binding.apply {
 
-            val itemListImpl = ComparableItemListImpl(comparator)
+            itemListImpl = ComparableItemListImpl(comparator)
 
-            itemAdapter = ItemAdapter(itemListImpl).apply {
+            itemAdapter = ItemAdapter(itemListImpl!!).apply {
                 itemFilter.filterPredicate = { item, constraint ->
                     item.entityTitle.lowercase().contains(constraint.toString().lowercase())
                 }
@@ -137,17 +144,11 @@ class ListFragment : Fragment() {
 
             swipeRefreshLayout.setOnRefreshListener { viewModel.fetchEntities() }
 
-            imageButtonExpandAll.setOnClickListener { /*TODO*/ }
-            imageButtonCollapseAll.setOnClickListener { /*TODO*/ }
+            imageButtonExpandAll.setOnClickListener { toggleAll(expand = true) }
+            imageButtonCollapseAll.setOnClickListener { toggleAll(expand = false) }
 
-            imageButtonSortAsc.setOnClickListener {
-                sortingStrategy = SORT_ASCENDING
-                itemListImpl.withComparator(comparator, sortNow = true)
-            }
-            imageButtonSortDesc.setOnClickListener {
-                sortingStrategy = SORT_DESCENDING
-                itemListImpl.withComparator(comparator, sortNow = true)
-            }
+            imageButtonSortAsc.setOnClickListener { sortingStrategy = SORT_ASCENDING }
+            imageButtonSortDesc.setOnClickListener { sortingStrategy = SORT_DESCENDING }
 
             val bottomSheetDialog = BottomSheetDialog(requireContext()).apply {
                 setContentView(R.layout.fragment_create_update)
@@ -156,6 +157,10 @@ class ListFragment : Fragment() {
 
             floatingActionButton.setOnClickListener { bottomSheetDialog.show() }
         }
+    }
+
+    private fun toggleAll(expand: Boolean) {
+        itemAdapter.adapterItems.forEach { it.expanded = expand }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

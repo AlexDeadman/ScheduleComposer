@@ -1,4 +1,4 @@
-package com.alexdeadman.schedulecomposer.data.model.auth
+package com.alexdeadman.schedulecomposer.model.auth
 
 data class LoginData(
     var data: Data

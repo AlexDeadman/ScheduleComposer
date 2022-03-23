@@ -3,10 +3,10 @@ package com.alexdeadman.schedulecomposer.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.data.model.DataList
-import com.alexdeadman.schedulecomposer.data.model.entity.Attributes
-import com.alexdeadman.schedulecomposer.data.model.entity.Entity
-import com.alexdeadman.schedulecomposer.data.model.entity.Relationships
+import com.alexdeadman.schedulecomposer.model.DataList
+import com.alexdeadman.schedulecomposer.model.entity.Attributes
+import com.alexdeadman.schedulecomposer.model.entity.Entity
+import com.alexdeadman.schedulecomposer.model.entity.Relationships
 import com.alexdeadman.schedulecomposer.utils.state.ListState
 import com.alexdeadman.schedulecomposer.utils.state.ListState.Loaded
 import com.alexdeadman.schedulecomposer.utils.state.ListState.NoItems

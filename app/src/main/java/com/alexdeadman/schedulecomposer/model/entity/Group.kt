@@ -1,4 +1,4 @@
-package com.alexdeadman.schedulecomposer.data.model.entity
+package com.alexdeadman.schedulecomposer.model.entity
 
 import com.alexdeadman.schedulecomposer.R
 import com.google.gson.annotations.SerializedName

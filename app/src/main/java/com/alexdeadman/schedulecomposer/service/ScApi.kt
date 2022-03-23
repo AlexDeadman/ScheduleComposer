@@ -1,8 +1,8 @@
 package com.alexdeadman.schedulecomposer.service
 
-import com.alexdeadman.schedulecomposer.data.model.DataList
-import com.alexdeadman.schedulecomposer.data.model.auth.AuthToken
-import com.alexdeadman.schedulecomposer.data.model.entity.*
+import com.alexdeadman.schedulecomposer.model.DataList
+import com.alexdeadman.schedulecomposer.model.auth.AuthToken
+import com.alexdeadman.schedulecomposer.model.entity.*
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET

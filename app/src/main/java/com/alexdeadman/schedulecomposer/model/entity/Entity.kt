@@ -1,4 +1,4 @@
-package com.alexdeadman.schedulecomposer.data.model.entity
+package com.alexdeadman.schedulecomposer.model.entity
 
 interface Attributes
 interface Relationships

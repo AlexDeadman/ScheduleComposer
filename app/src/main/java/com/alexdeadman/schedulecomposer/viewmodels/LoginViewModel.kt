@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.data.model.auth.LoginData
+import com.alexdeadman.schedulecomposer.model.auth.LoginData
 import com.alexdeadman.schedulecomposer.service.ScApi
 import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
 import com.alexdeadman.schedulecomposer.utils.state.LoginState
