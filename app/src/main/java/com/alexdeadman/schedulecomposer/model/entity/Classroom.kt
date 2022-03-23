@@ -8,12 +8,12 @@ import com.google.gson.annotations.SerializedName
 data class Classroom(
     override var type: String,
     override var id: Int,
-    override var attributes: AudienceAttributes,
+    override var attributes: ClassroomAttributes,
     override var relationships: Relationships?,
-) : Entity<Classroom.AudienceAttributes, Relationships> {
+) : Entity<Classroom.ClassroomAttributes, Relationships> {
 
     override val title get() = attributes.number
-    override val iconId get() = R.drawable.ic_audience
+    override val iconId get() = R.drawable.ic_classroom
 
     override val detailsPhId: Int get() = R.string.ph_classroom_details
     override val details
@@ -24,7 +24,7 @@ data class Classroom(
             )
         }
 
-    data class AudienceAttributes(
+    data class ClassroomAttributes(
         var number: String,
         var type: String?,
         @SerializedName("seats_count") var seatsCount: Int,

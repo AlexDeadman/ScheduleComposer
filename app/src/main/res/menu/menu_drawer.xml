@@ -17,8 +17,8 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/audiences"
-            android:icon="@drawable/ic_audience"
+            android:id="@+id/classrooms"
+            android:icon="@drawable/ic_classroom"
             android:title="@string/title_classrooms" />
 
         <item

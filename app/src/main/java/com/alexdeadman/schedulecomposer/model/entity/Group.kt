@@ -23,9 +23,7 @@ data class Group(
     ) : Attributes
 
     data class GroupRelationships(var syllabus: Syllabus) : Relationships {
-
         data class Syllabus(var data: Data) {
-
             data class Data(var id: Int)
         }
     }

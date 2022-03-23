@@ -24,9 +24,7 @@ data class Lecturer(
     ) : Attributes
 
     data class LecturerRelationships(var disciplines: Disciplines) : Relationships {
-
         data class Disciplines(var data: List<Data>) {
-
             data class Data(var id: Int)
         }
     }

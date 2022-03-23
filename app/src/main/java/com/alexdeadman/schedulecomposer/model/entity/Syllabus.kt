@@ -23,9 +23,7 @@ data class Syllabus(
     ) : Attributes
 
     data class SyllabusRelationships(var direction: Direction) : Relationships {
-
         data class Direction(var data: Data) {
-
             data class Data(var id: Int)
         }
     }

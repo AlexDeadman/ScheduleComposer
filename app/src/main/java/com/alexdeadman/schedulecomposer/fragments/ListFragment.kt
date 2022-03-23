@@ -104,7 +104,7 @@ class ListFragment : Fragment() {
             }
 
             val viewModelClass = when (MainFragment.currentDestinationId) {
-                R.id.audiences -> AudiencesViewModel::class
+                R.id.classrooms -> ClassroomViewModel::class
                 R.id.directions -> DirectionsViewModel::class
                 R.id.disciplines -> DisciplinesViewModel::class
                 R.id.groups -> GroupsViewModel::class

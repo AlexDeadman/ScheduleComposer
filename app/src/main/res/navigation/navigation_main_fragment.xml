@@ -10,7 +10,7 @@
         android:label="@string/title_groups"
         tools:layout="@layout/fragment_list" />
     <fragment
-        android:id="@+id/audiences"
+        android:id="@+id/classrooms"
         android:name="com.alexdeadman.schedulecomposer.fragments.ListFragment"
         android:label="@string/title_classrooms"
         tools:layout="@layout/fragment_list" />

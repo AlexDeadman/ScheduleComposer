@@ -89,8 +89,8 @@ dependencies {
     implementation 'com.plutolib:pluto:2.0.0'
     implementation 'com.plutolib.plugins:network:2.0.0'
 
-    // TableView
-    implementation 'com.github.evrencoskun:TableView:v0.8.9.4'
+    // smartTable
+    implementation 'com.github.huangyanbin:SmartTable:2.2.0'
 
     // Test
     testImplementation 'junit:junit:4.13.2'
