@@ -23,7 +23,7 @@
         android:layout_height="50dp"
         android:layout_margin="20dp"
         android:text="@string/todo"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:textSize="18sp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

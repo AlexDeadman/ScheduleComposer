@@ -13,7 +13,7 @@ fun Fragment.requireGrandParentFragment() = requireParentFragment().requireParen
 
 fun Any?.toStringOrDash() = this?.toString() ?: "—"
 
-inline fun <T> Flow<T>.launchRepeatedCollect(
+inline fun <T> Flow<T>.launchRepeatingCollect(
     lifecycleOwner: LifecycleOwner,
     crossinline action: suspend (T) -> Unit
 ) {

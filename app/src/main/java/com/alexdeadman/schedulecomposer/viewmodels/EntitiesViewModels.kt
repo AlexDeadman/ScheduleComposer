@@ -2,7 +2,7 @@ package com.alexdeadman.schedulecomposer.viewmodels
 
 import com.alexdeadman.schedulecomposer.service.ScApi
 
-class ClassroomViewModel(api: ScApi) : AbstractViewModel(api::getClassrooms)
+class ClassroomsViewModel(api: ScApi) : AbstractViewModel(api::getClassrooms)
 class DirectionsViewModel(api: ScApi) : AbstractViewModel(api::getDirections)
 class DisciplinesViewModel(api: ScApi) : AbstractViewModel(api::getDisciplines)
 class GroupsViewModel(api: ScApi) : AbstractViewModel(api::getGroups)

@@ -38,10 +38,10 @@
     <string name="theme">Theme</string>
     <string name="ph_classroom_details">Type: %1$s\nSeats count: %2$s</string>
     <string name="ph_direction_details">Name: %s</string>
-    <string name="ph_discipline_details">Code: %1$s\nCycle: %2$s\nHours total: %3$s\nLectures: %4$s\nPractices: %5$s\nLab assignments: %6$s\nISW: %7$s\nConsultations: %8$s</string>
-    <string name="ph_lecturer_details">%s</string>
-    <string name="ph_group_details">Students count: %s</string>
+    <string name="ph_discipline_details">Code: %1$s\nCycle: %2$s\nHours total: %3$s\nLectures: %4$s\nPractices: %5$s\nLab assignments: %6$s\nISW: %7$s\nConsultations: %8$s\n\nSyllabus: %9$s</string>
+    <string name="ph_lecturer_details"><b>Disciplines:</b>\n%s</string>
+    <string name="ph_group_details">Students count: %1$s\n\nSyllabus: %2$s</string>
     <string name="ph_schedule_details">%s</string>
-    <string name="ph_syllabus_details">Code: %s</string>
+    <string name="ph_syllabus_details">Code: %1$s\n\nDirection: %2$s</string>
     <string name="todo">TODO</string>
 </resources>

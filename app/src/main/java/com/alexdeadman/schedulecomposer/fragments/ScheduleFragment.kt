@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.alexdeadman.schedulecomposer.databinding.FragmentScheduleBinding
-import com.alexdeadman.schedulecomposer.utils.launchRepeatedCollect
+import com.alexdeadman.schedulecomposer.utils.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
-import com.alexdeadman.schedulecomposer.utils.state.ListState.Loaded
-import com.alexdeadman.schedulecomposer.utils.state.ListState.NoItems
+import com.alexdeadman.schedulecomposer.utils.state.ListState.*
 import com.alexdeadman.schedulecomposer.viewmodels.ScheduleViewModel
 import com.alexdeadman.schedulecomposer.viewmodels.ViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,8 +37,6 @@ class ScheduleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModelClass = ScheduleViewModel::class
-
         binding.apply {
             smartTable.apply {
                 config.apply {
@@ -50,6 +47,8 @@ class ScheduleFragment : Fragment() {
                 setZoom(true, 2f, 0.5f)
             }
 
+            val viewModelClass = ScheduleViewModel::class
+
             val viewModel = ViewModelProvider(
                 requireGrandParentFragment(),
                 viewModelFactory.withClass(viewModelClass)
@@ -57,14 +56,11 @@ class ScheduleFragment : Fragment() {
 
             viewModel.state
                 .filterNotNull()
-                .launchRepeatedCollect(viewLifecycleOwner) { state ->
+                .launchRepeatingCollect(viewLifecycleOwner) { state ->
                     when (state) {
-                        is Loaded -> {
-                            smartTable.setData(state.result.data)
-                        }
-                        is NoItems -> {
-
-                        }
+                        is Loaded -> smartTable.setData(state.result.data)
+                        is NoItems -> { }
+                        is Error -> { }
                     }
                 }
         }

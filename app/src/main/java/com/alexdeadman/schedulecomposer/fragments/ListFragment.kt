@@ -5,16 +5,19 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapters.ListItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentListBinding
+import com.alexdeadman.schedulecomposer.utils.Cringe
 import com.alexdeadman.schedulecomposer.utils.InstanceStateKeys
-import com.alexdeadman.schedulecomposer.utils.launchRepeatedCollect
+import com.alexdeadman.schedulecomposer.utils.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
-import com.alexdeadman.schedulecomposer.utils.state.ListState.Loaded
-import com.alexdeadman.schedulecomposer.utils.state.ListState.NoItems
+import com.alexdeadman.schedulecomposer.utils.state.ListState
+import com.alexdeadman.schedulecomposer.utils.state.ListState.*
 import com.alexdeadman.schedulecomposer.viewmodels.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.color.MaterialColors
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -22,7 +25,10 @@ import com.mikepenz.fastadapter.select.getSelectExtension
 import com.mikepenz.fastadapter.utils.ComparableItemListImpl
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
+import kotlin.reflect.KClass
+
 
 @AndroidEntryPoint
 class ListFragment : Fragment() {
@@ -75,7 +81,7 @@ class ListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
@@ -103,46 +109,45 @@ class ListFragment : Fragment() {
                 adapter = fastAdapter
             }
 
-            val viewModelClass = when (MainFragment.currentDestinationId) {
-                R.id.classrooms -> ClassroomViewModel::class
-                R.id.directions -> DirectionsViewModel::class
-                R.id.disciplines -> DisciplinesViewModel::class
-                R.id.groups -> GroupsViewModel::class
-                R.id.lecturers -> LecturersViewModel::class
-                R.id.syllabuses -> SyllabusesViewModel::class
+            val viewModelClasses = when (findNavController().currentDestination!!.id) {
+                R.id.classrooms -> ClassroomsViewModel::class to null
+                R.id.directions -> DirectionsViewModel::class to null
+                R.id.disciplines -> DisciplinesViewModel::class to SyllabusesViewModel::class
+                R.id.groups -> GroupsViewModel::class to SyllabusesViewModel::class
+                R.id.lecturers -> LecturersViewModel::class to DisciplinesViewModel::class
+                R.id.syllabuses -> SyllabusesViewModel::class to DirectionsViewModel::class
                 else -> throw IllegalStateException()
             }
 
-            val viewModel = ViewModelProvider(
-                requireGrandParentFragment(),
-                viewModelFactory.withClass(viewModelClass)
-            )[viewModelClass.java]
+            val mainViewModel = getViewModel(viewModelClasses.first)
+            val relatedViewModel = viewModelClasses.second?.let { getViewModel(it) }
 
-            viewModel.state
+            mainViewModel.state
                 .filterNotNull()
-                .launchRepeatedCollect(viewLifecycleOwner) { state ->
-                    progressBar.visibility = View.GONE
-                    swipeRefreshLayout.apply {
-                        visibility = View.VISIBLE
-                        isRefreshing = false
-                    }
-                    when (state) {
-                        is Loaded -> {
-                            textViewMassage.visibility = View.GONE
-                            FastAdapterDiffUtil[itemAdapter] = state.result.data.map(::ListItem)
-                            fastAdapter.withSavedInstanceState(savedInstanceState)
-                        }
-                        is NoItems -> {
-                            itemAdapter.clear()
-                            textViewMassage.apply {
-                                visibility = View.VISIBLE
-                                text = resources.getString(state.messageStringId)
+                .apply {
+                    @Cringe
+                    if (relatedViewModel != null) {
+                        zip(relatedViewModel.state.filterNotNull(), ::Pair)
+                            .launchRepeatingCollect(viewLifecycleOwner) {
+                                handleStates(it.first, it.second, savedInstanceState)
                             }
+                    } else {
+                        launchRepeatingCollect(viewLifecycleOwner) {
+                            handleStates(it, null, savedInstanceState)
                         }
                     }
                 }
 
-            swipeRefreshLayout.setOnRefreshListener { viewModel.fetchEntities() }
+            swipeRefreshLayout.apply {
+                setOnRefreshListener {
+                    mainViewModel.fetchEntities()
+                    relatedViewModel?.fetchEntities()
+                }
+                setColorSchemeResources(android.R.color.white)
+                setProgressBackgroundColorSchemeColor(
+                    MaterialColors.getColor(view, R.attr.colorPrimary)
+                )
+            }
 
             imageButtonExpandAll.setOnClickListener { toggleAll(expand = true) }
             imageButtonCollapseAll.setOnClickListener { toggleAll(expand = false) }
@@ -156,6 +161,58 @@ class ListFragment : Fragment() {
             }
 
             floatingActionButton.setOnClickListener { bottomSheetDialog.show() }
+        }
+    }
+
+    private fun getViewModel(clazz: KClass<out AbstractViewModel>): AbstractViewModel =
+        ViewModelProvider(
+            requireGrandParentFragment(),
+            viewModelFactory.withClass(clazz)
+        )[clazz.java]
+
+    private fun handleStates(
+        mainState: ListState,
+        relatedState: ListState?,
+        savedInstanceState: Bundle?,
+    ) {
+        binding.apply {
+            progressBar.visibility = View.GONE
+            swipeRefreshLayout.apply {
+                visibility = View.VISIBLE
+                isRefreshing = false
+            }
+
+            when (mainState) {
+                is Loaded -> {
+                    textViewMassage.visibility = View.GONE
+                    floatingActionButton.visibility = View.VISIBLE
+                    FastAdapterDiffUtil[itemAdapter] = mainState.result.data.map {
+                        @Cringe // TODO                         TEMPO
+                        if (relatedState != null && relatedState is Loaded) {
+                            ListItem(it, relatedState.result.data)
+                        } else {
+                            ListItem(it)
+                        }
+                    }
+                    fastAdapter.withSavedInstanceState(savedInstanceState)
+                }
+                is NoItems -> {
+                    itemAdapter.clear()
+                    textViewMassage.apply {
+                        visibility = View.VISIBLE
+                        text = resources.getString(R.string.list_is_empty)
+                    }
+                    floatingActionButton.visibility = View.VISIBLE
+                }
+                is Error -> {
+                    itemAdapter.clear() // TODO mb snackbar
+                    textViewMassage.apply {
+                        visibility = View.VISIBLE
+                        text = resources.getString(mainState.messageStringId)
+                    }
+                    floatingActionButton.visibility = View.GONE
+                }
+            }
         }
     }
 

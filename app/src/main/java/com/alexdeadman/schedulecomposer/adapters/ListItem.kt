@@ -6,13 +6,17 @@ import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.ListItemBinding
 import com.alexdeadman.schedulecomposer.model.entity.Attributes
 import com.alexdeadman.schedulecomposer.model.entity.Entity
-import com.alexdeadman.schedulecomposer.model.entity.Relationships
+import com.alexdeadman.schedulecomposer.model.entity.Relatable
+import com.alexdeadman.schedulecomposer.utils.Cringe
 import com.github.florent37.expansionpanel.ExpansionLayout
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class ListItem(
-    private val entity: Entity<out Attributes, out Relationships>
+    private val entity: Entity<out Attributes>,
+    private val relatives: List<Entity<out Attributes>>?,
 ) : AbstractBindingItem<ListItemBinding>() {
+
+    constructor(entity: Entity<out Attributes>) : this(entity, null)
 
     override var identifier: Long
         get() = entity.hashCode().toLong()
@@ -20,8 +24,7 @@ class ListItem(
             super.identifier = value
         }
 
-    override val type: Int
-        get() = R.id.list_item_id
+    override val type: Int get() = R.id.list_item_id
 
     val entityTitle = entity.title
 
@@ -52,9 +55,16 @@ class ListItem(
                     setCompoundDrawablesRelativeWithIntrinsicBounds(iconId, 0, 0, 0)
                     text = title
                 }
+
+                @Cringe
                 textViewDetails.text = root.resources.getString(
                     detailsPhId,
-                    *details.toTypedArray()
+                    *if (entity is Relatable<*> && relatives != null) {
+                        // TODO TEMPO
+                        details.plus(entity.getRelativesTitles(relatives).joinToString(";\n"))
+                    } else {
+                        details
+                    }.toTypedArray()
                 )
             }
         }

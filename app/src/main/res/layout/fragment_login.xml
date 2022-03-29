@@ -96,6 +96,6 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="20dp"
         android:text="@string/log_in"
-        android:textColor="@color/white" />
+        android:textColor="@android:color/white" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

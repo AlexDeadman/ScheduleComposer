@@ -7,14 +7,17 @@ data class Syllabus(
     override var type: String,
     override var id: Int,
     override var attributes: SyllabusAttributes,
-    override var relationships: SyllabusRelationships?
-) : Entity<Syllabus.SyllabusAttributes, Syllabus.SyllabusRelationships> {
+    override var relationships: SyllabusRelationships
+) : Entity<Syllabus.SyllabusAttributes>, Relatable<Syllabus.SyllabusRelationships> {
 
     override val title get() = attributes.run { "$year $name" }
     override val iconId get() = R.drawable.ic_syllabus
 
     override val detailsPhId: Int get() = R.string.ph_syllabus_details
     override val details get() = mutableListOf(attributes.code)
+
+    override fun getRelativesTitles(relatives: List<Entity<out Attributes>>): List<String> =
+        listOf(relatives.single { it.id == relationships.direction.data.id }.title)
 
     data class SyllabusAttributes(
         var year: String,

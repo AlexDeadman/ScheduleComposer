@@ -12,7 +12,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
-import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FragmentMainBinding
 import com.alexdeadman.schedulecomposer.databinding.NavHeaderBinding
 import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
@@ -20,10 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
-
-    companion object {
-        var currentDestinationId: Int = R.id.schedule
-    }
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
@@ -55,10 +50,6 @@ class MainFragment : Fragment() {
 
             val childNavController = contentMain.fragmentContainerView
                 .getFragment<NavHostFragment>().navController
-
-            childNavController.addOnDestinationChangedListener { _, destination, _ ->
-                currentDestinationId = destination.id
-            }
 
             val appBarConfiguration = AppBarConfiguration(
                 childNavController.graph.nodes

@@ -83,15 +83,21 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:background="?selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_edit" />
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_marginVertical="2dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/listDivider" />
+
                 <ImageButton
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:background="?selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_delete" />
 

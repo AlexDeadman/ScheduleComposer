@@ -9,8 +9,7 @@ data class Classroom(
     override var type: String,
     override var id: Int,
     override var attributes: ClassroomAttributes,
-    override var relationships: Relationships?,
-) : Entity<Classroom.ClassroomAttributes, Relationships> {
+) : Entity<Classroom.ClassroomAttributes> {
 
     override val title get() = attributes.number
     override val iconId get() = R.drawable.ic_classroom

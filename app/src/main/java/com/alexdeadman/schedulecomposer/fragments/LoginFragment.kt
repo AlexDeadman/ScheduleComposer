@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FragmentLoginBinding
-import com.alexdeadman.schedulecomposer.utils.launchRepeatedCollect
+import com.alexdeadman.schedulecomposer.utils.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.utils.state.LoginState.*
 import com.alexdeadman.schedulecomposer.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +39,7 @@ class LoginFragment : Fragment() {
 
             viewModel.state
                 .filterNotNull()
-                .launchRepeatedCollect(viewLifecycleOwner) { state ->
+                .launchRepeatingCollect(viewLifecycleOwner) { state ->
                     when (state) {
                         is Sending -> {
                             editTextUsername.isEnabled = false

@@ -9,8 +9,8 @@ data class Discipline(
     override var type: String,
     override var id: Int,
     override var attributes: DisciplineAttributes,
-    override var relationships: DisciplineRelationships?,
-) : Entity<Discipline.DisciplineAttributes, Discipline.DisciplineRelationships> {
+    override var relationships: DisciplineRelationships,
+) : Entity<Discipline.DisciplineAttributes>, Relatable<Discipline.DisciplineRelationships> {
 
     override val title get() = attributes.name
     override val iconId get() = R.drawable.ic_discipline
@@ -29,6 +29,9 @@ data class Discipline(
                 hoursCons.toStringOrDash()
             )
         }
+
+    override fun getRelativesTitles(relatives: List<Entity<out Attributes>>): List<String> =
+        listOf(relatives.single { it.id == relationships.syllabus.data.id }.title)
 
     data class DisciplineAttributes(
         var name: String,

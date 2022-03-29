@@ -1,15 +1,11 @@
 ПРОБЛЕМЫ:
-- Ресайклер переиспользует expand/collapse 
+- что-то в ListFragment блокирует UI поток
 
 ТУДУ (без конкретики):
-- Details (почти готово)
+- Create/update/delete: ALL 
+- Read: Schedule, Details
 - О приложении
-- Помощь
-- Сетка расписания
 - Обработать отсутствие интернета
-- Base list view
-    - Выделение и удаление 
-- Base create/update view
 - Валидация
 - Сбрасывается expanded/collapsed при перерисовке ListFragment
 

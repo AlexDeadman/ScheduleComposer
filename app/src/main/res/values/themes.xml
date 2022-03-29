@@ -8,7 +8,7 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@android:color/holo_blue_light</item>
         <item name="colorSecondaryVariant">@android:color/holo_blue_light</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@android:color/white</item>
         <!-- Customize your theme here. -->
 
         <item name="windowActionBar">false</item>
@@ -22,6 +22,6 @@
     <style name="Theme.AudDistAndroid.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="FloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="tint">@color/white</item>
+        <item name="tint">@android:color/white</item>
     </style>
 </resources>

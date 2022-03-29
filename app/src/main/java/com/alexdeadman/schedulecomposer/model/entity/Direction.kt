@@ -6,8 +6,7 @@ data class Direction(
     override var type: String,
     override var id: Int,
     override var attributes: DirectionAttributes,
-    override var relationships: Relationships?
-) : Entity<Direction.DirectionAttributes, Relationships> {
+) : Entity<Direction.DirectionAttributes> {
 
     override val title get() = attributes.code
     override val iconId get() = R.drawable.ic_direction

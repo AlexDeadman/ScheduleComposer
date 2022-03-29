@@ -8,14 +8,17 @@ data class Group(
     override var type: String,
     override var id: Int,
     override var attributes: GroupAttributes,
-    override var relationships: GroupRelationships?
-) : Entity<Group.GroupAttributes, Group.GroupRelationships> {
+    override var relationships: GroupRelationships
+) : Entity<Group.GroupAttributes>, Relatable<Group.GroupRelationships> {
 
     override val title get() = attributes.number
     override val iconId get() = R.drawable.ic_group
 
     override val detailsPhId: Int get() = R.string.ph_group_details
     override val details get() = mutableListOf(attributes.studentsCount.toString())
+
+    override fun getRelativesTitles(relatives: List<Entity<out Attributes>>): List<String> =
+        listOf(relatives.single { it.id == relationships.syllabus.data.id }.title)
 
     data class GroupAttributes(
         var number: String,
