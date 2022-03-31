@@ -1,16 +1,10 @@
 ПРОБЛЕМЫ:
-- что-то в ListFragment блокирует UI поток
+- Сбрасывается expanded/collapsed при перерисовке ListFragment и обновлении списка
 
 ТУДУ (без конкретики):
-- Create/update/delete: ALL 
-- Read: Schedule, Details
-- О приложении
+- Create/update/delete: ALL (с валидацией)
+- Read: Schedule
 - Обработать отсутствие интернета
-- Валидация
-- Сбрасывается expanded/collapsed при перерисовке ListFragment
-
-ТУДУ (прочее):
-- Чекай:
-  - https://developer.android.com/reference/android/accounts/AccountManager (ИБ?)
-  - Библиотеки роутинга (?)
+- Фильтрация по учебным планам (важно)
+- binding = null on destroy
   

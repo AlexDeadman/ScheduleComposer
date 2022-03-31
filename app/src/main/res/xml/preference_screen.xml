@@ -1,6 +1,8 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <PreferenceCategory app:title="@string/general">
         <ListPreference
             android:defaultValue="light"
             android:entries="@array/theme_entries"
@@ -11,14 +13,26 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory>
+    <PreferenceCategory app:title="@string/account">
         <Preference
-            android:icon="@drawable/ic_baseline_exit_to_app_24"
+            android:icon="@drawable/ic_user"
+            android:key="loggedInAs"
+            app:selectable="false"
+            app:title="@string/logged_in_as"
+            tools:summary="@string/username" />
+        <Preference
+            android:icon="@drawable/ic_logout"
             android:key="logout"
             android:title="@string/log_out" />
-        <Preference
-            android:icon="@drawable/ic_question_mark"
-            android:key="help"
-            android:title="@string/help" />
     </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/about">
+        <Preference
+            android:icon="@drawable/ic_about"
+            app:selectable="false"
+            app:key="about"
+            app:title="@string/app_name"
+            tools:summary="1.1.1" />
+    </PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

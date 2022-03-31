@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.MainActivity
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
+import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
 
 class SplashFragment : Fragment(R.layout.fragment_splash) {
 

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ScheduleFragment">
 
-    <com.alexdeadman.schedulecomposer.utils.MySmartTable
+    <com.alexdeadman.schedulecomposer.utils.CustomSmartTable
         android:id="@+id/smartTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

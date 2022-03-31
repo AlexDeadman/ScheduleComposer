@@ -15,36 +15,30 @@
     <group
         android:id="@+id/drawer_group_2"
         android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/classrooms"
-            android:icon="@drawable/ic_classroom"
-            android:title="@string/title_classrooms" />
-
         <item
             android:id="@+id/directions"
             android:icon="@drawable/ic_direction"
             android:title="@string/title_directions" />
-
-        <item
-            android:id="@+id/disciplines"
-            android:icon="@drawable/ic_discipline"
-            android:title="@string/title_disciplines" />
-
-        <item
-            android:id="@+id/groups"
-            android:icon="@drawable/ic_group"
-            android:title="@string/title_groups" />
-
-        <item
-            android:id="@+id/lecturers"
-            android:icon="@drawable/ic_lecturer"
-            android:title="@string/title_lecturers" />
-
         <item
             android:id="@+id/syllabuses"
             android:icon="@drawable/ic_syllabus"
             android:title="@string/title_syllabuses" />
+        <item
+            android:id="@+id/groups"
+            android:icon="@drawable/ic_group"
+            android:title="@string/title_groups" />
+        <item
+            android:id="@+id/disciplines"
+            android:icon="@drawable/ic_discipline"
+            android:title="@string/title_disciplines" />
+        <item
+            android:id="@+id/lecturers"
+            android:icon="@drawable/ic_lecturer"
+            android:title="@string/title_lecturers" />
+        <item
+            android:id="@+id/classrooms"
+            android:icon="@drawable/ic_classroom"
+            android:title="@string/title_classrooms" />
     </group>
 
     <group
@@ -53,7 +47,7 @@
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
-            android:title="@string/title_settings"/>
+            android:title="@string/title_settings" />
     </group>
 
 </menu>

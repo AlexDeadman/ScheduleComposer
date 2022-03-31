@@ -7,7 +7,7 @@ import com.bin.david.form.core.SmartTable
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.jvm.isAccessible
 
-class MySmartTable<T> @JvmOverloads constructor(
+class CustomSmartTable<T> @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : SmartTable<T>(context, attrs) {
 

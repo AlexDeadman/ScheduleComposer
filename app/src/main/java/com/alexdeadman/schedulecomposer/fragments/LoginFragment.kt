@@ -9,8 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FragmentLoginBinding
+import com.alexdeadman.schedulecomposer.utils.isValid
 import com.alexdeadman.schedulecomposer.utils.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.utils.state.LoginState.*
+import com.alexdeadman.schedulecomposer.utils.validate
 import com.alexdeadman.schedulecomposer.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
@@ -24,7 +26,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
@@ -34,7 +36,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-
             val viewModel: LoginViewModel by viewModels()
 
             viewModel.state
@@ -42,8 +43,8 @@ class LoginFragment : Fragment() {
                 .launchRepeatingCollect(viewLifecycleOwner) { state ->
                     when (state) {
                         is Sending -> {
-                            editTextUsername.isEnabled = false
-                            editTextPassword.isEnabled = false
+                            tiEditTextUsername.isEnabled = false
+                            tiEditTextPassword.isEnabled = false
                             progressBar.visibility = View.VISIBLE
                             textViewError.visibility = View.INVISIBLE
                         }
@@ -53,8 +54,8 @@ class LoginFragment : Fragment() {
                             )
                         }
                         is Error -> {
-                            editTextUsername.isEnabled = true
-                            editTextPassword.isEnabled = true
+                            tiEditTextUsername.isEnabled = true
+                            tiEditTextPassword.isEnabled = true
                             progressBar.visibility = View.INVISIBLE
 
                             textViewError.apply {
@@ -65,11 +66,21 @@ class LoginFragment : Fragment() {
                     }
                 }
 
-            buttonLogIn.setOnClickListener {
-                viewModel.fetchToken( // TODO validation
-                    editTextUsername.text.toString(),
-                    editTextPassword.text.toString()
-                )
+            tiLayoutUsername.validate(listOf(
+                { it.isNotBlank() to resources.getString(R.string.required_field) },
+                { (it.length < 150) to resources.getString(R.string.wrong_format) }
+            ))
+            tiLayoutPassword.validate(listOf {
+                it.isNotBlank() to resources.getString(R.string.required_field)
+            })
+
+            buttonLogin.setOnClickListener {
+                if (tiLayoutUsername.isValid() && tiLayoutPassword.isValid()) {
+                    viewModel.fetchToken(
+                        tiEditTextUsername.text.toString(),
+                        tiEditTextPassword.text.toString()
+                    )
+                }
             }
         }
     }

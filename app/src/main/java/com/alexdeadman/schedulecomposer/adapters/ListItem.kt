@@ -60,7 +60,6 @@ class ListItem(
                 textViewDetails.text = root.resources.getString(
                     detailsPhId,
                     *if (entity is Relatable<*> && relatives != null) {
-                        // TODO TEMPO
                         details.plus(entity.getRelativesTitles(relatives).joinToString(";\n"))
                     } else {
                         details

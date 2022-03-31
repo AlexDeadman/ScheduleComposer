@@ -6,7 +6,7 @@ import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.model.auth.LoginData
 import com.alexdeadman.schedulecomposer.service.ScApi
-import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
+import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
 import com.alexdeadman.schedulecomposer.utils.state.LoginState
 import com.alexdeadman.schedulecomposer.utils.state.LoginState.*
 import com.google.gson.Gson

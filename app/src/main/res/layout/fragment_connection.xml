@@ -11,7 +11,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="top|center"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="100dp"
         android:background="@drawable/bg_circle"
         android:paddingHorizontal="20dp"
         android:paddingTop="3dp"
@@ -28,18 +28,22 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="160dp"
         android:layout_marginHorizontal="40dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_layout_url"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_url"
+                android:id="@+id/ti_edit_text_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/url"
@@ -49,27 +53,12 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <TextView
-        android:id="@+id/text_view_error"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="80dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="@string/unknown_error"
-        android:textAlignment="center"
-        android:textColor="#F44336"
-        android:textSize="15sp"
-        android:visibility="invisible"
-        tools:visibility="visible" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_continue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="140dp"
         android:text="@string/button_continue_text"
         android:textColor="@android:color/white" />
 

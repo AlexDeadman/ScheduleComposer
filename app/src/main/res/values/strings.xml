@@ -6,7 +6,7 @@
     <string name="list_is_empty">List is empty</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="log_in">Log in</string>
+    <string name="login">Login</string>
     <string name="unauthorized">Unauthorized</string>
     <string name="welcome">Welcome</string>
     <string name="log_out">Log out</string>
@@ -22,7 +22,6 @@
     <string name="search">Search…</string>
     <string name="request_account">Request account</string>
     <string name="restore_password">Restore password</string>
-    <string name="add">Add</string>
     <string name="required_fields">* Required fields</string>
     <string name="system">System</string>
     <string name="light">Light</string>
@@ -34,14 +33,28 @@
     <string name="button_continue_text">Continue</string>
     <string name="server_connection">Server connection</string>
     <string name="incorrect_url">Incorrect URL</string>
-    <string name="help">Help</string>
     <string name="theme">Theme</string>
     <string name="ph_classroom_details">Type: %1$s\nSeats count: %2$s</string>
     <string name="ph_direction_details">Name: %s</string>
     <string name="ph_discipline_details">Code: %1$s\nCycle: %2$s\nHours total: %3$s\nLectures: %4$s\nPractices: %5$s\nLab assignments: %6$s\nISW: %7$s\nConsultations: %8$s\n\nSyllabus: %9$s</string>
-    <string name="ph_lecturer_details"><b>Disciplines:</b>\n%s</string>
+    <string name="ph_lecturer_details">Disciplines:\n%s</string>
     <string name="ph_group_details">Students count: %1$s\n\nSyllabus: %2$s</string>
     <string name="ph_schedule_details">%s</string>
     <string name="ph_syllabus_details">Code: %1$s\n\nDirection: %2$s</string>
     <string name="todo">TODO</string>
+    <string name="about">About</string>
+    <string name="logged_in_as">Logged in as</string>
+    <string name="account">Account</string>
+    <string name="general">General</string>
+    <string name="version">Version %s</string>
+    <string name="required_field">Required Field</string>
+    <string name="wrong_format">Wrong format</string>
+    <string name="sign_in">Sign in</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="patronymic">Patronymic</string>
+    <string name="add_entity">Add %s</string>
+    <string name="add">Add</string>
+    <string name="edit_entity">Edit %s</string>
+    <string name="edit">Edit</string>
 </resources>

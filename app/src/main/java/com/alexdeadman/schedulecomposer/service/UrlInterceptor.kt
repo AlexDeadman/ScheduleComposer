@@ -2,7 +2,7 @@ package com.alexdeadman.schedulecomposer.service
 
 import android.content.SharedPreferences
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
-import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
+import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor

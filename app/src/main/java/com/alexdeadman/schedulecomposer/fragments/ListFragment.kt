@@ -9,14 +9,14 @@ import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapters.ListItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentListBinding
+import com.alexdeadman.schedulecomposer.dialog.LecturerDialog
 import com.alexdeadman.schedulecomposer.utils.Cringe
-import com.alexdeadman.schedulecomposer.utils.InstanceStateKeys
+import com.alexdeadman.schedulecomposer.utils.keys.InstanceStateKeys
 import com.alexdeadman.schedulecomposer.utils.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
 import com.alexdeadman.schedulecomposer.utils.state.ListState
 import com.alexdeadman.schedulecomposer.utils.state.ListState.*
 import com.alexdeadman.schedulecomposer.viewmodels.*
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.color.MaterialColors
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -155,12 +155,8 @@ class ListFragment : Fragment() {
             imageButtonSortAsc.setOnClickListener { sortingStrategy = SORT_ASCENDING }
             imageButtonSortDesc.setOnClickListener { sortingStrategy = SORT_DESCENDING }
 
-            val bottomSheetDialog = BottomSheetDialog(requireContext()).apply {
-                setContentView(R.layout.fragment_create_update)
-                behavior.isHideable = false
-            }
-
-            floatingActionButton.setOnClickListener { bottomSheetDialog.show() }
+            val lecturerDialog = LecturerDialog(requireContext())
+            floatingActionButton.setOnClickListener { lecturerDialog.show() }
         }
     }
 
@@ -205,7 +201,7 @@ class ListFragment : Fragment() {
                     floatingActionButton.visibility = View.VISIBLE
                 }
                 is Error -> {
-                    itemAdapter.clear() // TODO mb snackbar
+                    itemAdapter.clear() // TODO snackbar
                     textViewMassage.apply {
                         visibility = View.VISIBLE
                         text = resources.getString(mainState.messageStringId)

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?colorOnSecondary"
-        android:elevation="10dp"
+        android:elevation="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingVertical="10dp">

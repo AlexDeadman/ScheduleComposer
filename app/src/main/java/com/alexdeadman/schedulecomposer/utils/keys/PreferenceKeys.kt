@@ -1,4 +1,4 @@
-package com.alexdeadman.schedulecomposer.utils
+package com.alexdeadman.schedulecomposer.utils.keys
 
 class PreferenceKeys {
     companion object {
@@ -9,5 +9,8 @@ class PreferenceKeys {
         const val LIGHT = "light"
         const val SYSTEM = "system"
         const val DARK = "dark"
+        const val LOGOUT = "logout"
+        const val LOGGED_IN_AS = "loggedInAs"
+        const val ABOUT = "about"
     }
 }

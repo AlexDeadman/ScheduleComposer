@@ -11,10 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.databinding.FragmentMainBinding
-import com.alexdeadman.schedulecomposer.databinding.NavHeaderBinding
-import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -70,9 +67,6 @@ class MainFragment : Fragment() {
                     childNavController
                 )
             }
-
-            NavHeaderBinding.bind(navView.getHeaderView(0)).textViewSubtitle.text =
-                preferences.getString(PreferenceKeys.USERNAME, "unknown")
         }
     }
 

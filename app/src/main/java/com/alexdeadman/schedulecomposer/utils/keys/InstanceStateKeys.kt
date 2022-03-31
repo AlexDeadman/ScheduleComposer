@@ -1,4 +1,4 @@
-package com.alexdeadman.schedulecomposer.utils
+package com.alexdeadman.schedulecomposer.utils.keys
 
 class InstanceStateKeys {
     companion object {

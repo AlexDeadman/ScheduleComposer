@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.utils.PreferenceKeys
+import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
 import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
 
 class LogoutConfirmDialog : DialogFragment() {
