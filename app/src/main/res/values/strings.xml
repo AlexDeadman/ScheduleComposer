@@ -47,7 +47,7 @@
     <string name="account">Account</string>
     <string name="general">General</string>
     <string name="version">Version %s</string>
-    <string name="required_field">Required Field</string>
+    <string name="required_field">Required field</string>
     <string name="wrong_format">Wrong format</string>
     <string name="sign_in">Sign in</string>
     <string name="name">Name</string>

@@ -3,11 +3,16 @@ package com.alexdeadman.schedulecomposer.dialog
 import android.content.Context
 import android.os.Bundle
 import androidx.viewbinding.ViewBinding
+import com.alexdeadman.schedulecomposer.model.entity.Attributes
+import com.alexdeadman.schedulecomposer.model.entity.Entity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-abstract class AbstractBottomSheetDialog<T : ViewBinding>(context: Context) :
-    BottomSheetDialog(context) {
+abstract class AbstractBottomSheetDialog<T : ViewBinding>(
+    context: Context,
+    protected val relatives: List<Entity<out Attributes>>,
+    protected val entity: Entity<out Attributes>? = null,
+) : BottomSheetDialog(context) {
 
     @Suppress("PropertyName")
     protected var _binding: T? = null

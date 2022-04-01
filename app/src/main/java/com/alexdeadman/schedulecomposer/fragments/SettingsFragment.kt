@@ -14,7 +14,6 @@ import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener
 {
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_screen, rootKey)
 

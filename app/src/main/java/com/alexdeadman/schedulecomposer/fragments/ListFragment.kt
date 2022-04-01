@@ -42,9 +42,9 @@ class ListFragment : Fragment() {
     private lateinit var fastAdapter: FastAdapter<ListItem>
 
     companion object {
+        private const val SORT_NONE = -1
         private const val SORT_ASCENDING = 0
         private const val SORT_DESCENDING = 1
-        private const val SORT_NONE = -1
     }
 
     private var sortingStrategy: Int = SORT_NONE
@@ -155,7 +155,7 @@ class ListFragment : Fragment() {
             imageButtonSortAsc.setOnClickListener { sortingStrategy = SORT_ASCENDING }
             imageButtonSortDesc.setOnClickListener { sortingStrategy = SORT_DESCENDING }
 
-            val lecturerDialog = LecturerDialog(requireContext())
+            val lecturerDialog = LecturerDialog(requireContext(), ) // TODO
             floatingActionButton.setOnClickListener { lecturerDialog.show() }
         }
     }
@@ -250,5 +250,10 @@ class ListFragment : Fragment() {
             putInt(InstanceStateKeys.SORTING_STRATEGY, sortingStrategy)
         }
         super.onSaveInstanceState(fastAdapter.saveInstanceState(outState))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

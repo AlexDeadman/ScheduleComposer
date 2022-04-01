@@ -6,5 +6,7 @@
 - Read: Schedule
 - Обработать отсутствие интернета
 - Фильтрация по учебным планам (важно)
-- binding = null on destroy
+- Кнопка "наверх"
   
+ТУДУ:
+- Вынести в AbstractViewModel операции с savedInstanceState из ListFragment  

@@ -13,10 +13,8 @@ import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class ListItem(
     private val entity: Entity<out Attributes>,
-    private val relatives: List<Entity<out Attributes>>?,
+    private val relatives: List<Entity<out Attributes>>? = null,
 ) : AbstractBindingItem<ListItemBinding>() {
-
-    constructor(entity: Entity<out Attributes>) : this(entity, null)
 
     override var identifier: Long
         get() = entity.hashCode().toLong()

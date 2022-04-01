@@ -4,7 +4,7 @@
 
     <PreferenceCategory app:title="@string/general">
         <ListPreference
-            android:defaultValue="light"
+            android:defaultValue="system"
             android:entries="@array/theme_entries"
             android:entryValues="@array/theme_values"
             android:icon="@drawable/ic_theme"

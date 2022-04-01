@@ -76,4 +76,9 @@ class MainFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
