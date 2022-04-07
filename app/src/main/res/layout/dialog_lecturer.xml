@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".dialog.LecturerDialog">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:textAlignment="center"
             android:textColor="?android:textColorPrimary"
             android:textSize="25sp"
-            tools:text="Add lecturer" />
+            tools:text="@string/add_entity" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -31,8 +32,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:counterEnabled="true"
-                app:counterMaxLength="30"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true">
 
@@ -50,8 +49,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:counterEnabled="true"
-                app:counterMaxLength="30"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true">
 
@@ -69,8 +66,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:counterEnabled="true"
-                app:counterMaxLength="30"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true">
 
@@ -83,22 +78,21 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_layout_disciplines"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <TextView
+                android:layout_marginStart="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_disciplines"
+                android:textSize="16sp"
+                android:textColor="?android:textColorPrimary"/>
+
+            <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+                android:layout_marginTop="10dp"
+                android:id="@+id/toggle_group_disciplines"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/title_disciplines">
-
-                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/ac_text_view_disciplines"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:flexDirection="column"
+                app:toggle_requiredAmount="1"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -110,7 +104,7 @@
             android:layout_margin="20dp"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            tools:text="Add" />
+            tools:text="@string/add" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

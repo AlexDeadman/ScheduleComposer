@@ -15,10 +15,13 @@ data class Group(
     override val iconId get() = R.drawable.ic_group
 
     override val detailsPhId: Int get() = R.string.ph_group_details
-    override val details get() = mutableListOf(attributes.studentsCount.toString())
 
-    override fun getRelativesTitles(relatives: List<Entity<out Attributes>>): List<String> =
-        listOf(relatives.single { it.id == relationships.syllabus.data.id }.title)
+    override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
+        listOf(
+            attributes.studentsCount.toString()
+        ).plus(
+            relatives.single { it.id == relationships.syllabus.data.id }.title
+        )
 
     data class GroupAttributes(
         var number: String,
@@ -26,6 +29,7 @@ data class Group(
     ) : Attributes
 
     data class GroupRelationships(var syllabus: Syllabus) : Relationships {
+
         data class Syllabus(var data: Data) {
             data class Data(var id: Int)
         }

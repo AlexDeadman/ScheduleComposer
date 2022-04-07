@@ -2,7 +2,7 @@ package com.alexdeadman.schedulecomposer.service
 
 import android.content.SharedPreferences
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
-import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
+import com.alexdeadman.schedulecomposer.utils.Keys
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -14,7 +14,7 @@ class UrlInterceptor : Interceptor, SharedPreferences.OnSharedPreferenceChangeLi
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
-    var httpUrl: HttpUrl? = preferences.getString(PreferenceKeys.URL, null)?.toHttpUrlOrNull()
+    var httpUrl: HttpUrl? = preferences.getString(Keys.URL, null)?.toHttpUrlOrNull()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -37,7 +37,7 @@ class UrlInterceptor : Interceptor, SharedPreferences.OnSharedPreferenceChangeLi
     }
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String?) {
-        if (key == PreferenceKeys.URL) {
+        if (key == Keys.URL) {
             httpUrl = sp.getString(key, null)?.toHttpUrlOrNull()
         }
     }

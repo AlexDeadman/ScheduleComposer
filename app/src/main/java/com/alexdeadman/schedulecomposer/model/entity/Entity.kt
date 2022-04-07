@@ -12,11 +12,10 @@ interface Entity<A : Attributes> {
     val iconId: Int
 
     val detailsPhId: Int
-    val details: MutableList<String>
+
+    fun getDetails(relatives: List<Entity<out Attributes>>): List<String>
 }
 
 interface Relatable<A: Relationships> {
     var relationships: A
-
-    fun getRelativesTitles(relatives: List<Entity<out Attributes>>): List<String>
 }

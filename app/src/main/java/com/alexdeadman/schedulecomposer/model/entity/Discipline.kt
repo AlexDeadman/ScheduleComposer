@@ -16,9 +16,11 @@ data class Discipline(
     override val iconId get() = R.drawable.ic_discipline
 
     override val detailsPhId: Int get() = R.string.ph_discipline_details
-    override val details
-        get() = attributes.run {
-            mutableListOf(
+
+    override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
+        attributes.run {
+            listOf(
+                name,
                 code,
                 cycle,
                 hoursTotal.toString(),
@@ -27,11 +29,10 @@ data class Discipline(
                 hoursLa.toStringOrDash(),
                 hoursIsw.toStringOrDash(),
                 hoursCons.toStringOrDash()
+            ).plus(
+                relatives.single { it.id == relationships.syllabus.data.id }.title
             )
         }
-
-    override fun getRelativesTitles(relatives: List<Entity<out Attributes>>): List<String> =
-        listOf(relatives.single { it.id == relationships.syllabus.data.id }.title)
 
     data class DisciplineAttributes(
         var name: String,
@@ -46,6 +47,7 @@ data class Discipline(
     ) : Attributes
 
     data class DisciplineRelationships(var syllabus: Syllabus) : Relationships {
+
         data class Syllabus(var data: Data) {
             data class Data(var id: Int)
         }

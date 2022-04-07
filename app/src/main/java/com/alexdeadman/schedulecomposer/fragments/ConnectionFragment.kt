@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FragmentConnectionBinding
+import com.alexdeadman.schedulecomposer.utils.Keys
 import com.alexdeadman.schedulecomposer.utils.isValid
-import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
 import com.alexdeadman.schedulecomposer.utils.validate
 
 class ConnectionFragment : Fragment() {
@@ -38,12 +38,16 @@ class ConnectionFragment : Fragment() {
                 { URLUtil.isValidUrl(it) to resources.getString(R.string.wrong_format) }
             ))
 
-            tiEditTextUrl.setText(preferences.getString(PreferenceKeys.URL, ""))
+            preferences.getString(Keys.URL, null)?.let {
+                if (it.isNotBlank()) {
+                    tiEditTextUrl.setText(it)
+                }
+            }
 
             buttonContinue.setOnClickListener {
                 if (tiLayoutUrl.isValid()) {
                     preferences.edit().putString(
-                        PreferenceKeys.URL,
+                        Keys.URL,
                         tiEditTextUrl.text.toString()
                     ).apply()
 

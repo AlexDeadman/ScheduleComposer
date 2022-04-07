@@ -10,8 +10,6 @@ import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapters.ListItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentListBinding
 import com.alexdeadman.schedulecomposer.dialog.LecturerDialog
-import com.alexdeadman.schedulecomposer.utils.Cringe
-import com.alexdeadman.schedulecomposer.utils.keys.InstanceStateKeys
 import com.alexdeadman.schedulecomposer.utils.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
 import com.alexdeadman.schedulecomposer.utils.state.ListState
@@ -36,45 +34,18 @@ class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
-    private var itemListImpl: ComparableItemListImpl<ListItem>? = null
-
+    private lateinit var itemListImpl: ComparableItemListImpl<ListItem>
     private lateinit var itemAdapter: ItemAdapter<ListItem>
     private lateinit var fastAdapter: FastAdapter<ListItem>
-
-    companion object {
-        private const val SORT_NONE = -1
-        private const val SORT_ASCENDING = 0
-        private const val SORT_DESCENDING = 1
-    }
-
-    private var sortingStrategy: Int = SORT_NONE
-        set(value) {
-            field = value
-            itemListImpl?.withComparator(comparator, sortNow = true)
-        }
-
-    private val comparator: Comparator<ListItem> =
-        Comparator { lhs, rhs ->
-            when (sortingStrategy) {
-                SORT_ASCENDING -> lhs.entityTitle.compareTo(rhs.entityTitle)
-                SORT_DESCENDING -> rhs.entityTitle.compareTo(lhs.entityTitle)
-                SORT_NONE -> 0
-                else -> throw IllegalStateException()
-            }
-        }
+    private lateinit var mainViewModel: AbstractViewModel
+    private lateinit var searchView: SearchView
+    private lateinit var createUpdateDialog: LecturerDialog // TODO TEMPO
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var searchView: SearchView
-    private var searchQuery: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        savedInstanceState?.apply {
-            searchQuery = getString(InstanceStateKeys.SEARCH_QUERY)
-            sortingStrategy = getInt(InstanceStateKeys.SORTING_STRATEGY)
-        }
         setHasOptionsMenu(true)
     }
 
@@ -92,9 +63,9 @@ class ListFragment : Fragment() {
 
         binding.apply {
 
-            itemListImpl = ComparableItemListImpl(comparator)
+            itemListImpl = ComparableItemListImpl({ _, _ -> 0 })
 
-            itemAdapter = ItemAdapter(itemListImpl!!).apply {
+            itemAdapter = ItemAdapter(itemListImpl).apply {
                 itemFilter.filterPredicate = { item, constraint ->
                     item.entityTitle.lowercase().contains(constraint.toString().lowercase())
                 }
@@ -109,7 +80,9 @@ class ListFragment : Fragment() {
                 adapter = fastAdapter
             }
 
-            val viewModelClasses = when (findNavController().currentDestination!!.id) {
+            val currentDestination = findNavController().currentDestination!!
+
+            val viewModelClasses = when (currentDestination.id) {
                 R.id.classrooms -> ClassroomsViewModel::class to null
                 R.id.directions -> DirectionsViewModel::class to null
                 R.id.disciplines -> DisciplinesViewModel::class to SyllabusesViewModel::class
@@ -119,13 +92,14 @@ class ListFragment : Fragment() {
                 else -> throw IllegalStateException()
             }
 
-            val mainViewModel = getViewModel(viewModelClasses.first)
+            mainViewModel = getViewModel(viewModelClasses.first)
             val relatedViewModel = viewModelClasses.second?.let { getViewModel(it) }
+
+            mainViewModel.comparator?.let { itemListImpl.withComparator(it, true) }
 
             mainViewModel.state
                 .filterNotNull()
                 .apply {
-                    @Cringe
                     if (relatedViewModel != null) {
                         zip(relatedViewModel.state.filterNotNull(), ::Pair)
                             .launchRepeatingCollect(viewLifecycleOwner) {
@@ -152,11 +126,12 @@ class ListFragment : Fragment() {
             imageButtonExpandAll.setOnClickListener { toggleAll(expand = true) }
             imageButtonCollapseAll.setOnClickListener { toggleAll(expand = false) }
 
-            imageButtonSortAsc.setOnClickListener { sortingStrategy = SORT_ASCENDING }
-            imageButtonSortDesc.setOnClickListener { sortingStrategy = SORT_DESCENDING }
-
-            val lecturerDialog = LecturerDialog(requireContext(), ) // TODO
-            floatingActionButton.setOnClickListener { lecturerDialog.show() }
+            imageButtonSortAsc.setOnClickListener {
+                updateComparator { lli, rli -> lli.entityTitle.compareTo(rli.entityTitle) }
+            }
+            imageButtonSortDesc.setOnClickListener {
+                updateComparator { lli, rli -> rli.entityTitle.compareTo(lli.entityTitle) }
+            }
         }
     }
 
@@ -177,15 +152,24 @@ class ListFragment : Fragment() {
                 visibility = View.VISIBLE
                 isRefreshing = false
             }
-
             when (mainState) {
                 is Loaded -> {
                     textViewMassage.visibility = View.GONE
                     floatingActionButton.visibility = View.VISIBLE
                     FastAdapterDiffUtil[itemAdapter] = mainState.result.data.map {
-                        @Cringe // TODO                         TEMPO
-                        if (relatedState != null && relatedState is Loaded) {
-                            ListItem(it, relatedState.result.data)
+                        if (relatedState != null) {
+                            if (relatedState is Loaded) {
+                                createUpdateDialog = LecturerDialog( // TODO TEMPO
+                                    requireContext(),
+                                    relatedState.result.data
+                                )
+                                floatingActionButton.setOnClickListener { createUpdateDialog.show() }
+
+                                ListItem(it, relatedState.result.data)
+                            } else {
+                                mainViewModel.state.value = Error(R.string.unknown_error /*TODO TEMPO*/)
+                                return
+                            }
                         } else {
                             ListItem(it)
                         }
@@ -216,39 +200,45 @@ class ListFragment : Fragment() {
         itemAdapter.adapterItems.forEach { it.expanded = expand }
     }
 
+    private fun updateComparator(rule: (ListItem, ListItem) -> Int) {
+        Comparator<ListItem>(rule).let {
+            itemListImpl.withComparator(it, true)
+            mainViewModel.comparator = it
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_search, menu)
 
         val searchMenuItem = menu.findItem(R.id.action_search)
-        searchView = searchMenuItem.actionView as SearchView
+        searchView = (searchMenuItem.actionView as SearchView).apply {
+            setOnQueryTextListener(
+                object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextChange(newText: String): Boolean {
+                        itemAdapter.filter(newText)
+                        return true
+                    }
 
-        searchView.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
-                override fun onQueryTextChange(newText: String): Boolean {
-                    itemAdapter.filter(newText)
-                    return true
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        return false
+                    }
                 }
+            )
+        }
 
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    return false
+        mainViewModel.searchQuery?.let {
+            if (it.isNotBlank()) {
+                searchMenuItem.expandActionView()
+                searchView.apply {
+                    setQuery(it, false)
+                    clearFocus()
                 }
-            }
-        )
-
-        if (!searchQuery.isNullOrBlank()) {
-            searchMenuItem.expandActionView()
-            searchView.apply {
-                setQuery(searchQuery, false)
-                clearFocus()
             }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.apply {
-            putString(InstanceStateKeys.SEARCH_QUERY, searchView.query.toString())
-            putInt(InstanceStateKeys.SORTING_STRATEGY, sortingStrategy)
-        }
+        mainViewModel.searchQuery = searchView.query.toString()
         super.onSaveInstanceState(fastAdapter.saveInstanceState(outState))
     }
 

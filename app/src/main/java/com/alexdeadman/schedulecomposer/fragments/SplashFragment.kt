@@ -7,7 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.MainActivity
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
+import com.alexdeadman.schedulecomposer.utils.Keys
 
 class SplashFragment : Fragment(R.layout.fragment_splash) {
 
@@ -18,7 +18,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
 
         view.postDelayed({
             findNavController().navigate(
-                if (preferences.getString(PreferenceKeys.AUTH_TOKEN, null) != null) {
+                if (preferences.getString(Keys.AUTH_TOKEN, null) != null) {
                     R.id.action_splashFragment_to_mainFragment
                 } else {
                     R.id.action_splashFragment_to_connectionFragment

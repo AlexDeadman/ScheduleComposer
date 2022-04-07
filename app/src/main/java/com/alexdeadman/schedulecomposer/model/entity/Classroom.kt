@@ -15,9 +15,10 @@ data class Classroom(
     override val iconId get() = R.drawable.ic_classroom
 
     override val detailsPhId: Int get() = R.string.ph_classroom_details
-    override val details
-        get() = attributes.run {
-            mutableListOf(
+
+    override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
+        attributes.run {
+            listOf(
                 type.toStringOrDash(),
                 seatsCount.toString()
             )

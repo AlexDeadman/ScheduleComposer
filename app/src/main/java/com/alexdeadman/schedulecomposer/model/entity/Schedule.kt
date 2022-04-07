@@ -19,10 +19,8 @@ data class Schedule(
     override val iconId get() = R.drawable.ic_schedule
 
     override val detailsPhId: Int get() = R.string.ph_schedule_details
-    override val details get() = mutableListOf("")
 
-    override fun getRelativesTitles(relatives: List<Entity<out Attributes>>): List<String> =
-        listOf() // TODO
+    override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> = emptyList()
 
     data class ScheduleAttributes(
         @SmartColumn var semester: Int,

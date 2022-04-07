@@ -12,7 +12,9 @@ data class Direction(
     override val iconId get() = R.drawable.ic_direction
 
     override val detailsPhId: Int get() = R.string.ph_direction_details
-    override val details get() = mutableListOf(attributes.name)
+
+    override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
+        listOf(attributes.name)
 
     data class DirectionAttributes(
         var code: String,

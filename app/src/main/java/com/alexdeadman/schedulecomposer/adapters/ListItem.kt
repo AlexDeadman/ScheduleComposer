@@ -6,8 +6,6 @@ import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.ListItemBinding
 import com.alexdeadman.schedulecomposer.model.entity.Attributes
 import com.alexdeadman.schedulecomposer.model.entity.Entity
-import com.alexdeadman.schedulecomposer.model.entity.Relatable
-import com.alexdeadman.schedulecomposer.utils.Cringe
 import com.github.florent37.expansionpanel.ExpansionLayout
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
@@ -53,15 +51,9 @@ class ListItem(
                     setCompoundDrawablesRelativeWithIntrinsicBounds(iconId, 0, 0, 0)
                     text = title
                 }
-
-                @Cringe
                 textViewDetails.text = root.resources.getString(
                     detailsPhId,
-                    *if (entity is Relatable<*> && relatives != null) {
-                        details.plus(entity.getRelativesTitles(relatives).joinToString(";\n"))
-                    } else {
-                        details
-                    }.toTypedArray()
+                    *getDetails(relatives.orEmpty()).toTypedArray()
                 )
             }
         }

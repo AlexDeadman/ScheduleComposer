@@ -8,19 +8,20 @@ data class Lecturer(
     override var type: String,
     override var id: Int,
     override var attributes: LecturerAttributes,
-    override var relationships: LecturerRelationships
+    override var relationships: LecturerRelationships,
 ) : Entity<Lecturer.LecturerAttributes>, Relatable<Lecturer.LecturerRelationships> {
 
     override val title get() = attributes.run { "$surname $firstName ${patronymic.orEmpty()}" }
     override val iconId get() = R.drawable.ic_lecturer
 
     override val detailsPhId: Int get() = R.string.ph_lecturer_details
-    override val details get() = mutableListOf<String>()
 
-    override fun getRelativesTitles(relatives: List<Entity<out Attributes>>): List<String> =
-        relatives.filter {
-            it.id in relationships.disciplines.data.map { dis -> dis.id }
-        }.map { it.title }
+    override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
+        listOf(
+            relatives.filter {
+                it.id in relationships.disciplines.data.map { dis -> dis.id }
+            }.joinToString(";\n") { it.title }
+        )
 
     data class LecturerAttributes(
         @SerializedName("first_name") var firstName: String,

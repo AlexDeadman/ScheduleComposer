@@ -24,10 +24,6 @@
             android:icon="@drawable/ic_syllabus"
             android:title="@string/title_syllabuses" />
         <item
-            android:id="@+id/groups"
-            android:icon="@drawable/ic_group"
-            android:title="@string/title_groups" />
-        <item
             android:id="@+id/disciplines"
             android:icon="@drawable/ic_discipline"
             android:title="@string/title_disciplines" />
@@ -35,6 +31,10 @@
             android:id="@+id/lecturers"
             android:icon="@drawable/ic_lecturer"
             android:title="@string/title_lecturers" />
+        <item
+            android:id="@+id/groups"
+            android:icon="@drawable/ic_group"
+            android:title="@string/title_groups" />
         <item
             android:id="@+id/classrooms"
             android:icon="@drawable/ic_classroom"

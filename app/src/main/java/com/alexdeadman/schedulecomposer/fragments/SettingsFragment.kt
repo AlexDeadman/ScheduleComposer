@@ -9,7 +9,7 @@ import com.alexdeadman.schedulecomposer.BuildConfig
 import com.alexdeadman.schedulecomposer.MainActivity
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.dialog.LogoutConfirmDialog
-import com.alexdeadman.schedulecomposer.utils.keys.PreferenceKeys
+import com.alexdeadman.schedulecomposer.utils.Keys
 
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener
@@ -20,22 +20,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
         preferences.registerOnSharedPreferenceChangeListener(this)
 
         preferenceManager.apply {
-            findPreference<Preference>(PreferenceKeys.LOGGED_IN_AS)?.summary =
-                preferences.getString(PreferenceKeys.USERNAME, "Unknown")
+            findPreference<Preference>(Keys.LOGGED_IN_AS)?.summary =
+                preferences.getString(Keys.USERNAME, "Unknown")
 
-            val logoutConfirmDialog = LogoutConfirmDialog()
-            findPreference<Preference>(PreferenceKeys.LOGOUT)?.setOnPreferenceClickListener {
-                logoutConfirmDialog.show(parentFragmentManager, "")
+            findPreference<Preference>(Keys.LOGOUT)?.setOnPreferenceClickListener {
+                LogoutConfirmDialog().show(parentFragmentManager, null)
                 return@setOnPreferenceClickListener true
             }
 
-            findPreference<Preference>(PreferenceKeys.ABOUT)?.summary =
+            findPreference<Preference>(Keys.ABOUT)?.summary =
                 resources.getString(R.string.version, BuildConfig.VERSION_NAME)
         }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == PreferenceKeys.THEME) {
+        if (key == Keys.THEME) {
             MainActivity.updateTheme()
         }
     }
