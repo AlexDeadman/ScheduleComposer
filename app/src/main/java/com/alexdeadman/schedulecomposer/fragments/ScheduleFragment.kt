@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.alexdeadman.schedulecomposer.databinding.FragmentScheduleBinding
 import com.alexdeadman.schedulecomposer.utils.launchRepeatingCollect
-import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
+import com.alexdeadman.schedulecomposer.utils.provideViewModel
 import com.alexdeadman.schedulecomposer.utils.state.ListState.*
 import com.alexdeadman.schedulecomposer.viewmodels.ScheduleViewModel
 import com.alexdeadman.schedulecomposer.viewmodels.ViewModelFactory
@@ -47,17 +46,12 @@ class ScheduleFragment : Fragment() {
                 setZoom(true, 2f, 0.5f)
             }
 
-            val viewModelClass = ScheduleViewModel::class
+            val viewModel = provideViewModel(viewModelFactory, ScheduleViewModel::class)
 
-            val viewModel = ViewModelProvider(
-                requireGrandParentFragment(),
-                viewModelFactory.withClass(viewModelClass)
-            )[viewModelClass.java]
-
-            viewModel.state
+            viewModel.fetchState
                 .filterNotNull()
                 .launchRepeatingCollect(viewLifecycleOwner) { state ->
-                    when (state) {
+                    when (state) { // TODO
                         is Loaded -> smartTable.setData(state.result.data)
                         is NoItems -> { }
                         is Error -> { }

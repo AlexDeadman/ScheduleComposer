@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
                             progressBar.visibility = View.INVISIBLE
 
                             textViewError.apply {
-                                text = resources.getString(state.messageStringId)
+                                text = getString(state.messageStringId)
                                 visibility = View.VISIBLE
                             }
                         }
@@ -67,11 +67,11 @@ class LoginFragment : Fragment() {
                 }
 
             tiLayoutUsername.validate(listOf(
-                { it.isNotBlank() to resources.getString(R.string.required_field) },
-                { (it.length < 150) to resources.getString(R.string.wrong_format) }
+                { it.isNotBlank() to getString(R.string.required_field) },
+                { (it.length < 150) to getString(R.string.wrong_format) }
             ))
             tiLayoutPassword.validate(listOf {
-                it.isNotBlank() to resources.getString(R.string.required_field)
+                it.isNotBlank() to getString(R.string.required_field)
             })
 
             buttonLogin.setOnClickListener {

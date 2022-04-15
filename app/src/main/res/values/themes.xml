@@ -21,6 +21,10 @@
 
     <style name="Theme.AudDistAndroid.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="DrawerTextAppearance">
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="FloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="tint">@android:color/white</item>
     </style>

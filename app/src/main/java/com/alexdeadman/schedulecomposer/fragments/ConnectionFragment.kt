@@ -34,8 +34,8 @@ class ConnectionFragment : Fragment() {
         binding.apply {
 
             tiLayoutUrl.validate(listOf(
-                { it.isNotBlank() to resources.getString(R.string.required_field) },
-                { URLUtil.isValidUrl(it) to resources.getString(R.string.wrong_format) }
+                { it.isNotBlank() to getString(R.string.required_field) },
+                { URLUtil.isValidUrl(it) to getString(R.string.wrong_format) }
             ))
 
             preferences.getString(Keys.URL, null)?.let {

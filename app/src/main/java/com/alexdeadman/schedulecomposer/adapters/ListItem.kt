@@ -10,7 +10,7 @@ import com.github.florent37.expansionpanel.ExpansionLayout
 import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class ListItem(
-    private val entity: Entity<out Attributes>,
+    val entity: Entity<out Attributes>,
     private val relatives: List<Entity<out Attributes>>? = null,
 ) : AbstractBindingItem<ListItemBinding>() {
 

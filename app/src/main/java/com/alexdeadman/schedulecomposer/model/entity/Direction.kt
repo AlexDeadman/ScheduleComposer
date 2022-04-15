@@ -8,6 +8,8 @@ data class Direction(
     override var attributes: DirectionAttributes,
 ) : Entity<Direction.DirectionAttributes> {
 
+    constructor(id: Int, attributes: DirectionAttributes) : this("Direction", id, attributes)
+
     override val title get() = attributes.code
     override val iconId get() = R.drawable.ic_direction
 

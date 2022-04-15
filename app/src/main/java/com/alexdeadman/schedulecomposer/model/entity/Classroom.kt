@@ -11,6 +11,8 @@ data class Classroom(
     override var attributes: ClassroomAttributes,
 ) : Entity<Classroom.ClassroomAttributes> {
 
+    constructor(id: Int, attributes: ClassroomAttributes) : this("Classroom", id, attributes)
+
     override val title get() = attributes.number
     override val iconId get() = R.drawable.ic_classroom
 

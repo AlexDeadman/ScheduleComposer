@@ -4,32 +4,34 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapters.ListItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentListBinding
+import com.alexdeadman.schedulecomposer.databinding.ListItemBinding
+import com.alexdeadman.schedulecomposer.dialog.ConfirmDialog
 import com.alexdeadman.schedulecomposer.dialog.LecturerDialog
 import com.alexdeadman.schedulecomposer.utils.launchRepeatingCollect
-import com.alexdeadman.schedulecomposer.utils.requireGrandParentFragment
+import com.alexdeadman.schedulecomposer.utils.provideViewModel
 import com.alexdeadman.schedulecomposer.utils.state.ListState
 import com.alexdeadman.schedulecomposer.utils.state.ListState.*
 import com.alexdeadman.schedulecomposer.viewmodels.*
 import com.google.android.material.color.MaterialColors
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.binding.BindingViewHolder
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
-import com.mikepenz.fastadapter.select.getSelectExtension
+import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.mikepenz.fastadapter.utils.ComparableItemListImpl
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
-import kotlin.reflect.KClass
 
 
 @AndroidEntryPoint
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), ConfirmDialog.ConfirmationListener {
 
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
@@ -43,6 +45,39 @@ class ListFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    private val confirmDialog = ConfirmDialog()
+
+    // TODO REFACTOR
+    private val editClickEventHook = object : ClickEventHook<ListItem>() {
+        override fun onBind(viewHolder: RecyclerView.ViewHolder): View =
+            ((viewHolder as BindingViewHolder<*>).binding as ListItemBinding).imageButtonEdit
+
+        override fun onClick(
+            v: View,
+            position: Int,
+            fastAdapter: FastAdapter<ListItem>,
+            item: ListItem,
+        ) {
+            mainViewModel.currentEntity = item.entity
+            createUpdateDialog.show(childFragmentManager, null)
+        }
+    }
+    private val deleteClickEventHook = object : ClickEventHook<ListItem>() {
+        override fun onBind(viewHolder: RecyclerView.ViewHolder): View =
+            ((viewHolder as BindingViewHolder<*>).binding as ListItemBinding).imageButtonDelete
+
+        override fun onClick(
+            v: View,
+            position: Int,
+            fastAdapter: FastAdapter<ListItem>,
+            item: ListItem,
+        ) {
+            mainViewModel.currentEntity = item.entity
+            confirmDialog.show(childFragmentManager, null)
+        }
+    }
+    //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,12 +102,14 @@ class ListFragment : Fragment() {
 
             itemAdapter = ItemAdapter(itemListImpl).apply {
                 itemFilter.filterPredicate = { item, constraint ->
+                    // FIXME case trouble
                     item.entityTitle.lowercase().contains(constraint.toString().lowercase())
                 }
             }
 
             fastAdapter = FastAdapter.with(itemAdapter).apply {
-                getSelectExtension().apply { isSelectable = true } // TODO
+//                getSelectExtension().apply { isSelectable = true } // TODO
+                addEventHooks(listOf(editClickEventHook, deleteClickEventHook))
             }
 
             recyclerView.apply {
@@ -80,9 +117,7 @@ class ListFragment : Fragment() {
                 adapter = fastAdapter
             }
 
-            val currentDestination = findNavController().currentDestination!!
-
-            val viewModelClasses = when (currentDestination.id) {
+            val viewModelClasses = when (findNavController().currentDestination!!.id) {
                 R.id.classrooms -> ClassroomsViewModel::class to null
                 R.id.directions -> DirectionsViewModel::class to null
                 R.id.disciplines -> DisciplinesViewModel::class to SyllabusesViewModel::class
@@ -92,16 +127,18 @@ class ListFragment : Fragment() {
                 else -> throw IllegalStateException()
             }
 
-            mainViewModel = getViewModel(viewModelClasses.first)
-            val relatedViewModel = viewModelClasses.second?.let { getViewModel(it) }
+            mainViewModel = provideViewModel(viewModelFactory, viewModelClasses.first)
+            val relatedViewModel = viewModelClasses.second?.let {
+                provideViewModel(viewModelFactory, it)
+            }
 
             mainViewModel.comparator?.let { itemListImpl.withComparator(it, true) }
 
-            mainViewModel.state
+            mainViewModel.fetchState
                 .filterNotNull()
                 .apply {
                     if (relatedViewModel != null) {
-                        zip(relatedViewModel.state.filterNotNull(), ::Pair)
+                        zip(relatedViewModel.fetchState.filterNotNull(), ::Pair)
                             .launchRepeatingCollect(viewLifecycleOwner) {
                                 handleStates(it.first, it.second, savedInstanceState)
                             }
@@ -127,19 +164,20 @@ class ListFragment : Fragment() {
             imageButtonCollapseAll.setOnClickListener { toggleAll(expand = false) }
 
             imageButtonSortAsc.setOnClickListener {
-                updateComparator { lli, rli -> lli.entityTitle.compareTo(rli.entityTitle) }
+                updateComparator { left, right -> left.entityTitle.compareTo(right.entityTitle) }
             }
             imageButtonSortDesc.setOnClickListener {
-                updateComparator { lli, rli -> rli.entityTitle.compareTo(lli.entityTitle) }
+                updateComparator { left, right -> right.entityTitle.compareTo(left.entityTitle) }
+            }
+
+            createUpdateDialog = LecturerDialog()
+
+            floatingActionButton.setOnClickListener {
+                mainViewModel.currentEntity = null
+                createUpdateDialog.show(childFragmentManager, null)
             }
         }
     }
-
-    private fun getViewModel(clazz: KClass<out AbstractViewModel>): AbstractViewModel =
-        ViewModelProvider(
-            requireGrandParentFragment(),
-            viewModelFactory.withClass(clazz)
-        )[clazz.java]
 
     private fun handleStates(
         mainState: ListState,
@@ -151,6 +189,7 @@ class ListFragment : Fragment() {
             swipeRefreshLayout.apply {
                 visibility = View.VISIBLE
                 isRefreshing = false
+                isEnabled = true
             }
             when (mainState) {
                 is Loaded -> {
@@ -159,15 +198,11 @@ class ListFragment : Fragment() {
                     FastAdapterDiffUtil[itemAdapter] = mainState.result.data.map {
                         if (relatedState != null) {
                             if (relatedState is Loaded) {
-                                createUpdateDialog = LecturerDialog( // TODO TEMPO
-                                    requireContext(),
-                                    relatedState.result.data
-                                )
-                                floatingActionButton.setOnClickListener { createUpdateDialog.show() }
-
                                 ListItem(it, relatedState.result.data)
                             } else {
-                                mainViewModel.state.value = Error(R.string.unknown_error /*TODO TEMPO*/)
+                                // FIXME
+                                mainViewModel.fetchState.value =
+                                    Error(R.string.unknown_error /*TODO TEMPO*/)
                                 return
                             }
                         } else {
@@ -180,15 +215,15 @@ class ListFragment : Fragment() {
                     itemAdapter.clear()
                     textViewMassage.apply {
                         visibility = View.VISIBLE
-                        text = resources.getString(R.string.list_is_empty)
+                        text = getString(R.string.list_is_empty)
                     }
                     floatingActionButton.visibility = View.VISIBLE
                 }
                 is Error -> {
-                    itemAdapter.clear() // TODO snackbar
+                    itemAdapter.clear() // TODO mb snackbar
                     textViewMassage.apply {
                         visibility = View.VISIBLE
-                        text = resources.getString(mainState.messageStringId)
+                        text = getString(mainState.messageStringId)
                     }
                     floatingActionButton.visibility = View.GONE
                 }
@@ -211,19 +246,16 @@ class ListFragment : Fragment() {
         inflater.inflate(R.menu.menu_search, menu)
 
         val searchMenuItem = menu.findItem(R.id.action_search)
-        searchView = (searchMenuItem.actionView as SearchView).apply {
-            setOnQueryTextListener(
-                object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextChange(newText: String): Boolean {
-                        itemAdapter.filter(newText)
-                        return true
-                    }
 
-                    override fun onQueryTextSubmit(query: String): Boolean {
-                        return false
-                    }
+        searchView = (searchMenuItem.actionView as SearchView).apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String): Boolean {
+                    itemAdapter.filter(newText)
+                    return true
                 }
-            )
+
+                override fun onQueryTextSubmit(query: String): Boolean = false
+            })
         }
 
         mainViewModel.searchQuery?.let {
@@ -234,6 +266,14 @@ class ListFragment : Fragment() {
                     clearFocus()
                 }
             }
+        }
+    }
+
+    override fun confirmButtonClicked() {
+        mainViewModel.run {
+            deleteEntity(currentEntity!!.id)
+            // TODO
+//            fetchState.value = Loaded((fetchState.value as Loaded).result.also { it.data.remove(currentEntity) })
         }
     }
 

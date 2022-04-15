@@ -4,34 +4,56 @@ import com.alexdeadman.schedulecomposer.model.DataList
 import com.alexdeadman.schedulecomposer.model.auth.AuthToken
 import com.alexdeadman.schedulecomposer.model.entity.*
 import okhttp3.RequestBody
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.Response
+import retrofit2.http.*
 
 interface ScApi {
 
-    @POST("/auth/token/login/")
-    suspend fun getToken(@Body requestBody: RequestBody): AuthToken
+    companion object {
+        private const val CLASSROOMS = "/api/classrooms/"
+        private const val DIRECTIONS = "/api/directions/"
+        private const val DISCIPLINES = "/api/disciplines/"
+        private const val GROUPS = "/api/groups/"
+        private const val LECTURERS = "/api/lecturers/"
+        private const val SCHEDULES = "/api/schedules/"
+        private const val SYLLABUSES = "/api/syllabuses/"
+    }
 
-    @GET("/api/classrooms/")
-    suspend fun getClassrooms(): DataList<Classroom>
+    @POST("/auth/token/login/") suspend fun getToken(@Body rb: RequestBody): AuthToken
 
-    @GET("/api/directions/")
-    suspend fun getDirections(): DataList<Direction>
+    @GET(CLASSROOMS) suspend fun getClassrooms(): DataList<Classroom>
+    @POST(CLASSROOMS) suspend fun postClassroom(@Body rb: RequestBody)
+    @PUT("$CLASSROOMS{id}/") suspend fun putClassroom(@Path("id") id: Int, @Body rb: RequestBody)
+    @DELETE("$CLASSROOMS{id}/") suspend fun deleteClassroom(@Path("id") id: Int): Response<Unit>
 
-    @GET("/api/disciplines/")
-    suspend fun getDisciplines(): DataList<Discipline>
+    @GET(DIRECTIONS) suspend fun getDirections(): DataList<Direction>
+    @POST(DIRECTIONS) suspend fun postDirection(@Body rb: RequestBody)
+    @PUT("$DIRECTIONS{id}/") suspend fun putDirection(@Path("id") id: Int, @Body rb: RequestBody)
+    @DELETE("$DIRECTIONS{id}/") suspend fun deleteDirection(@Path("id") id: Int): Response<Unit>
 
-    @GET("/api/groups/")
-    suspend fun getGroups(): DataList<Group>
+    @GET(DISCIPLINES) suspend fun getDisciplines(): DataList<Discipline>
+    @POST(DISCIPLINES) suspend fun postDiscipline(@Body rb: RequestBody)
+    @PUT("$DISCIPLINES{id}/") suspend fun putDiscipline(@Path("id") id: Int, @Body rb: RequestBody)
+    @DELETE("$DISCIPLINES{id}/") suspend fun deleteDiscipline(@Path("id") id: Int): Response<Unit>
 
-    @GET("/api/lecturers/")
-    suspend fun getLecturers(): DataList<Lecturer>
+    @GET(GROUPS) suspend fun getGroups(): DataList<Group>
+    @POST(GROUPS) suspend fun postGroup(@Body rb: RequestBody)
+    @PUT("$GROUPS{id}/") suspend fun putGroup(@Path("id") id: Int, @Body rb: RequestBody)
+    @DELETE("$GROUPS{id}/") suspend fun deleteGroup(@Path("id") id: Int): Response<Unit>
 
-    @GET("/api/schedules/")
-    suspend fun getSchedule(): DataList<Schedule>
+    @GET(LECTURERS) suspend fun getLecturers(): DataList<Lecturer>
+    @POST(LECTURERS) suspend fun postLecturer(@Body rb: RequestBody)
+    @PUT("$LECTURERS{id}/") suspend fun putLecturer(@Path("id") id: Int, @Body rb: RequestBody)
+    @DELETE("$LECTURERS{id}/") suspend fun deleteLecturer(@Path("id") id: Int): Response<Unit>
 
-    @GET("/api/syllabuses/")
-    suspend fun getSyllabuses(): DataList<Syllabus>
+    @GET(SCHEDULES) suspend fun getSchedule(): DataList<Schedule>
+    @POST(SCHEDULES) suspend fun postSchedule(@Body rb: RequestBody)
+    @PUT("$SCHEDULES{id}/") suspend fun putSchedule(@Path("id") id: Int, @Body rb: RequestBody)
+    @DELETE("$SCHEDULES{id}/") suspend fun deleteSchedule(@Path("id") id: Int): Response<Unit>
+
+    @GET(SYLLABUSES) suspend fun getSyllabuses(): DataList<Syllabus>
+    @POST(SYLLABUSES) suspend fun postSyllabus(@Body rb: RequestBody)
+    @PUT("$SYLLABUSES{id}/") suspend fun putSyllabus(@Path("id") id: Int, @Body rb: RequestBody)
+    @DELETE("$SYLLABUSES{id}/") suspend fun deleteSyllabus(@Path("id") id: Int): Response<Unit>
 
 }

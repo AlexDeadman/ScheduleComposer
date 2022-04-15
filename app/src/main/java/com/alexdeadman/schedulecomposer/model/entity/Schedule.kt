@@ -12,8 +12,10 @@ data class Schedule(
     override var type: String,
     override var id: Int,
     @SmartColumn(type = ColumnType.Child) override var attributes: ScheduleAttributes,
-    @SmartColumn(type = ColumnType.Child) override var relationships: ScheduleRelationships
+    @SmartColumn(type = ColumnType.Child) override var relationships: ScheduleRelationships? = null
 ) : Entity<Schedule.ScheduleAttributes>, Relatable<Schedule.ScheduleRelationships> {
+
+    constructor(id: Int, attributes: ScheduleAttributes) : this("Schedule", id, attributes)
 
     override val title get() = "Schedule item"
     override val iconId get() = R.drawable.ic_schedule
@@ -28,6 +30,11 @@ data class Schedule(
         @SmartColumn @SerializedName("week_parity") var weekParity: Boolean,
         @SmartColumn @SerializedName("day_of_the_week") var dayOfTheWeek: Int,
         @SmartColumn @SerializedName("lecture_begin") var lectureBegin: Int,
+
+        var lecturer: Int? = null,
+        var discipline: Int? = null,
+        var group: Int? = null,
+        var classroom: Int? = null
     ) : Attributes
 
     data class ScheduleRelationships(

@@ -17,5 +17,5 @@ interface Entity<A : Attributes> {
 }
 
 interface Relatable<A: Relationships> {
-    var relationships: A
+    var relationships: A?
 }

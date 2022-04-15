@@ -31,7 +31,7 @@
     <string name="button_continue_text">Продолжить</string>
     <string name="server_connection">Подключение к серверу</string>
     <string name="theme">Тема</string>
-    <string name="ph_classroom_details">Тип: %1$s\Количество мест: %2$s</string>
+    <string name="ph_classroom_details">Тип: %1$s\nКоличество мест: %2$s</string>
     <string name="ph_direction_details">Название: %s</string>
     <string name="ph_discipline_details">Название: %1$s\n\nКод: %2$s\nЦикл: %3$s\nВсего часов: %4$s\nЛек: %5$s\nПрак: %6$s\nЛаб: %7$s\nСРС: %8$s\nКонс: %9$s\n\nУчебный план: %10$s</string>
     <string name="ph_lecturer_details">Дисциплины:\n%s</string>
@@ -55,4 +55,5 @@
     <string name="edit_entity">Редактирование %s</string>
     <string name="edit">Редактировать</string>
     <string name="wrong_symbol_count">Превышено макс. число символов</string>
+    <string name="confirm_action">Подтвердите действие</string>
 </resources>
