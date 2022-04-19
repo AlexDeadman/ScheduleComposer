@@ -45,7 +45,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
@@ -54,6 +53,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
+    // Kotlin reflect
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
 
     // Retrofit
@@ -83,15 +83,20 @@ dependencies {
     implementation 'com.plutolib:pluto:2.0.0'
     implementation 'com.plutolib.plugins:network:2.0.0'
 
-    implementation 'com.drakeet.drawer:drawer:1.0.3'
-
+    // Expansion panel
     implementation 'com.github.florent37:expansionpanel:1.2.4'
 
+    // SmartTable
     implementation 'com.github.huangyanbin:SmartTable:2.2.0'
 
+    // TextInputLayoutValidator
     implementation 'com.github.BrianHardyR:TextInputLayoutValidator:1.1.2'
 
+    // Themed toggle buttons
     implementation 'nl.bryanderidder:themed-toggle-button-group:1.4.1'
+
+    // Number picker
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13'
 
     // Test
     testImplementation 'junit:junit:4.13.2'

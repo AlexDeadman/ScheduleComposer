@@ -1,7 +1,7 @@
 package com.alexdeadman.schedulecomposer.model.entity
 
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.utils.toStringOrDash
+import com.alexdeadman.schedulecomposer.util.toStringOrDash
 import com.google.gson.annotations.SerializedName
 
 
@@ -9,7 +9,7 @@ data class Discipline(
     override var type: String,
     override var id: Int,
     override var attributes: DisciplineAttributes,
-    override var relationships: DisciplineRelationships? = null
+    override var relationships: DisciplineRelationships? = null,
 ) : Entity<Discipline.DisciplineAttributes>, Relatable<Discipline.DisciplineRelationships> {
 
     constructor(id: Int, attributes: DisciplineAttributes) : this("Discipline", id, attributes)
@@ -47,7 +47,7 @@ data class Discipline(
         @SerializedName("hours_isw") var hoursIsw: Int?,
         @SerializedName("hours_cons") var hoursCons: Int?,
 
-        var syllabus: Int? = null
+        var syllabus: Int? = null,
     ) : Attributes
 
     data class DisciplineRelationships(var syllabus: Syllabus) : Relationships {

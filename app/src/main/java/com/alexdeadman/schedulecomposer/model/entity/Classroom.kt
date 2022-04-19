@@ -1,7 +1,7 @@
 package com.alexdeadman.schedulecomposer.model.entity
 
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.utils.toStringOrDash
+import com.alexdeadman.schedulecomposer.util.toStringOrDash
 import com.google.gson.annotations.SerializedName
 
 

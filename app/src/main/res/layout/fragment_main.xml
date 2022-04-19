@@ -6,20 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".fragments.MainFragment"
+    tools:context=".fragment.MainFragment"
     tools:openDrawer="start">
 
-    <com.drakeet.drawer.FullDraggableContainer
+    <include
+        android:id="@+id/content_main"
+        layout="@layout/content_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/content_main"
-            layout="@layout/content_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.drakeet.drawer.FullDraggableContainer>
+        android:layout_height="match_parent" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

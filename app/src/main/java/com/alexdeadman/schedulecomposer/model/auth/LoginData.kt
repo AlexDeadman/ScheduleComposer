@@ -1,15 +1,15 @@
 package com.alexdeadman.schedulecomposer.model.auth
 
 data class LoginData(
-    var data: Data
+    var data: Data,
 ) {
     data class Data(
         var type: String,
-        var attributes: Attributes
+        var attributes: Attributes,
     ) {
         data class Attributes(
-           var username: String,
-           var password: String
+            var username: String,
+            var password: String,
         )
     }
 }

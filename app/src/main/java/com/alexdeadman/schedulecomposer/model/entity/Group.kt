@@ -8,7 +8,7 @@ data class Group(
     override var type: String,
     override var id: Int,
     override var attributes: GroupAttributes,
-    override var relationships: GroupRelationships? = null
+    override var relationships: GroupRelationships? = null,
 ) : Entity<Group.GroupAttributes>, Relatable<Group.GroupRelationships> {
 
     constructor(id: Int, attributes: GroupAttributes) : this("Group", id, attributes)
@@ -29,7 +29,7 @@ data class Group(
         var number: String,
         @SerializedName("students_count") var studentsCount: Int,
 
-        var syllabus: Int? = null
+        var syllabus: Int? = null,
     ) : Attributes
 
     data class GroupRelationships(var syllabus: Syllabus) : Relationships {

@@ -10,7 +10,7 @@ import com.alexdeadman.schedulecomposer.R
 class ConfirmDialog : DialogFragment() {
 
     interface ConfirmationListener {
-        fun confirmButtonClicked()
+        fun onConfirm()
     }
 
     private lateinit var listener: ConfirmationListener
@@ -28,7 +28,7 @@ class ConfirmDialog : DialogFragment() {
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.confirm_action)
             .setMessage(R.string.are_you_sure)
-            .setPositiveButton(R.string.yes) { _, _ -> listener.confirmButtonClicked() }
+            .setPositiveButton(R.string.yes) { _, _ -> listener.onConfirm() }
             .setNegativeButton(R.string.cancel, null)
             .create()
     }

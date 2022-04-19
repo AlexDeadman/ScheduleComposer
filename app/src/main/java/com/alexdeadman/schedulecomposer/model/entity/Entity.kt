@@ -16,6 +16,6 @@ interface Entity<A : Attributes> {
     fun getDetails(relatives: List<Entity<out Attributes>>): List<String>
 }
 
-interface Relatable<A: Relationships> {
+interface Relatable<A : Relationships> {
     var relationships: A?
 }

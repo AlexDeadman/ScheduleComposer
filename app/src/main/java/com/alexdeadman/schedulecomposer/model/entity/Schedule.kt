@@ -1,18 +1,14 @@
 package com.alexdeadman.schedulecomposer.model.entity
 
 import com.alexdeadman.schedulecomposer.R
-import com.bin.david.form.annotation.ColumnType
-import com.bin.david.form.annotation.SmartColumn
-import com.bin.david.form.annotation.SmartTable
 import com.google.gson.annotations.SerializedName
 
 
-@SmartTable
 data class Schedule(
     override var type: String,
     override var id: Int,
-    @SmartColumn(type = ColumnType.Child) override var attributes: ScheduleAttributes,
-    @SmartColumn(type = ColumnType.Child) override var relationships: ScheduleRelationships? = null
+    override var attributes: ScheduleAttributes,
+    override var relationships: ScheduleRelationships? = null,
 ) : Entity<Schedule.ScheduleAttributes>, Relatable<Schedule.ScheduleRelationships> {
 
     constructor(id: Int, attributes: ScheduleAttributes) : this("Schedule", id, attributes)
@@ -25,28 +21,29 @@ data class Schedule(
     override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> = emptyList()
 
     data class ScheduleAttributes(
-        @SmartColumn var semester: Int,
-        @SmartColumn @SerializedName("lecture_type") var lectureType: Int,
-        @SmartColumn @SerializedName("week_parity") var weekParity: Boolean,
-        @SmartColumn @SerializedName("day_of_the_week") var dayOfTheWeek: Int,
-        @SmartColumn @SerializedName("lecture_begin") var lectureBegin: Int,
+        var semester: Int,
+        @SerializedName("type") var type: Int,
+        @SerializedName("even_week") var evenWeek: Boolean,
+        @SerializedName("week_day") var weekDay: Int,
+        @SerializedName("period") var period: Int,
 
         var lecturer: Int? = null,
         var discipline: Int? = null,
         var group: Int? = null,
-        var classroom: Int? = null
+        var classroom: Int? = null,
     ) : Attributes
 
     data class ScheduleRelationships(
-        @SmartColumn(type = ColumnType.Child) var lecturer: Lecturer,
-        @SmartColumn(type = ColumnType.Child) var discipline: Discipline,
-        @SmartColumn(type = ColumnType.Child) var group: Group,
-        @SmartColumn(type = ColumnType.Child) var classroom: Classroom,
+        var lecturer: Lecturer,
+        var discipline: Discipline,
+        var group: Group,
+        var classroom: Classroom,
     ) : Relationships {
-        data class Lecturer(@SmartColumn(type = ColumnType.Child) var data: Data)
-        data class Discipline(@SmartColumn(type = ColumnType.Child) var data: Data)
-        data class Group(@SmartColumn(type = ColumnType.Child) var data: Data)
-        data class Classroom(@SmartColumn(type = ColumnType.Child) var data: Data)
-        data class Data(@SmartColumn var id: Int)
+        data class Lecturer(var data: Data)
+        data class Discipline(var data: Data)
+        data class Group(var data: Data)
+        data class Classroom(var data: Data)
+
+        data class Data(var id: Int)
     }
 }

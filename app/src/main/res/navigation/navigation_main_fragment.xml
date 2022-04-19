@@ -5,42 +5,42 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/schedule">
     <fragment
-        android:id="@+id/groups"
-        android:name="com.alexdeadman.schedulecomposer.fragments.ListFragment"
-        android:label="@string/title_groups"
-        tools:layout="@layout/fragment_list" />
+        android:id="@+id/schedule"
+        android:name="com.alexdeadman.schedulecomposer.fragment.ScheduleFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_schedule" />
     <fragment
         android:id="@+id/classrooms"
-        android:name="com.alexdeadman.schedulecomposer.fragments.ListFragment"
+        android:name="com.alexdeadman.schedulecomposer.fragment.list.ClassroomListFragment"
         android:label="@string/title_classrooms"
         tools:layout="@layout/fragment_list" />
     <fragment
-        android:id="@+id/lecturers"
-        android:name="com.alexdeadman.schedulecomposer.fragments.ListFragment"
-        android:label="@string/title_lecturers"
-        tools:layout="@layout/fragment_list" />
-    <fragment
         android:id="@+id/directions"
-        android:name="com.alexdeadman.schedulecomposer.fragments.ListFragment"
+        android:name="com.alexdeadman.schedulecomposer.fragment.list.DirectionListFragment"
         android:label="@string/title_directions"
         tools:layout="@layout/fragment_list" />
     <fragment
-        android:id="@+id/syllabuses"
-        android:name="com.alexdeadman.schedulecomposer.fragments.ListFragment"
-        android:label="@string/title_syllabuses"
-        tools:layout="@layout/fragment_list" />
-    <fragment
         android:id="@+id/disciplines"
-        android:name="com.alexdeadman.schedulecomposer.fragments.ListFragment"
+        android:name="com.alexdeadman.schedulecomposer.fragment.list.DisciplineListFragment"
         android:label="@string/title_disciplines"
         tools:layout="@layout/fragment_list" />
     <fragment
-        android:id="@+id/settings"
-        android:name="com.alexdeadman.schedulecomposer.fragments.SettingsFragment"
-        android:label="@string/title_settings" />
+        android:id="@+id/groups"
+        android:name="com.alexdeadman.schedulecomposer.fragment.list.GroupListFragment"
+        android:label="@string/title_groups"
+        tools:layout="@layout/fragment_list" />
     <fragment
-        android:id="@+id/schedule"
-        android:name="com.alexdeadman.schedulecomposer.fragments.ScheduleFragment"
-        android:label="@string/title_schedule"
-        tools:layout="@layout/fragment_schedule" />
+        android:id="@+id/lecturers"
+        android:name="com.alexdeadman.schedulecomposer.fragment.list.LecturerListFragment"
+        android:label="@string/title_lecturers"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/syllabuses"
+        android:name="com.alexdeadman.schedulecomposer.fragment.list.SyllabusListFragment"
+        android:label="@string/title_syllabuses"
+        tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.alexdeadman.schedulecomposer.fragment.SettingsFragment"
+        android:label="@string/title_settings" />
 </navigation>

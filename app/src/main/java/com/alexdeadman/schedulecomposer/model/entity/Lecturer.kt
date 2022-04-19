@@ -8,10 +8,15 @@ data class Lecturer(
     override var type: String,
     override var id: Int,
     override var attributes: LecturerAttributes,
-    override var relationships: LecturerRelationships? = null
+    override var relationships: LecturerRelationships? = null,
 ) : Entity<Lecturer.LecturerAttributes>, Relatable<Lecturer.LecturerRelationships> {
 
     constructor(id: Int, attributes: LecturerAttributes) : this("Lecturer", id, attributes)
+
+    val shortTitle
+        get() = attributes.run {
+            "$surname ${firstName.first()}." + patronymic?.firstOrNull()?.plus(".").orEmpty()
+        }
 
     override val title get() = attributes.run { "$surname $firstName ${patronymic.orEmpty()}" }
     override val iconId get() = R.drawable.ic_lecturer
@@ -30,7 +35,7 @@ data class Lecturer(
         var surname: String,
         var patronymic: String?,
 
-        var disciplines: List<Int>? = null
+        var disciplines: List<Int>? = null,
     ) : Attributes
 
     data class LecturerRelationships(var disciplines: Disciplines) : Relationships {

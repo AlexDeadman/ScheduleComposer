@@ -18,7 +18,7 @@ data class Syllabus(
     override val detailsPhId: Int get() = R.string.ph_syllabus_details
 
     override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
-         attributes.run {
+        attributes.run {
             listOf(
                 name,
                 code
@@ -32,7 +32,7 @@ data class Syllabus(
         @SerializedName("specialty_code") var code: String,
         @SerializedName("specialty_name") var name: String,
 
-        var direction: Int? = null
+        var direction: Int? = null,
     ) : Attributes
 
     data class SyllabusRelationships(var direction: Direction) : Relationships {

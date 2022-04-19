@@ -3,7 +3,7 @@ package com.alexdeadman.schedulecomposer.di
 import com.alexdeadman.schedulecomposer.service.HeadersInterceptor
 import com.alexdeadman.schedulecomposer.service.ScApi
 import com.alexdeadman.schedulecomposer.service.UrlInterceptor
-import com.alexdeadman.schedulecomposer.viewmodels.ViewModelFactory
+import com.alexdeadman.schedulecomposer.viewmodel.ViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +29,7 @@ object AppModule {
     @Singleton
     fun provideHttpClient(
         urlInterceptor: UrlInterceptor,
-        headersInterceptor: HeadersInterceptor
+        headersInterceptor: HeadersInterceptor,
     ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(urlInterceptor)

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Schedule Composer</string>
     <string name="unknown_error">Неизвестная ошибка</string>
-    <string name="list_is_empty">Список пуст</string>
+    <string name="list_empty">Список пуст</string>
     <string name="username">Имя пользователя</string>
     <string name="password">Пароль</string>
     <string name="login">Войти</string>
@@ -11,15 +11,15 @@
     <string name="title_settings">Настройки</string>
     <string name="title_schedule">Расписание</string>
     <string name="title_disciplines">Дисциплины</string>
-    <string name="discipline">дисциплину</string>
+    <string name="discipline">дисциплины</string>
     <string name="title_groups">Группы</string>
-    <string name="group">группу</string>
+    <string name="group">группы</string>
     <string name="title_classrooms">Аудитории</string>
-    <string name="classroom">аудиторию</string>
+    <string name="classroom">аудитории</string>
     <string name="title_directions">Направления</string>
-    <string name="direction">направление</string>
+    <string name="direction">направления</string>
     <string name="title_syllabuses">Учебные планы</string>
-    <string name="syllabus">учебный план</string>
+    <string name="syllabus">учебного плана</string>
     <string name="search">Поиск</string>
     <string name="system">Системная</string>
     <string name="light">Светлая</string>
@@ -47,7 +47,7 @@
     <string name="required_field">Обязательное поле</string>
     <string name="wrong_format">Неверный формат</string>
     <string name="sign_in">Вход</string>
-    <string name="name">Имя</string>
+    <string name="first_name">Имя</string>
     <string name="surname">Фамилия</string>
     <string name="patronymic">Отчество</string>
     <string name="add_entity">Добавление %s</string>
@@ -56,4 +56,36 @@
     <string name="edit">Редактировать</string>
     <string name="wrong_symbol_count">Превышено макс. число символов</string>
     <string name="confirm_action">Подтвердите действие</string>
+    <string name="number">Номер</string>
+    <string name="classroom_type">Тип аудитории</string>
+    <string name="seats_count">Количество мест</string>
+    <string name="students_count">Количество студентов</string>
+    <string name="field_syllabus">Учебный план</string>
+    <string name="name">Название</string>
+    <string name="code">Код</string>
+    <string name="cycle">Цикл</string>
+    <string name="hours_total">Всего часов</string>
+    <string name="hours_lec">Лекции</string>
+    <string name="hours_pr">Практики</string>
+    <string name="hours_la">Лабораторные</string>
+    <string name="hours_isw">СРС</string>
+    <string name="hours_cons">Консультации</string>
+    <string name="year">Год</string>
+    <string name="specialty_code">Код специальности</string>
+    <string name="specialty_name">Название специальности</string>
+    <string name="field_direction">Направление</string>
+    <string name="table_empty">Таблица пуста</string>
+    <string name="even">Чёт</string>
+    <string name="odd">Нечёт</string>
+    <string name="lec">Лек</string>
+    <string name="lab">Лаб</string>
+    <string name="prac">Прак</string>
+    <string name="isw">СРС</string>
+    <string name="unknown_type">Неиз</string>
+    <string name="monday">Пн</string>
+    <string name="tuesday">Вт</string>
+    <string name="wednesday">Ср</string>
+    <string name="thursday">Чт</string>
+    <string name="friday">Пт</string>
+    <string name="saturday">Сб</string>
 </resources>

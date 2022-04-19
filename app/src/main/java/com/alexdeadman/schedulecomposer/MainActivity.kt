@@ -3,7 +3,7 @@ package com.alexdeadman.schedulecomposer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
-import com.alexdeadman.schedulecomposer.utils.Keys
+import com.alexdeadman.schedulecomposer.util.Keys
 import dagger.hilt.android.AndroidEntryPoint
 
 

@@ -10,22 +10,22 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-        android:layout_marginTop="30dp"
         android:id="@+id/image_view"
-        android:layout_gravity="center_horizontal"
         android:layout_width="90dp"
         android:layout_height="90dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
         app:srcCompat="@drawable/calendar_clock"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:textStyle="bold"
-        android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="@string/app_name"
+        android:textAlignment="center"
         android:textColor="?android:textColorPrimary"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
