@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ScheduleFragment">
+    android:background="?attr/colorOnPrimary"
+    tools:context=".fragment.select.SyllabusSelectFragment"
+    tools:ignore="ContentDescription">
 
     <TextView
         android:id="@+id/text_view_massage"
@@ -17,17 +20,32 @@
         tools:text="@string/unknown_error"
         tools:visibility="visible" />
 
+    <TextView
+        android:id="@+id/text_view_select"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="?colorOnSecondary"
+        android:elevation="5dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="22sp"
+        tools:text="@string/select_syllabus" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
         android:visibility="gone"
         tools:visibility="visible">
 
-        <com.alexdeadman.schedulecomposer.util.CustomSmartTable
-            android:id="@+id/smartTable"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/select_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -36,6 +54,8 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

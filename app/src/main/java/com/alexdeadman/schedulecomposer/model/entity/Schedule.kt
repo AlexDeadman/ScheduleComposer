@@ -13,7 +13,32 @@ data class Schedule(
 
     constructor(id: Int, attributes: ScheduleAttributes) : this("Schedule", id, attributes)
 
-    override val title get() = "Schedule item"
+    companion object {
+        val weekNames = listOf(
+            R.string.even,
+            R.string.odd,
+        )
+        val weekDayNames = listOf(
+            R.string.monday,
+            R.string.tuesday,
+            R.string.wednesday,
+            R.string.thursday,
+            R.string.friday,
+            R.string.saturday,
+        )
+        val types = listOf(
+            R.string.lec,
+            R.string.lab,
+            R.string.prac,
+            R.string.isw,
+        )
+    }
+
+    val weekNameId get() = weekNames.getOrElse(if (attributes.evenWeek) 0 else 1) { R.string.unknown }
+    val dayNameId get() = weekDayNames.getOrElse(attributes.weekDay - 1) { R.string.unknown }
+    val typeName get() = types.getOrElse(attributes.type - 1) { R.string.unknown }
+
+    override val title get() = "Schedule"
     override val iconId get() = R.drawable.ic_schedule
 
     override val detailsPhId: Int get() = R.string.ph_schedule_details

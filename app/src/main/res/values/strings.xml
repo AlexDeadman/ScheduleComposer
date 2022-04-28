@@ -27,6 +27,9 @@
     <string name="are_you_sure">Вы уверены?</string>
     <string name="yes">Да</string>
     <string name="cancel">Отмена</string>
+    <string name="apply">Применить</string>
+    <string name="clear">Отчистить</string>
+    <string name="all">Все</string>
     <string name="url" translatable="false">URL</string>
     <string name="button_continue_text">Продолжить</string>
     <string name="server_connection">Подключение к серверу</string>
@@ -81,11 +84,24 @@
     <string name="lab">Лаб</string>
     <string name="prac">Прак</string>
     <string name="isw">СРС</string>
-    <string name="unknown_type">Неиз</string>
     <string name="monday">Пн</string>
     <string name="tuesday">Вт</string>
     <string name="wednesday">Ср</string>
     <string name="thursday">Чт</string>
     <string name="friday">Пт</string>
     <string name="saturday">Сб</string>
+    <string name="unknown">\???</string>
+
+    <string name="column_semester">Семестер</string>
+    <string name="column_group">Группа</string>
+    <string name="column_week">Неделя</string>
+    <string name="column_day">День</string>
+    <string name="column_period">Пара</string>
+    <string name="column_discipline">Дисциплина</string>
+    <string name="column_classroom">Аудитория</string>
+    <string name="column_lecturer">Преподаватель</string>
+    <string name="column_type">Тип</string>
+    <string name="select_syllabus">Выберите учебный план</string>
+    <string name="select_year">Выберите год</string>
+    <string name="select_semester">Выберите семестр</string>
 </resources>

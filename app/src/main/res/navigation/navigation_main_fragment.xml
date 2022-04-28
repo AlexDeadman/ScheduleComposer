@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/schedule">
+    app:startDestination="@id/syllabusSelect">
     <fragment
         android:id="@+id/schedule"
         android:name="com.alexdeadman.schedulecomposer.fragment.ScheduleFragment"
@@ -43,4 +43,31 @@
         android:id="@+id/settings"
         android:name="com.alexdeadman.schedulecomposer.fragment.SettingsFragment"
         android:label="@string/title_settings" />
+    <fragment
+        android:id="@+id/syllabusSelect"
+        android:name="com.alexdeadman.schedulecomposer.fragment.select.SyllabusSelectFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_select" >
+        <action
+            android:id="@+id/action_syllabusSelect_to_yearSelect"
+            app:destination="@id/yearSelect" />
+    </fragment>
+    <fragment
+        android:id="@+id/semesterSelect"
+        android:name="com.alexdeadman.schedulecomposer.fragment.select.SemesterSelectFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_select">
+        <action
+            android:id="@+id/action_semesterSelect_to_schedule"
+            app:destination="@id/schedule" />
+    </fragment>
+    <fragment
+        android:id="@+id/yearSelect"
+        android:name="com.alexdeadman.schedulecomposer.fragment.select.YearSelectFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_select">
+        <action
+            android:id="@+id/action_yearSelect_to_semesterSelect"
+            app:destination="@id/semesterSelect" />
+    </fragment>
 </navigation>

@@ -39,7 +39,7 @@ abstract class AbstractEntityViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             state.value = try {
                 val result = get()
-                if (result.data.isEmpty()) NoItems()
+                if (result.data.isEmpty()) NoItems
                 else Loaded(result)
             } catch (e: Exception) {
                 Error(R.string.unknown_error)

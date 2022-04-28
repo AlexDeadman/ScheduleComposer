@@ -6,8 +6,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.collection.keyIterator
+import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -19,6 +20,9 @@ class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var topLevelDestinations: Set<Int>
+    private lateinit var childNavController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,29 +42,28 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            val toolbar = contentMain.appbar.toolbar
-
             (requireActivity() as AppCompatActivity).apply {
-                setSupportActionBar(toolbar)
+                setSupportActionBar(contentMain.appbar.toolbar)
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
             }
 
-            val childNavController = contentMain.fragmentContainerView
+            childNavController = contentMain.fragmentContainerView
                 .getFragment<NavHostFragment>().navController
 
-            val appBarConfiguration = AppBarConfiguration(
-                childNavController.graph.nodes
-                    .keyIterator()
-                    .asSequence()
-                    .toSet(),
-                drawerLayout
-            )
+            topLevelDestinations = navView.menu
+                .iterator()
+                .asSequence()
+                .map { it.itemId }
+                .toSet()
 
             NavigationUI.apply {
                 setupActionBarWithNavController(
                     requireActivity() as AppCompatActivity,
                     childNavController,
-                    appBarConfiguration
+                    AppBarConfiguration(
+                        topLevelDestinations,
+                        drawerLayout
+                    )
                 )
                 setupWithNavController(
                     navView,
@@ -72,7 +75,11 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            binding.drawerLayout.open()
+            if (childNavController.currentDestination!!.id in topLevelDestinations) {
+                binding.drawerLayout.open()
+            } else {
+                requireActivity().onBackPressed()
+            }
         }
         return super.onOptionsItemSelected(item)
     }

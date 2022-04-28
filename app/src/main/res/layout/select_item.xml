@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:background="?attr/colorOnSecondary"
+    android:orientation="horizontal"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="12dp"
+    tools:ignore="ContentDescription">
+
+        <TextView
+            android:id="@+id/text_view_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginEnd="10dp"
+            android:drawablePadding="15dp"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="18sp"
+            tools:drawableStart="@drawable/ic_syllabus"
+            tools:text="Информационные системы и программирование" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+</LinearLayout>

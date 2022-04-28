@@ -8,7 +8,6 @@
     tools:ignore="ContentDescription">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?colorOnSecondary"

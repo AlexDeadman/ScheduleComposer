@@ -22,8 +22,6 @@ class ListItem(
 
     override val type: Int get() = R.id.list_item_id
 
-    val entityTitle = entity.title
-
     private var expansion: ExpansionLayout? = null
     var expanded = false
         set(value) {
@@ -46,7 +44,7 @@ class ListItem(
                 if (expanded) expand(false)
                 else collapse(false)
             }
-            entity.run {
+            entity.apply {
                 textViewTitle.apply {
                     setCompoundDrawablesRelativeWithIntrinsicBounds(iconId, 0, 0, 0)
                     text = title

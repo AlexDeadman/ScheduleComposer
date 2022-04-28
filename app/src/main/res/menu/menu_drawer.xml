@@ -7,7 +7,7 @@
         android:id="@+id/drawer_group_1"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/schedule"
+            android:id="@+id/syllabusSelect"
             android:icon="@drawable/ic_schedule"
             android:title="@string/title_schedule" />
     </group>

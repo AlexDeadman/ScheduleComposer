@@ -3,18 +3,19 @@ package com.alexdeadman.schedulecomposer.fragment.list
 import com.alexdeadman.schedulecomposer.dialog.addedit.*
 import com.alexdeadman.schedulecomposer.viewmodel.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.reflect.KClass
 
 @AndroidEntryPoint
 class ClassroomListFragment : AbstractListFragment() {
     override val mainViewModelClass = ClassroomsViewModel::class
-    override val relatedViewModelClass = null
+    override val relatedViewModelClass: KClass<out AbstractEntityViewModel>? = null
     override val addEditDialog = ClassroomDialog()
 }
 
 @AndroidEntryPoint
 class DirectionListFragment : AbstractListFragment() {
     override val mainViewModelClass = DirectionsViewModel::class
-    override val relatedViewModelClass = null
+    override val relatedViewModelClass: KClass<out AbstractEntityViewModel>? = null
     override val addEditDialog = DirectionDialog()
 }
 

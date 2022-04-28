@@ -12,7 +12,7 @@ class HeadersInterceptor : Interceptor, SharedPreferences.OnSharedPreferenceChan
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
-    var authToken: String? = preferences.getString(Keys.AUTH_TOKEN, null)
+    private var authToken: String? = preferences.getString(Keys.AUTH_TOKEN, null)
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()

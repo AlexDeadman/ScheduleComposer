@@ -26,6 +26,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility "1.8"
         targetCompatibility "1.8"
     }
@@ -39,6 +40,8 @@ android {
 }
 
 dependencies {
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     // Core
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -97,6 +100,9 @@ dependencies {
 
     // Number picker
     implementation 'io.github.ShawnLin013:number-picker:2.4.13'
+
+    // Nice-spinner
+    implementation 'com.github.arcadefire:nice-spinner:1.4.5'
 
     // Test
     testImplementation 'junit:junit:4.13.2'

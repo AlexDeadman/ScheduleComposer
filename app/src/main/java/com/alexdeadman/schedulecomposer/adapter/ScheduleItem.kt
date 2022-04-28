@@ -1,78 +1,71 @@
 package com.alexdeadman.schedulecomposer.adapter
 
 import android.content.Context
-import android.graphics.Paint
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.model.entity.*
-import com.bin.david.form.annotation.SmartColumn
-import com.bin.david.form.annotation.SmartTable
 
-@SmartTable
+//@SmartTable
 class ScheduleItem(
     context: Context,
     schedule: Schedule,
-    lecturers: List<Lecturer>,
-    disciplines: List<Discipline>,
     groups: List<Group>,
+    disciplines: List<Discipline>,
     classrooms: List<Classroom>,
+    lecturers: List<Lecturer>,
 ) {
+//    companion object {
+//        val columnNamesIds = listOf(
+//            R.string.column_group,
+//            R.string.column_week,
+//            R.string.column_day,
+//            R.string.column_period,
+//            R.string.column_discipline,
+//            R.string.column_classroom,
+//            R.string.column_lecturer,
+//            R.string.column_type,
+//        )
+//    }
+
     private val attributes: Schedule.ScheduleAttributes = schedule.attributes
     private val relationships: Schedule.ScheduleRelationships = schedule.relationships!!
 
     val weekDay = attributes.weekDay
     val evenWeek = attributes.evenWeek
 
-    @SmartColumn(id = 1, autoMerge = true)
-    val semester: Int = attributes.semester
-
-    @SmartColumn(id = 2, autoMerge = true)
-    val group: String = groups.single {
+    //    @SmartColumn(id = 1, autoMerge = true)
+    val group: String = groups.singleOrNull {
         it.id == relationships.group.data.id
-    }.title
+    }?.title ?: context.getString(R.string.unknown)
 
-    @SmartColumn(id = 3, autoMerge = true)
-    val weekName: String = context.getString(if (evenWeek) R.string.even else R.string.odd)
+    //    @SmartColumn(id = 2, autoMerge = true)
+    val weekName: String = context.getString(schedule.weekNameId)
 
-    @SmartColumn(id = 4, autoMerge = true)
-    val dayName: String = context.getString(
-        when (weekDay) {
-            1 -> R.string.monday
-            2 -> R.string.tuesday
-            3 -> R.string.wednesday
-            4 -> R.string.thursday
-            5 -> R.string.friday
-            6 -> R.string.saturday
-            else -> throw IllegalStateException()
-        }
-    )
+    //    @SmartColumn(id = 3, autoMerge = true)
+    val dayName: String = context.getString(schedule.dayNameId)
 
-    @SmartColumn(id = 5)
+    //    @SmartColumn(id = 4)
     val period = attributes.period
 
-    @SmartColumn(id = 6, align = Paint.Align.LEFT)
-    val discipline: String = disciplines.single {
+    private val disciplineTitle = disciplines.singleOrNull {
         it.id == relationships.discipline.data.id
-    }.title
+    }?.title ?: context.getString(R.string.unknown)
 
-    @SmartColumn(id = 7)
-    val classroom: String = classrooms.single {
+//    @SmartColumn(id = 5, align = Paint.Align.LEFT)
+    val discipline: String = // FIXME:
+        if (disciplineTitle.length > 30) disciplineTitle.take(27) + "..." else disciplineTitle
+
+//    @SmartColumn(id = 6)
+    val classroom = classrooms.singleOrNull {
         it.id == relationships.classroom.data.id
-    }.title
+    }?.title ?: context.getString(R.string.unknown)
 
-    @SmartColumn(id = 8)
-    val lecturer: String = lecturers.single {
+//
+//    @SmartColumn(id = 7, align = Paint.Align.LEFT)
+    val lecturer: String = lecturers.singleOrNull {
         it.id == relationships.lecturer.data.id
-    }.shortTitle
-
-    @SmartColumn(id = 9)
-    val typeName: String = context.getString(
-        when (attributes.type) {
-            1 -> R.string.lec
-            2 -> R.string.lab
-            3 -> R.string.prac
-            4 -> R.string.isw
-            else -> R.string.unknown_type
-        }
-    )
+    }?.shortTitle ?: context.getString(R.string.unknown)
+//
+//    @SmartColumn(id = 8)
+    val type: String = context.getString(schedule.typeName)
 
 }

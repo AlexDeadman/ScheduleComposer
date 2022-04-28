@@ -14,7 +14,7 @@ class UrlInterceptor : Interceptor, SharedPreferences.OnSharedPreferenceChangeLi
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
-    var httpUrl: HttpUrl? = preferences.getString(Keys.URL, null)?.toHttpUrlOrNull()
+    private var httpUrl: HttpUrl? = preferences.getString(Keys.URL, null)?.toHttpUrlOrNull()
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()

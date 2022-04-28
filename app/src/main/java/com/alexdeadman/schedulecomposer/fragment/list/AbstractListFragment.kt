@@ -76,7 +76,7 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
 
             itemAdapter = ItemAdapter(itemListImpl).apply {
                 itemFilter.filterPredicate = { item, constraint ->
-                    item.entityTitle.contains(constraint!!, true)
+                    item.entity.title.contains(constraint!!, true)
                 }
             }
 
@@ -92,7 +92,10 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                 }
             }
 
-            recyclerView.adapter = fastAdapter
+            recyclerView.apply {
+                setHasFixedSize(true)
+                adapter = fastAdapter
+            }
 
             mainViewModel = provideViewModel(viewModelFactory, mainViewModelClass)
             relatedViewModel = relatedViewModelClass?.let {
@@ -129,16 +132,11 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
             imageButtonExpandAll.setOnClickListener { toggleAll(expand = true) }
             imageButtonCollapseAll.setOnClickListener { toggleAll(expand = false) }
 
-            imageButtonSortAsc.setOnClickListener {
-                updateComparator { left, right ->
-                    left.entityTitle.compareTo(right.entityTitle, true)
-                }
+            val comparator = Comparator<ListItem> { left, right ->
+                left.entity.title.compareTo(right.entity.title, true)
             }
-            imageButtonSortDesc.setOnClickListener {
-                updateComparator { left, right ->
-                    right.entityTitle.compareTo(left.entityTitle, true)
-                }
-            }
+            imageButtonSortAsc.setOnClickListener { updateComparator(comparator) }
+            imageButtonSortDesc.setOnClickListener { updateComparator(comparator.reversed()) }
 
             floatingActionButton.setOnClickListener {
                 mainViewModel.currentEntity = null
@@ -159,12 +157,15 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                         mainViewModel.state.value = Error(R.string.unknown_error)
                         return
                     }
+
                     textViewMassage.visibility = View.GONE
                     floatingActionButton.visibility = View.VISIBLE
+
                     FastAdapterDiffUtil[itemAdapter] = mainState.result.data.map { entity ->
                         val relatives = relatedState?.let { (it as Loaded).result.data }
                         ListItem(entity, relatives)
                     }
+
                     fastAdapter.withSavedInstanceState(savedInstanceState)
                 }
                 is NoItems -> {
@@ -196,11 +197,9 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
         itemAdapter.adapterItems.forEach { it.expanded = expand }
     }
 
-    private fun updateComparator(rule: (ListItem, ListItem) -> Int) {
-        Comparator<ListItem>(rule).let {
-            itemListImpl.withComparator(it, true)
-            mainViewModel.comparator = it
-        }
+    private fun updateComparator(comparator: Comparator<ListItem>) {
+        itemListImpl.withComparator(comparator, true)
+        mainViewModel.comparator = comparator
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
