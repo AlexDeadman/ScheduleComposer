@@ -1,21 +1,24 @@
 package com.alexdeadman.schedulecomposer.fragment
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.adapter.ScheduleItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentScheduleBinding
 import com.alexdeadman.schedulecomposer.model.entity.*
+import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.columnNameIds
+import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.dayNameIds
+import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.typeIds
+import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.weekNameIds
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
 import com.alexdeadman.schedulecomposer.util.state.ListState.*
 import com.alexdeadman.schedulecomposer.viewmodel.*
-import com.bin.david.form.data.column.Column
-import com.bin.david.form.data.table.TableData
+import com.bin.david.form.data.format.draw.TextDrawFormat
+import com.bin.david.form.data.table.ArrayTableData
 import com.google.android.material.color.MaterialColors
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
@@ -45,19 +48,24 @@ class ScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
+
+            val columnNames = columnNameIds.map { getString(it) }
+
             smartTable.apply {
                 config.apply {
-                    isShowTableTitle = false
                     isShowXSequence = false
                     isShowYSequence = false
                 }
                 setOnColumnClickListener {
+
+                    if (it.column.columnName !in columnNames) return@setOnColumnClickListener
+
                     val list = it.column.datas
                         .distinct()
                         .map { any -> any.toString() }
-                        .sorted()
 
-                    AlertDialog.Builder(context) // FIXME:  
+                    // FIXME: memory leak etc
+                    AlertDialog.Builder(context)
                         .setMultiChoiceItems(
                             list.toTypedArray(),
                             list.map { true }.toBooleanArray()
@@ -69,7 +77,7 @@ class ScheduleFragment : Fragment() {
                         .create()
                         .show()
                 }
-                setZoom(true, 1.5f, 0.5f)
+                setZoom(true, 1f, 0.33f)
             }
 
             val viewModels = listOf(
@@ -77,7 +85,8 @@ class ScheduleFragment : Fragment() {
                 GroupsViewModel::class,
                 DisciplinesViewModel::class,
                 ClassroomsViewModel::class,
-                LecturersViewModel::class
+                LecturersViewModel::class,
+                SyllabusesViewModel::class
             ).map {
                 provideViewModel(viewModelFactory, it)
             }
@@ -96,59 +105,87 @@ class ScheduleFragment : Fragment() {
                             textViewMassage.visibility = View.GONE
 
                             val results = stateList.map { (it as Loaded).result.data }
+
+                            val syllabusId = requireArguments().getInt("syllabus_id")
                             val groups = results[1]
                                 .map { it as Group }
-                                .filter {
-                                    val syllabusId = requireArguments().getInt("syllabus_id")
-                                    it.relationships!!.syllabus.data.id == syllabusId
-                                }
+                                .filter { it.relationships!!.syllabus.data.id == syllabusId }
 
-                            val scheduleItems = results[0]
-                                .asSequence()
+                            val semester = requireArguments().getInt("semester")
+                            val groupIds = groups.map { it.id }
+                            val schedules = results[0]
                                 .map { it as Schedule }
-                                .filter { it.relationships!!.group.data.id in groups.map { g -> g.id } }
-                                .filter { it.attributes.semester == requireArguments().getInt("semester") }
-                                .map { schedule ->
-                                    ScheduleItem(
-                                        requireContext(),
-                                        schedule,
-                                        groups,
-                                        results[2].map { it as Discipline },
-                                        results[3].map { it as Classroom },
-                                        results[4].map { it as Lecturer },
-                                    )
-                                }
-                                .sortedWith(
-                                    compareBy(
-                                        { it.group },
-                                        { it.evenWeek },
-                                        { it.weekDay },
-                                        { it.period }
-                                    )
-                                )
-                                .toList()
+                                .filter { it.attributes.semester == semester }
+                                .filter { it.relationships!!.group.data.id in groupIds }
 
-                            val tableData = TableData(
-                                "",
-                                scheduleItems,
-                                Column<String>(getString(R.string.column_group), "group"),
-                                Column<String>(getString(R.string.column_week), "weekName"),
-                                Column<String>(getString(R.string.column_day), "dayName"),
-                                Column<Int>(getString(R.string.column_period), "period"),
-                                Column<Int>(getString(R.string.column_discipline), "discipline"),
-                                Column<Int>(getString(R.string.column_classroom), "classroom"),
-                                Column<Int>(getString(R.string.column_lecturer), "lecturer"),
-                                Column<Int>(getString(R.string.column_type), "type"),
+                            val disciplines = results[2].map { it as Discipline }
+
+                            val classrooms = results[3]
+                                .map { it as Classroom }
+                                .sortedBy { it.title }
+
+                            val lecturers = results[4].map { it as Lecturer }
+
+                            val syllabus = results[5]
+                                .map { it as Syllabus }
+                                .single { it.id == syllabusId }
+
+                            val titleNames = columnNames.plus(classrooms.map { it.title })
+
+                            smartTable.tableData = ArrayTableData.create(
+                                "${syllabus.attributes.name.take(30).plus("...")} > " +
+                                        "${syllabus.attributes.year} > " +
+                                        "$semester",
+                                titleNames.toTypedArray(),
+                                Array(titleNames.size) { i ->
+                                    var day = -1
+                                    Array(2 * 6 * 8) { j ->
+                                        val week = j / 6 / 8
+                                        val period = j % 8 + 1
+                                        if (period == 1) day++
+                                        when (i) {
+                                            0 -> getString(weekNameIds[week])
+                                            1 -> getString(dayNameIds[day - week * 6])
+                                            2 -> period
+                                            else -> {
+                                                schedules.find { sch ->
+                                                    sch.attributes.let { attr ->
+                                                        listOf(
+                                                            attr.evenWeek == (week == 0),
+                                                            attr.weekDay == day - week * 6 + 1,
+                                                            attr.period == period,
+                                                            sch.relationships!!.classroom.data.id ==
+                                                                    classrooms[i - 3].id
+                                                        ).all { it }
+                                                    }
+                                                }?.let { sch ->
+                                                    val group = groups.find {
+                                                        it.id == sch.relationships!!.group.data.id
+                                                    }?.title
+                                                    val discipline = disciplines.find {
+                                                        it.id == sch.relationships!!.discipline.data.id
+                                                    }?.title
+                                                    val lecturer = lecturers.find {
+                                                        it.id == sch.relationships!!.lecturer.data.id
+                                                    }?.shortTitle
+                                                    val type = getString(
+                                                        typeIds[sch.attributes.type - 1]
+                                                    )
+                                                    "$group $discipline $lecturer $type"
+                                                        .take(20)
+                                                        .plus("...")
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                TextDrawFormat()
                             )
 
-                            smartTable.apply {
-//                                setData(scheduleItems)
-                                setTableData(tableData)
-//                                tableData.columns
-//                                    .zip(ScheduleItem.columnNamesIds)
-//                                    .forEach { it.first.columnName = getString(it.second) }
+                            smartTable.tableData.columns.run {
+                                take(2).forEach { it.isAutoMerge = true } // FIXME 
+                                take(3).forEach { it.isFixed = true }
                             }
-
                         }
                         is NoItems -> {
                             textViewMassage.apply {
@@ -165,9 +202,7 @@ class ScheduleFragment : Fragment() {
                     }
                     progressBar.visibility = View.GONE
                     swipeRefreshLayout.apply {
-                        //
                         /* tempo */ isEnabled = false /* tempo */
-                        //
                         visibility = View.VISIBLE
                         isRefreshing = false
                     }
