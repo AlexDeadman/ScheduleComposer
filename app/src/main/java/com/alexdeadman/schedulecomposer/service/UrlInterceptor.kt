@@ -2,7 +2,7 @@ package com.alexdeadman.schedulecomposer.service
 
 import android.content.SharedPreferences
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
-import com.alexdeadman.schedulecomposer.util.Keys
+import com.alexdeadman.schedulecomposer.util.key.PreferenceKeys
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
@@ -14,30 +14,27 @@ class UrlInterceptor : Interceptor, SharedPreferences.OnSharedPreferenceChangeLi
         preferences.registerOnSharedPreferenceChangeListener(this)
     }
 
-    private var httpUrl: HttpUrl? = preferences.getString(Keys.URL, null)?.toHttpUrlOrNull()
+    private var httpUrl: HttpUrl? = preferences
+        .getString(PreferenceKeys.URL, null)?.toHttpUrlOrNull()
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
-        return chain.proceed(
-            if (httpUrl != null) {
-                request.newBuilder()
-                    .url(httpUrl!!.let {
-                        // only way to change URL at runtime
-                        request.url.newBuilder()
-                            .scheme(it.scheme)
-                            .host(it.host)
-                            .port(it.port)
-                            .build()
-                    })
-                    .build()
-            } else {
-                request
-            }
-        )
+        var request = chain.request()
+        httpUrl?.let {
+            request = request.newBuilder()
+                .url(
+                    request.url.newBuilder()
+                        .scheme(it.scheme)
+                        .host(it.host)
+                        .port(it.port)
+                        .build()
+                )
+                .build()
+        }
+        return chain.proceed(request)
     }
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String?) {
-        if (key == Keys.URL) {
+        if (key == PreferenceKeys.URL) {
             httpUrl = sp.getString(key, null)?.toHttpUrlOrNull()
         }
     }

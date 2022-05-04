@@ -16,7 +16,7 @@ data class Classroom(
     override val title get() = attributes.number
     override val iconId get() = R.drawable.ic_classroom
 
-    override val detailsPhId: Int get() = R.string.ph_classroom_details
+    override val detailsId: Int get() = R.string.ph_classroom_details
 
     override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
         attributes.run {

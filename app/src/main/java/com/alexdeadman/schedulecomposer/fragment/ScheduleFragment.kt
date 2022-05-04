@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.alexdeadman.schedulecomposer.R
+import com.alexdeadman.schedulecomposer.adapter.ScheduleItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentScheduleBinding
 import com.alexdeadman.schedulecomposer.model.entity.*
 import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.columnNameIds
 import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.dayNameIds
-import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.typeIds
 import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.weekNameIds
+import com.alexdeadman.schedulecomposer.util.ellipsize
+import com.alexdeadman.schedulecomposer.util.key.BundleKeys
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
 import com.alexdeadman.schedulecomposer.util.state.ListState.*
@@ -49,7 +51,7 @@ class ScheduleFragment : Fragment() {
 
         binding.apply {
 
-            val columnNames = columnNameIds.map { getString(it) }
+            val columnNames = columnNameIds.map { getString(it) }.toMutableList()
 
             smartTable.apply {
                 config.apply {
@@ -77,7 +79,7 @@ class ScheduleFragment : Fragment() {
                         .create()
                         .show()
                 }
-                setZoom(true, 1f, 0.33f)
+                setZoom(true, 1f, 0.25f)
             }
 
             val viewModels = listOf(
@@ -86,7 +88,6 @@ class ScheduleFragment : Fragment() {
                 DisciplinesViewModel::class,
                 ClassroomsViewModel::class,
                 LecturersViewModel::class,
-                SyllabusesViewModel::class
             ).map {
                 provideViewModel(viewModelFactory, it)
             }
@@ -106,12 +107,13 @@ class ScheduleFragment : Fragment() {
 
                             val results = stateList.map { (it as Loaded).result.data }
 
-                            val syllabusId = requireArguments().getInt("syllabus_id")
+                            val syllabus = requireArguments()
+                                .getParcelable<Syllabus>(BundleKeys.SYLLABUS)!!
                             val groups = results[1]
                                 .map { it as Group }
-                                .filter { it.relationships!!.syllabus.data.id == syllabusId }
+                                .filter { it.relationships!!.syllabus.data.id == syllabus.id }
 
-                            val semester = requireArguments().getInt("semester")
+                            val semester = requireArguments().getInt(BundleKeys.SEMESTER)
                             val groupIds = groups.map { it.id }
                             val schedules = results[0]
                                 .map { it as Schedule }
@@ -119,72 +121,77 @@ class ScheduleFragment : Fragment() {
                                 .filter { it.relationships!!.group.data.id in groupIds }
 
                             val disciplines = results[2].map { it as Discipline }
-
                             val classrooms = results[3]
                                 .map { it as Classroom }
                                 .sortedBy { it.title }
-
                             val lecturers = results[4].map { it as Lecturer }
 
-                            val syllabus = results[5]
-                                .map { it as Syllabus }
-                                .single { it.id == syllabusId }
+                            val scheduleItems = schedules.map { sch ->
+                                val rel = sch.relationships!!
+                                ScheduleItem(
+                                    requireContext(),
+                                    sch,
+                                    groups.find { it.id == rel.group.data.id }?.title,
+                                    disciplines.find { it.id == rel.discipline.data.id }?.title,
+                                    lecturers.find { it.id == rel.lecturer.data.id }?.shortTitle,
+                                    classrooms.find { it.id == rel.classroom.data.id }?.title
+                                )
+                            }
 
-                            val titleNames = columnNames.plus(classrooms.map { it.title })
+                            columnNames.addAll(classrooms.map { it.title })
 
-                            smartTable.tableData = ArrayTableData.create(
-                                "${syllabus.attributes.name.take(30).plus("...")} > " +
-                                        "${syllabus.attributes.year} > " +
-                                        "$semester",
-                                titleNames.toTypedArray(),
-                                Array(titleNames.size) { i ->
-                                    var day = -1
-                                    Array(2 * 6 * 8) { j ->
-                                        val week = j / 6 / 8
-                                        val period = j % 8 + 1
-                                        if (period == 1) day++
-                                        when (i) {
-                                            0 -> getString(weekNameIds[week])
-                                            1 -> getString(dayNameIds[day - week * 6])
-                                            2 -> period
-                                            else -> {
-                                                schedules.find { sch ->
-                                                    sch.attributes.let { attr ->
-                                                        listOf(
-                                                            attr.evenWeek == (week == 0),
-                                                            attr.weekDay == day - week * 6 + 1,
-                                                            attr.period == period,
-                                                            sch.relationships!!.classroom.data.id ==
-                                                                    classrooms[i - 3].id
-                                                        ).all { it }
-                                                    }
-                                                }?.let { sch ->
-                                                    val group = groups.find {
-                                                        it.id == sch.relationships!!.group.data.id
-                                                    }?.title
-                                                    val discipline = disciplines.find {
-                                                        it.id == sch.relationships!!.discipline.data.id
-                                                    }?.title
-                                                    val lecturer = lecturers.find {
-                                                        it.id == sch.relationships!!.lecturer.data.id
-                                                    }?.shortTitle
-                                                    val type = getString(
-                                                        typeIds[sch.attributes.type - 1]
-                                                    )
-                                                    "$group $discipline $lecturer $type"
-                                                        .take(20)
-                                                        .plus("...")
-                                                }
+                            val weekTypeCount = 2
+                            val dayCount = 6
+                            val periodCount = 8
+
+                            val tableDataData = Array(columnNames.size) { columnInd ->
+                                var dayInd = -1
+                                Array(weekTypeCount * dayCount * periodCount) { rowInd ->
+
+                                    val weekId = rowInd / dayCount / periodCount
+                                    val week = getString(weekNameIds[weekId])
+
+                                    val period = rowInd % periodCount + 1
+
+                                    if (period == 1) dayInd++
+                                    val day = getString(dayNameIds[dayInd - weekId * dayCount])
+
+                                    when (columnInd) {
+                                        0 -> week
+                                        1 -> day
+                                        2 -> period
+                                        else -> {
+                                            scheduleItems.find { sch ->
+                                                listOf(
+                                                    sch.week == week,
+                                                    sch.day == day,
+                                                    sch.period == period,
+                                                    sch.classroom == columnNames[columnInd]
+                                                ).all { it }
+                                            }?.let {
+                                                "${it.group} ${it.discipline}".ellipsize(20)
                                             }
                                         }
                                     }
-                                },
-                                TextDrawFormat()
-                            )
+                                }
+                            }
 
-                            smartTable.tableData.columns.run {
-                                take(2).forEach { it.isAutoMerge = true } // FIXME 
-                                take(3).forEach { it.isFixed = true }
+                            val tableName = syllabus.attributes.let {
+                                "${it.name.ellipsize(30)} > ${it.year} > $semester"
+                            }
+
+                            smartTable.apply {
+                                tableData = ArrayTableData.create(
+                                    tableName,
+                                    columnNames.toTypedArray(),
+                                    tableDataData,
+                                    TextDrawFormat()
+                                )
+                                tableData.columns
+                                    .take(3)
+                                    .onEach { it.isFixed = true }
+                                    .dropLast(1)
+                                    .forEach { it.isAutoMerge = true } // FIXME
                             }
                         }
                         is NoItems -> {

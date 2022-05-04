@@ -30,21 +30,19 @@ object AppModule {
     fun provideHttpClient(
         urlInterceptor: UrlInterceptor,
         headersInterceptor: HeadersInterceptor,
-    ): OkHttpClient =
-        OkHttpClient.Builder()
-            .addInterceptor(urlInterceptor)
-            .addInterceptor(headersInterceptor)
-//            .addInterceptor(PlutoInterceptor())
-            .build()
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(urlInterceptor)
+        .addInterceptor(headersInterceptor)
+//        .addInterceptor(PlutoInterceptor())
+        .build()
 
     @Provides
     @Singleton
-    fun provideRetrofit(client: OkHttpClient): Retrofit =
-        Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://template/") // required
-            .client(client)
-            .build()
+    fun provideRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl("http://template/") // required
+        .client(client)
+        .build()
 
     @Provides
     @Singleton

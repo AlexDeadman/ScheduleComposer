@@ -10,7 +10,7 @@ import com.alexdeadman.schedulecomposer.BuildConfig
 import com.alexdeadman.schedulecomposer.MainActivity
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.dialog.ConfirmDialog
-import com.alexdeadman.schedulecomposer.util.Keys
+import com.alexdeadman.schedulecomposer.util.key.PreferenceKeys
 import com.alexdeadman.schedulecomposer.util.show
 
 class SettingsFragment : PreferenceFragmentCompat(),
@@ -23,25 +23,25 @@ class SettingsFragment : PreferenceFragmentCompat(),
         preferences.registerOnSharedPreferenceChangeListener(this)
 
         preferenceManager.apply {
-            findPreference<Preference>(Keys.LOGGED_IN_AS)?.summary =
-                preferences.getString(Keys.USERNAME, "Unknown")
+            findPreference<Preference>(PreferenceKeys.LOGGED_IN_AS)?.summary =
+                preferences.getString(PreferenceKeys.USERNAME, "Unknown")
 
             val confirmDialog = ConfirmDialog()
 
-            findPreference<Preference>(Keys.LOGOUT)?.setOnPreferenceClickListener {
+            findPreference<Preference>(PreferenceKeys.LOGOUT)?.setOnPreferenceClickListener {
                 confirmDialog.show(childFragmentManager)
                 return@setOnPreferenceClickListener true
             }
 
-            findPreference<Preference>(Keys.ABOUT)?.summary =
+            findPreference<Preference>(PreferenceKeys.ABOUT)?.summary =
                 getString(R.string.version, BuildConfig.VERSION_NAME)
         }
     }
 
     override fun onConfirm() {
         preferences.edit().apply {
-            remove(Keys.AUTH_TOKEN)
-            remove(Keys.USERNAME)
+            remove(PreferenceKeys.AUTH_TOKEN)
+            remove(PreferenceKeys.USERNAME)
             apply()
         }
         requireParentFragment().requireParentFragment()
@@ -50,7 +50,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == Keys.THEME) {
+        if (key == PreferenceKeys.THEME) {
             MainActivity.updateTheme()
         }
     }

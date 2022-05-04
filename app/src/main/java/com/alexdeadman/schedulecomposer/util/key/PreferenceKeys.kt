@@ -1,6 +1,6 @@
-package com.alexdeadman.schedulecomposer.util
+package com.alexdeadman.schedulecomposer.util.key
 
-class Keys {
+class PreferenceKeys {
     companion object {
         const val URL = "url"
         const val AUTH_TOKEN = "authToken"

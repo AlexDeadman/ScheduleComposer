@@ -10,27 +10,17 @@ import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapter.SelectItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentSelectBinding
 import com.alexdeadman.schedulecomposer.model.entity.Syllabus
-import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
-import com.alexdeadman.schedulecomposer.util.provideViewModel
-import com.alexdeadman.schedulecomposer.util.state.ListState
-import com.alexdeadman.schedulecomposer.viewmodel.SyllabusesViewModel
-import com.alexdeadman.schedulecomposer.viewmodel.ViewModelFactory
-import com.google.android.material.color.MaterialColors
+import com.alexdeadman.schedulecomposer.util.key.BundleKeys
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.filterNotNull
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class YearSelectFragment : Fragment() {
 
     private var _binding: FragmentSelectBinding? = null
     private val binding get() = _binding!!
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,21 +36,28 @@ class YearSelectFragment : Fragment() {
 
         binding.apply {
 
+            textViewSelect.text = getString(R.string.select_year)
+            textViewMassage.visibility = View.GONE
             swipeRefreshLayout.apply {
-                setColorSchemeResources(android.R.color.white)
-                setProgressBackgroundColorSchemeColor(
-                    MaterialColors.getColor(view, R.attr.colorPrimary)
-                )
+                isEnabled = false
+                visibility = View.VISIBLE
             }
 
-            textViewSelect.text = getString(R.string.select_year)
+            val syllabuses = requireArguments()
+                .getParcelableArray(BundleKeys.SYLLABUS_LIST)!!
+                .map { it as Syllabus }
 
             val itemAdapter = ItemAdapter<SelectItem>()
             val fastAdapter = FastAdapter.with(itemAdapter).apply {
                 onClickListener = { _, _, item, _ ->
                     findNavController().navigate(
                         R.id.action_yearSelect_to_semesterSelect,
-                        Bundle().apply { putInt("syllabus_id", item.id!!) }
+                        Bundle().apply {
+                            putParcelable(
+                                BundleKeys.SYLLABUS,
+                                syllabuses.single { it.attributes.year == item.title }
+                            )
+                        }
                     )
                     false
                 }
@@ -71,29 +68,7 @@ class YearSelectFragment : Fragment() {
                 adapter = fastAdapter
             }
 
-            val viewModel = provideViewModel(viewModelFactory, SyllabusesViewModel::class)
-
-            viewModel.state
-                .filterNotNull()
-                .launchRepeatingCollect(viewLifecycleOwner) { state ->
-
-                    textViewMassage.visibility = View.GONE
-
-                    FastAdapterDiffUtil[itemAdapter] =
-                        (state as ListState.Loaded).result.data
-                            .map { it as Syllabus }
-                            .filter {
-                                it.attributes.name == requireArguments().getString("syllabus_name")
-                            }
-                            .map { SelectItem(it.attributes.year, it.id) }
-
-                    swipeRefreshLayout.apply {
-                        visibility = View.VISIBLE
-                        isRefreshing = false
-                    }
-                }
-
-            swipeRefreshLayout.setOnRefreshListener { viewModel.getEntities() }
+            FastAdapterDiffUtil[itemAdapter] = syllabuses.map { SelectItem(it.attributes.year) }
         }
     }
 

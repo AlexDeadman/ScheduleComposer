@@ -10,6 +10,7 @@ import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapter.SelectItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentSelectBinding
 import com.alexdeadman.schedulecomposer.model.entity.Syllabus
+import com.alexdeadman.schedulecomposer.util.key.BundleKeys
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
 import com.alexdeadman.schedulecomposer.util.state.ListState
@@ -31,6 +32,8 @@ class SyllabusSelectFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    private lateinit var syllabuses: List<Syllabus>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +63,14 @@ class SyllabusSelectFragment : Fragment() {
                 onClickListener = { _, _, item, _ ->
                     findNavController().navigate(
                         R.id.action_syllabusSelect_to_yearSelect,
-                        Bundle().apply { putString("syllabus_name", item.title) }
+                        Bundle().apply {
+                            putParcelableArray(
+                                BundleKeys.SYLLABUS_LIST,
+                                syllabuses.filter {
+                                    it.attributes.name == item.title
+                                }.toTypedArray()
+                            )
+                        }
                     )
                     false
                 }
@@ -76,16 +86,16 @@ class SyllabusSelectFragment : Fragment() {
             viewModel.state
                 .filterNotNull()
                 .launchRepeatingCollect(viewLifecycleOwner) { state ->
+                    if (state is ListState.Loaded) {
+                        textViewMassage.visibility = View.GONE
 
-                    textViewMassage.visibility = View.GONE
+                        syllabuses = state.result.data.map { it as Syllabus }
 
-                    FastAdapterDiffUtil[itemAdapter] =
-                        (state as ListState.Loaded).result.data.map {
-                            SelectItem(
-                                (it as Syllabus).attributes.name,
-                                iconId = R.drawable.ic_syllabus
-                            )
-                        }
+                        FastAdapterDiffUtil[itemAdapter] = syllabuses
+                            .map { it.attributes.name }
+                            .distinct()
+                            .map { SelectItem(it, R.drawable.ic_syllabus) }
+                    }
 
                     swipeRefreshLayout.apply {
                         visibility = View.VISIBLE

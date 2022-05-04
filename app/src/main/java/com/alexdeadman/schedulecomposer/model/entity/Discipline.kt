@@ -17,7 +17,7 @@ data class Discipline(
     override val title get() = attributes.name
     override val iconId get() = R.drawable.ic_discipline
 
-    override val detailsPhId: Int get() = R.string.ph_discipline_details
+    override val detailsId: Int get() = R.string.ph_discipline_details
 
     override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
         attributes.run {

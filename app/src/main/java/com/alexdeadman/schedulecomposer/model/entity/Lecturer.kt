@@ -21,7 +21,7 @@ data class Lecturer(
     override val title get() = attributes.run { "$surname $firstName ${patronymic.orEmpty()}" }
     override val iconId get() = R.drawable.ic_lecturer
 
-    override val detailsPhId: Int get() = R.string.ph_lecturer_details
+    override val detailsId: Int get() = R.string.ph_lecturer_details
 
     override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
         listOf(

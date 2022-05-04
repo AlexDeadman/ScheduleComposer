@@ -19,16 +19,17 @@ import kotlin.reflect.KClass
 
 fun Any?.toStringOrDash() = this?.toString() ?: "—"
 
+fun String.ellipsize(n: Int) = if (this.length < n) this else this.take(n).plus("...")
+
 fun Editable?.toStringOrNull() = if (this.isNullOrBlank()) null else this.toString()
 
 fun Fragment.provideViewModel(
     factory: ViewModelFactory,
     clazz: KClass<out AbstractEntityViewModel>,
-): AbstractEntityViewModel =
-    ViewModelProvider(
-        requireActivity(),
-        factory.withClass(clazz)
-    )[clazz.java]
+): AbstractEntityViewModel = ViewModelProvider(
+    requireActivity(),
+    factory.withClass(clazz)
+)[clazz.java]
 
 fun DialogFragment.show(manager: FragmentManager) {
     show(manager, null)

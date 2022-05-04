@@ -6,7 +6,7 @@ import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.model.auth.LoginData
 import com.alexdeadman.schedulecomposer.service.ScApi
-import com.alexdeadman.schedulecomposer.util.Keys
+import com.alexdeadman.schedulecomposer.util.key.PreferenceKeys
 import com.alexdeadman.schedulecomposer.util.state.LoginState
 import com.alexdeadman.schedulecomposer.util.state.LoginState.*
 import com.google.gson.Gson
@@ -42,8 +42,8 @@ class LoginViewModel @Inject constructor(
                 ).data.attributes.authToken
 
                 preferences.edit().apply {
-                    putString(Keys.AUTH_TOKEN, authToken)
-                    putString(Keys.USERNAME, username)
+                    putString(PreferenceKeys.AUTH_TOKEN, authToken)
+                    putString(PreferenceKeys.USERNAME, username)
                     apply()
                 }
                 Success

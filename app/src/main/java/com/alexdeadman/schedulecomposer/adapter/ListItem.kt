@@ -50,7 +50,7 @@ class ListItem(
                     text = title
                 }
                 textViewDetails.text = root.resources.getString(
-                    detailsPhId,
+                    detailsId,
                     *getDetails(relatives.orEmpty()).toTypedArray()
                 )
             }

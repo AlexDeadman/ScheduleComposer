@@ -9,9 +9,9 @@ interface Entity<A : Attributes> {
     var attributes: A
 
     val title: String
-    val iconId: Int
 
-    val detailsPhId: Int
+    val iconId: Int
+    val detailsId: Int
 
     fun getDetails(relatives: List<Entity<out Attributes>>): List<String>
 }

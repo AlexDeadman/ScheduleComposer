@@ -8,7 +8,6 @@ import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class SelectItem(
     val title: String,
-    val id: Int? = null,
     val iconId: Int? = null
 ) : AbstractBindingItem<SelectItemBinding>() {
 

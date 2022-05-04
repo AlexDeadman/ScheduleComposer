@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapter.SelectItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentSelectBinding
+import com.alexdeadman.schedulecomposer.util.key.BundleKeys
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -33,6 +34,11 @@ class SemesterSelectFragment : Fragment() {
         binding.apply {
 
             textViewSelect.text = getString(R.string.select_semester)
+            textViewMassage.visibility = View.GONE
+            swipeRefreshLayout.apply {
+                visibility = View.VISIBLE
+                isEnabled = false
+            }
 
             val itemAdapter = ItemAdapter<SelectItem>()
             val fastAdapter = FastAdapter.with(itemAdapter).apply {
@@ -40,8 +46,11 @@ class SemesterSelectFragment : Fragment() {
                     findNavController().navigate(
                         R.id.action_semesterSelect_to_schedule,
                         Bundle().apply {
-                            putInt("syllabus_id", requireArguments().getInt("syllabus_id"))
-                            putInt("semester", item.title.toInt())
+                            putParcelable(
+                                BundleKeys.SYLLABUS,
+                                requireArguments().getParcelable(BundleKeys.SYLLABUS)
+                            )
+                            putInt(BundleKeys.SEMESTER, item.title.toInt())
                         }
                     )
                     false
@@ -53,14 +62,8 @@ class SemesterSelectFragment : Fragment() {
                 adapter = fastAdapter
             }
 
-            textViewMassage.visibility = View.GONE
-
-            FastAdapterDiffUtil[itemAdapter] = (1..8).map { SelectItem(it.toString()) }
-
-            swipeRefreshLayout.apply {
-                visibility = View.VISIBLE
-                isEnabled = false
-            }
+            FastAdapterDiffUtil[itemAdapter] = (1..8) // FIXME: hardcoded
+                .map { SelectItem(it.toString()) }
         }
     }
 

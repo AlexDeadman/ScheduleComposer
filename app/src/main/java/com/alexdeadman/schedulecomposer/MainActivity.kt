@@ -3,7 +3,7 @@ package com.alexdeadman.schedulecomposer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.alexdeadman.schedulecomposer.App.Companion.preferences
-import com.alexdeadman.schedulecomposer.util.Keys
+import com.alexdeadman.schedulecomposer.util.key.PreferenceKeys
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -12,12 +12,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     companion object {
         fun updateTheme() {
-            val theme: String? = preferences.getString(Keys.THEME, Keys.SYSTEM)
+            val theme: String? = preferences.getString(PreferenceKeys.THEME, PreferenceKeys.SYSTEM)
 
             AppCompatDelegate.setDefaultNightMode(
                 when (theme) {
-                    Keys.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-                    Keys.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+                    PreferenceKeys.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                    PreferenceKeys.DARK -> AppCompatDelegate.MODE_NIGHT_YES
                     else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 }
             )

@@ -16,7 +16,7 @@ data class Schedule(
     override val title get() = "Schedule"
     override val iconId get() = R.drawable.ic_schedule
 
-    override val detailsPhId: Int get() = R.string.ph_schedule_details
+    override val detailsId: Int get() = R.string.ph_schedule_details
 
     override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> = emptyList()
 

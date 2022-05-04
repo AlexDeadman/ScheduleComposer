@@ -16,7 +16,7 @@ data class Group(
     override val title get() = attributes.number
     override val iconId get() = R.drawable.ic_group
 
-    override val detailsPhId: Int get() = R.string.ph_group_details
+    override val detailsId: Int get() = R.string.ph_group_details
 
     override fun getDetails(relatives: List<Entity<out Attributes>>): List<String> =
         listOf(
