@@ -8,7 +8,7 @@ import com.mikepenz.fastadapter.binding.AbstractBindingItem
 
 class SelectItem(
     val title: String,
-    val iconId: Int? = null
+    val iconId: Int? = null,
 ) : AbstractBindingItem<SelectItemBinding>() {
 
     override var identifier: Long

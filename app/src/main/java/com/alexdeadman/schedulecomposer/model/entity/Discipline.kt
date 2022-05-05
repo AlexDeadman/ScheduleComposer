@@ -32,7 +32,7 @@ data class Discipline(
                 hoursIsw.toStringOrDash(),
                 hoursCons.toStringOrDash()
             ).plus(
-                relatives.single { it.id == relationships!!.syllabus.data.id }.title
+                relatives.find { it.id == relationships!!.syllabus.data.id }?.title ?: "???"
             )
         }
 

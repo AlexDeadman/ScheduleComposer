@@ -80,9 +80,9 @@
     <string name="table_empty">Таблица пуста</string>
     <string name="even">Чёт</string>
     <string name="odd">Нечёт</string>
-    <string name="lec">Лек</string>
-    <string name="lab">Лаб</string>
-    <string name="prac">Прак</string>
+    <string name="lection">Лекция</string>
+    <string name="lab">Лабораторная</string>
+    <string name="practice">Практика</string>
     <string name="isw">СРС</string>
     <string name="monday">Пн</string>
     <string name="tuesday">Вт</string>
@@ -104,4 +104,5 @@
     <string name="select_syllabus">Выберите учебный план</string>
     <string name="select_year">Выберите год</string>
     <string name="select_semester">Выберите семестр</string>
+    <string name="refresh">Обновить</string>
 </resources>

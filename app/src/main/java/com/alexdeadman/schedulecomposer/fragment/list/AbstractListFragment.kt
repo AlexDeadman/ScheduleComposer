@@ -153,7 +153,7 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
         binding.apply {
             when (mainState) {
                 is Loaded -> {
-                    if (relatedState != null && relatedState !is Loaded) {
+                    if (relatedState != null && relatedState is Error) {
                         mainViewModel.state.value = Error(R.string.unknown_error)
                         return
                     }
@@ -162,7 +162,10 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                     floatingActionButton.visibility = View.VISIBLE
 
                     FastAdapterDiffUtil[itemAdapter] = mainState.result.data.map { entity ->
-                        val relatives = relatedState?.let { (it as Loaded).result.data }
+                        val relatives = relatedState?.let {
+                            if (it is Loaded) it.result.data
+                            else emptyList()
+                        }
                         ListItem(entity, relatives)
                     }
 

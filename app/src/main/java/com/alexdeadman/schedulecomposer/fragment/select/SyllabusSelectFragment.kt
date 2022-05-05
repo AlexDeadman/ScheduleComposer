@@ -13,7 +13,7 @@ import com.alexdeadman.schedulecomposer.model.entity.Syllabus
 import com.alexdeadman.schedulecomposer.util.key.BundleKeys
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
-import com.alexdeadman.schedulecomposer.util.state.ListState
+import com.alexdeadman.schedulecomposer.util.state.ListState.*
 import com.alexdeadman.schedulecomposer.viewmodel.SyllabusesViewModel
 import com.alexdeadman.schedulecomposer.viewmodel.ViewModelFactory
 import com.google.android.material.color.MaterialColors
@@ -86,17 +86,32 @@ class SyllabusSelectFragment : Fragment() {
             viewModel.state
                 .filterNotNull()
                 .launchRepeatingCollect(viewLifecycleOwner) { state ->
-                    if (state is ListState.Loaded) {
-                        textViewMassage.visibility = View.GONE
+                    when (state) {
+                        is Loaded -> {
+                            textViewMassage.visibility = View.GONE
 
-                        syllabuses = state.result.data.map { it as Syllabus }
+                            syllabuses = state.result.data.map { it as Syllabus }
 
-                        FastAdapterDiffUtil[itemAdapter] = syllabuses
-                            .map { it.attributes.name }
-                            .distinct()
-                            .map { SelectItem(it, R.drawable.ic_syllabus) }
+                            FastAdapterDiffUtil[itemAdapter] = syllabuses
+                                .map { it.attributes.name }
+                                .distinct()
+                                .map { SelectItem(it, R.drawable.ic_syllabus) }
+                        }
+                        is NoItems -> {
+                            itemAdapter.clear()
+                            textViewMassage.apply {
+                                visibility = View.VISIBLE
+                                text = getString(R.string.list_empty)
+                            }
+                        }
+                        is Error -> {
+                            itemAdapter.clear()
+                            textViewMassage.apply {
+                                visibility = View.VISIBLE
+                                text = getString(state.messageStringId)
+                            }
+                        }
                     }
-
                     swipeRefreshLayout.apply {
                         visibility = View.VISIBLE
                         isRefreshing = false

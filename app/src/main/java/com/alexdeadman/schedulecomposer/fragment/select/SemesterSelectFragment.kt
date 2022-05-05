@@ -62,8 +62,7 @@ class SemesterSelectFragment : Fragment() {
                 adapter = fastAdapter
             }
 
-            FastAdapterDiffUtil[itemAdapter] = (1..8) // FIXME: hardcoded
-                .map { SelectItem(it.toString()) }
+            FastAdapterDiffUtil[itemAdapter] = (1..2).map { SelectItem(it.toString()) }
         }
     }
 

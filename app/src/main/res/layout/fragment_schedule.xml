@@ -17,19 +17,26 @@
         tools:text="@string/unknown_error"
         tools:visibility="visible" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <com.alexdeadman.schedulecomposer.util.CustomSmartTable
+        android:id="@+id/smartTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="?actionBarSize"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="visible"/>
 
-        <com.alexdeadman.schedulecomposer.util.CustomSmartTable
-            android:id="@+id/smartTable"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <TextView
+        android:id="@+id/text_view_schedule_item"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="?colorOnSecondary"
+        android:elevation="5dp"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:textAlignment="center"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="16sp"
+        tools:text="314, Y2432, Производственная практика, Говорова М.М., Лекция" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

@@ -26,7 +26,7 @@ data class Syllabus(
                 name,
                 code
             ).plus(
-                relatives.single { it.id == relationships!!.direction.data.id }.title
+                relatives.find { it.id == relationships!!.direction.data.id }?.title ?: "???"
             )
         }
 

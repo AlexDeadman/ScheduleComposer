@@ -1,10 +1,8 @@
 package com.alexdeadman.schedulecomposer.fragment
 
+import android.graphics.Paint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
+import android.view.*
 import androidx.fragment.app.Fragment
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapter.ScheduleItem
@@ -34,8 +32,15 @@ class ScheduleFragment : Fragment() {
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var viewModels: List<AbstractEntityViewModel>
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,31 +63,10 @@ class ScheduleFragment : Fragment() {
                     isShowXSequence = false
                     isShowYSequence = false
                 }
-                setOnColumnClickListener {
-
-                    if (it.column.columnName !in columnNames) return@setOnColumnClickListener
-
-                    val list = it.column.datas
-                        .distinct()
-                        .map { any -> any.toString() }
-
-                    // FIXME: memory leak etc
-                    AlertDialog.Builder(context)
-                        .setMultiChoiceItems(
-                            list.toTypedArray(),
-                            list.map { true }.toBooleanArray()
-                        ) { _, _, _ -> }
-                        .setTitle(it.column.columnName)
-                        .setNegativeButton(R.string.all, null)
-                        .setNeutralButton(R.string.clear, null)
-                        .setPositiveButton(R.string.apply, null)
-                        .create()
-                        .show()
-                }
                 setZoom(true, 1f, 0.25f)
             }
 
-            val viewModels = listOf(
+            viewModels = listOf(
                 ScheduleViewModel::class,
                 GroupsViewModel::class,
                 DisciplinesViewModel::class,
@@ -97,15 +81,16 @@ class ScheduleFragment : Fragment() {
             ) { stateArray -> stateArray.toList() }
                 .launchRepeatingCollect(viewLifecycleOwner) { stateList ->
                     when (val scheduleState = stateList.first()) {
-                        is Loaded -> {
-                            if (stateList.any { it !is Loaded }) {
+                        is Loaded, is NoItems -> {
+                            if (stateList.any { it is Error }) {
                                 viewModels.first().state.value = Error(R.string.unknown_error)
                                 return@launchRepeatingCollect
                             }
 
-                            textViewMassage.visibility = View.GONE
-
-                            val results = stateList.map { (it as Loaded).result.data }
+                            val results = stateList.map {
+                                if (it is Loaded) it.result.data
+                                else emptyList()
+                            }
 
                             val syllabus = requireArguments()
                                 .getParcelable<Syllabus>(BundleKeys.SYLLABUS)!!
@@ -117,13 +102,15 @@ class ScheduleFragment : Fragment() {
                             val groupIds = groups.map { it.id }
                             val schedules = results[0]
                                 .map { it as Schedule }
-                                .filter { it.attributes.semester == semester }
-                                .filter { it.relationships!!.group.data.id in groupIds }
+                                .filter {
+                                    it.attributes.semester == semester &&
+                                        it.relationships!!.group.data.id in groupIds
+                                }
 
-                            val disciplines = results[2].map { it as Discipline }
-                            val classrooms = results[3]
-                                .map { it as Classroom }
-                                .sortedBy { it.title }
+                            val disciplines = results[2]
+                                .map { it as Discipline }
+                                .filter { it.relationships!!.syllabus.data.id == syllabus.id }
+                            val classrooms = results[3].map { it as Classroom }
                             val lecturers = results[4].map { it as Lecturer }
 
                             val scheduleItems = schedules.map { sch ->
@@ -138,40 +125,34 @@ class ScheduleFragment : Fragment() {
                                 )
                             }
 
-                            columnNames.addAll(classrooms.map { it.title })
-
                             val weekTypeCount = 2
                             val dayCount = 6
                             val periodCount = 8
+                            val rowCount = weekTypeCount * dayCount * periodCount
 
-                            val tableDataData = Array(columnNames.size) { columnInd ->
-                                var dayInd = -1
-                                Array(weekTypeCount * dayCount * periodCount) { rowInd ->
+                            val weekColumnData = Array(rowCount) {
+                                getString(weekNameIds[it / dayCount / periodCount])
+                            }
 
-                                    val weekId = rowInd / dayCount / periodCount
-                                    val week = getString(weekNameIds[weekId])
+                            val periodColumnData = Array(rowCount) { it % periodCount + 1 }
 
-                                    val period = rowInd % periodCount + 1
+                            var dayInd = -1
+                            val dayColumnData = Array(rowCount) {
+                                if (periodColumnData[it] == 1) dayInd++
+                                val half = it / dayCount / periodCount
+                                getString(dayNameIds[dayInd - half * dayCount])
+                            }
 
-                                    if (period == 1) dayInd++
-                                    val day = getString(dayNameIds[dayInd - weekId * dayCount])
-
-                                    when (columnInd) {
-                                        0 -> week
-                                        1 -> day
-                                        2 -> period
-                                        else -> {
-                                            scheduleItems.find { sch ->
-                                                listOf(
-                                                    sch.week == week,
-                                                    sch.day == day,
-                                                    sch.period == period,
-                                                    sch.classroom == columnNames[columnInd]
-                                                ).all { it }
-                                            }?.let {
-                                                "${it.group} ${it.discipline}".ellipsize(20)
-                                            }
-                                        }
+                            val classroomTitles = classrooms.map { it.title }.sorted()
+                            val classroomColumnsData = Array(classroomTitles.size) { columnInd ->
+                                Array(rowCount) { rowInd ->
+                                    scheduleItems.find { sch ->
+                                        listOf(
+                                            sch.week == weekColumnData[rowInd],
+                                            sch.day == dayColumnData[rowInd],
+                                            sch.period == periodColumnData[rowInd],
+                                            sch.classroom == classroomTitles[columnInd]
+                                        ).all { it }
                                     }
                                 }
                             }
@@ -180,6 +161,14 @@ class ScheduleFragment : Fragment() {
                                 "${it.name.ellipsize(30)} > ${it.year} > $semester"
                             }
 
+                            columnNames.addAll(classroomTitles)
+                            val tableDataData = arrayOf(
+                                weekColumnData,
+                                dayColumnData,
+                                periodColumnData,
+                                *classroomColumnsData
+                            )
+
                             smartTable.apply {
                                 tableData = ArrayTableData.create(
                                     tableName,
@@ -187,20 +176,34 @@ class ScheduleFragment : Fragment() {
                                     tableDataData,
                                     TextDrawFormat()
                                 )
-                                tableData.columns
-                                    .take(3)
-                                    .onEach { it.isFixed = true }
-                                    .dropLast(1)
-                                    .forEach { it.isAutoMerge = true } // FIXME
-                            }
-                        }
-                        is NoItems -> {
-                            textViewMassage.apply {
+                                tableData.columns.run {
+                                    take(2).forEach { it.isAutoMerge = true } // FIXME
+                                    take(3).forEach { it.isFixed = true }
+                                    drop(3).forEach {
+                                        it.setOnColumnItemClickListener { column, _, _, position ->
+                                            val item = column.datas
+                                                .getOrNull(position) as ScheduleItem?
+                                            textViewScheduleItem.text = item?.title
+                                        }
+                                    }
+                                }
+
+                                setSelectFormat { canvas, rect, _, config ->
+                                    val paint = config.paint.apply {
+                                        color = MaterialColors.getColor(view, R.attr.colorPrimary)
+                                        style = Paint.Style.STROKE
+                                        strokeWidth = 6f
+                                    }
+                                    canvas.drawRect(rect, paint)
+                                }
+
                                 visibility = View.VISIBLE
-                                text = getString(R.string.table_empty)
                             }
+
+                            textViewMassage.visibility = View.GONE
                         }
                         is Error -> {
+                            smartTable.visibility = View.GONE
                             textViewMassage.apply {
                                 visibility = View.VISIBLE
                                 text = getString(scheduleState.messageStringId)
@@ -208,23 +211,20 @@ class ScheduleFragment : Fragment() {
                         }
                     }
                     progressBar.visibility = View.GONE
-                    swipeRefreshLayout.apply {
-                        /* tempo */ isEnabled = false /* tempo */
-                        visibility = View.VISIBLE
-                        isRefreshing = false
-                    }
                 }
-
-            swipeRefreshLayout.apply {
-                setOnRefreshListener {
-                    viewModels.first().getEntities()
-                }
-                setColorSchemeResources(android.R.color.white)
-                setProgressBackgroundColorSchemeColor(
-                    MaterialColors.getColor(view, R.attr.colorPrimary)
-                )
-            }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_refresh, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_refresh) {
+            binding.progressBar.visibility = View.VISIBLE
+            viewModels.first().getEntities()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

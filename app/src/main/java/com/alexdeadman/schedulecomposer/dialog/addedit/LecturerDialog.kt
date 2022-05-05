@@ -55,7 +55,10 @@ class LecturerDialog : AbstractAddEditDialog<FieldsLecturerBinding>() {
             tiLayouts.take(2).forEach { it.validate(validators) }
             tiLayoutPatronymic.validate(validators.drop(1))
 
-            val relatives = (relatedViewModel!!.state.value as ListState.Loaded).result.data
+            val relatives = relatedViewModel!!.state.value.let {
+                if (it is ListState.Loaded) it.result.data
+                else emptyList()
+            }
 
             toggleGroupDisciplines.apply {
                 selectableAmount = relatives.size

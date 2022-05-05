@@ -22,7 +22,7 @@ data class Group(
         listOf(
             attributes.studentsCount.toString()
         ).plus(
-            relatives.single { it.id == relationships!!.syllabus.data.id }.title
+            relatives.find { it.id == relationships!!.syllabus.data.id }?.title ?: "???"
         )
 
     data class GroupAttributes(

@@ -66,9 +66,9 @@ data class Schedule(
             R.string.saturday,
         )
         val typeIds = listOf(
-            R.string.lec,
+            R.string.lection,
             R.string.lab,
-            R.string.prac,
+            R.string.practice,
             R.string.isw,
         )
     }
