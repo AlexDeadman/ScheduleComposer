@@ -38,6 +38,7 @@ class YearSelectFragment : Fragment() {
 
             textViewSelect.text = getString(R.string.select_year)
             textViewMassage.visibility = View.GONE
+            progressBar.visibility = View.GONE
             swipeRefreshLayout.apply {
                 isEnabled = false
                 visibility = View.VISIBLE

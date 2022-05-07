@@ -112,6 +112,7 @@ class SyllabusSelectFragment : Fragment() {
                             }
                         }
                     }
+                    progressBar.visibility = View.GONE
                     swipeRefreshLayout.apply {
                         visibility = View.VISIBLE
                         isRefreshing = false

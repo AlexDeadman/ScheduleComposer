@@ -35,6 +35,7 @@ class SemesterSelectFragment : Fragment() {
 
             textViewSelect.text = getString(R.string.select_semester)
             textViewMassage.visibility = View.GONE
+            progressBar.visibility = View.GONE
             swipeRefreshLayout.apply {
                 visibility = View.VISIBLE
                 isEnabled = false
