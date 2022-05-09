@@ -64,7 +64,7 @@ class ScheduleFragment : Fragment() {
                     isShowXSequence = false
                     isShowYSequence = false
                 }
-                setZoom(true, 1f, 0.25f)
+                setZoom(true, 1f, 0.3f)
             }
 
             viewModels = listOf(

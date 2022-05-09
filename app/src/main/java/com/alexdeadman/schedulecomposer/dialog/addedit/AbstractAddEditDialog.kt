@@ -20,15 +20,15 @@ import kotlin.reflect.KClass
 
 abstract class AbstractAddEditDialog<T : ViewBinding> : BottomSheetDialogFragment() {
 
+    protected abstract val mainViewModelClass: KClass<out AbstractEntityViewModel>
+    protected abstract val relatedViewModelClass: KClass<out AbstractEntityViewModel>?
+    protected abstract val entityTitleId: Int
+
     private var _binding: DialogAddEditBinding? = null
     protected val binding get() = _binding!!
 
     private var _fieldsBinding: T? = null
     protected val fieldsBinding get() = _fieldsBinding!!
-
-    protected abstract val entityTitleId: Int
-    protected abstract val mainViewModelClass: KClass<out AbstractEntityViewModel>
-    protected abstract val relatedViewModelClass: KClass<out AbstractEntityViewModel>?
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -37,9 +37,8 @@ abstract class AbstractAddEditDialog<T : ViewBinding> : BottomSheetDialogFragmen
     protected var relatedViewModel: AbstractEntityViewModel? = null
 
     protected var currentEntity: Entity<out Attributes>? = null
-    protected var isNew: Boolean = true
 
-    abstract fun createBinding(inflater: LayoutInflater): T
+    protected abstract fun createBinding(inflater: LayoutInflater): T
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,14 +61,12 @@ abstract class AbstractAddEditDialog<T : ViewBinding> : BottomSheetDialogFragmen
 
         currentEntity = mainViewModel.currentEntity
 
-        isNew = currentEntity == null || currentEntity?.id == -1
-
-        binding.apply {
-            if (isNew) {
-                R.string.add_entity to R.string.add
-            } else {
-                R.string.edit_entity to R.string.edit
-            }.let {
+        if (currentEntity == null) {
+            R.string.add_entity to R.string.add
+        } else {
+            R.string.edit_entity to R.string.edit
+        }.let {
+            binding.apply {
                 textViewAddEdit.text = getString(it.first, getString(entityTitleId))
                 buttonAddEdit.text = getString(it.second)
             }
@@ -83,7 +80,7 @@ abstract class AbstractAddEditDialog<T : ViewBinding> : BottomSheetDialogFragmen
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         _fieldsBinding = null
+        _binding = null
     }
 }

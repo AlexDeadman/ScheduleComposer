@@ -1,6 +1,7 @@
 package com.alexdeadman.schedulecomposer.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.ListItemBinding
@@ -49,10 +50,13 @@ class ListItem(
                     setCompoundDrawablesRelativeWithIntrinsicBounds(iconId, 0, 0, 0)
                     text = title
                 }
-                textViewDetails.text = root.resources.getString(
-                    detailsId,
-                    *getDetails(relatives.orEmpty()).toTypedArray()
-                )
+                detailsId?.let {
+                    textViewDetails.apply {
+                        val details = getDetails(relatives.orEmpty())
+                        text = root.resources.getString(it, *details.toTypedArray())
+                        visibility = View.VISIBLE
+                    }
+                }
             }
         }
     }

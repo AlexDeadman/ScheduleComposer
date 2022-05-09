@@ -39,7 +39,6 @@
     <string name="ph_discipline_details">Название: %1$s\n\nКод: %2$s\nЦикл: %3$s\nВсего часов: %4$s\nЛек: %5$s\nПрак: %6$s\nЛаб: %7$s\nСРС: %8$s\nКонс: %9$s\n\nУчебный план: %10$s</string>
     <string name="ph_lecturer_details">Дисциплины:\n%s</string>
     <string name="ph_group_details">Количество студентов: %1$s\n\nУчебный план: %2$s</string>
-    <string name="ph_schedule_details">%s</string>
     <string name="ph_syllabus_details">Название специальности: %1$s\nКод специальности: %2$s\n\nНаправление: %3$s</string>
     <string name="todo" translatable="false">TODO</string>
     <string name="about">О приложении</string>

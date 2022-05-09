@@ -11,7 +11,7 @@ interface Entity<A : Attributes> {
     val title: String
 
     val iconId: Int
-    val detailsId: Int
+    val detailsId: Int?
 
     fun getDetails(relatives: List<Entity<out Attributes>>): List<String>
 }

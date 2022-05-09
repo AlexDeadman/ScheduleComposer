@@ -9,40 +9,40 @@ import kotlin.reflect.KClass
 class ClassroomListFragment : AbstractListFragment() {
     override val mainViewModelClass = ClassroomsViewModel::class
     override val relatedViewModelClass: KClass<out AbstractEntityViewModel>? = null
-    override val addEditDialog = ClassroomDialog()
+    override val addEditDialogClass = ClassroomDialog::class
 }
 
 @AndroidEntryPoint
 class DirectionListFragment : AbstractListFragment() {
     override val mainViewModelClass = DirectionsViewModel::class
     override val relatedViewModelClass: KClass<out AbstractEntityViewModel>? = null
-    override val addEditDialog = DirectionDialog()
+    override val addEditDialogClass = DirectionDialog::class
 }
 
 @AndroidEntryPoint
 class DisciplineListFragment : AbstractListFragment() {
     override val mainViewModelClass = DisciplinesViewModel::class
     override val relatedViewModelClass = SyllabusesViewModel::class
-    override val addEditDialog = DisciplineDialog()
+    override val addEditDialogClass = DisciplineDialog::class
 }
 
 @AndroidEntryPoint
 class GroupListFragment : AbstractListFragment() {
     override val mainViewModelClass = GroupsViewModel::class
     override val relatedViewModelClass = SyllabusesViewModel::class
-    override val addEditDialog = GroupDialog()
+    override val addEditDialogClass = GroupDialog::class
 }
 
 @AndroidEntryPoint
 class LecturerListFragment : AbstractListFragment() {
     override val mainViewModelClass = LecturersViewModel::class
-    override val relatedViewModelClass = DisciplinesViewModel::class
-    override val addEditDialog = LecturerDialog()
+    override val relatedViewModelClass: KClass<out AbstractEntityViewModel>? = null
+    override val addEditDialogClass = LecturerDialog::class
 }
 
 @AndroidEntryPoint
 class SyllabusListFragment : AbstractListFragment() {
     override val mainViewModelClass = SyllabusesViewModel::class
     override val relatedViewModelClass = DirectionsViewModel::class
-    override val addEditDialog = SyllabusDialog()
+    override val addEditDialogClass = SyllabusDialog::class
 }

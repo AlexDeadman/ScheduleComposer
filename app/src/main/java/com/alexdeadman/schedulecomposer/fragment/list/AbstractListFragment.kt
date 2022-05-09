@@ -33,8 +33,14 @@ import kotlin.reflect.KClass
 
 abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationListener {
 
+    protected abstract val mainViewModelClass: KClass<out AbstractEntityViewModel>
+    protected abstract val relatedViewModelClass: KClass<out AbstractEntityViewModel>?
+    protected abstract val addEditDialogClass: KClass<out AbstractAddEditDialog<out ViewBinding>>
+
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
+
+    private val confirmDialog = ConfirmDialog()
 
     private lateinit var itemListImpl: ComparableItemListImpl<ListItem>
     private lateinit var itemAdapter: ItemAdapter<ListItem>
@@ -46,12 +52,6 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-
-    private val confirmDialog = ConfirmDialog()
-
-    protected abstract val mainViewModelClass: KClass<out AbstractEntityViewModel>
-    protected abstract val relatedViewModelClass: KClass<out AbstractEntityViewModel>?
-    protected abstract val addEditDialog: AbstractAddEditDialog<out ViewBinding>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,11 +82,15 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
 
             fastAdapter = FastAdapter.with(itemAdapter).apply {
                 getSelectExtension().apply { isSelectable = true }
-                addClickListener({ binding: ListItemBinding -> binding.imageButtonEdit }) { _, _, _, item ->
+                addClickListener({ binding: ListItemBinding ->
+                    binding.imageButtonEdit
+                }) { _, _, _, item ->
                     mainViewModel.currentEntity = item.entity
-                    addEditDialog.show(childFragmentManager)
+                    addEditDialogClass.constructors.first().call().show(childFragmentManager)
                 }
-                addClickListener({ binding: ListItemBinding -> binding.imageButtonDelete }) { _, _, _, item ->
+                addClickListener({ binding: ListItemBinding ->
+                    binding.imageButtonDelete
+                }) { _, _, _, item ->
                     mainViewModel.currentEntity = item.entity
                     confirmDialog.show(childFragmentManager)
                 }
@@ -108,10 +112,11 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                 .filterNotNull()
                 .apply {
                     if (relatedViewModel != null) {
-                        combine(relatedViewModel!!.state.filterNotNull(), ::Pair)
-                            .launchRepeatingCollect(viewLifecycleOwner) {
-                                handleStates(it.first, it.second, savedInstanceState)
-                            }
+                        combine(relatedViewModel!!.state.filterNotNull()) { main, related ->
+                            main to related
+                        }.launchRepeatingCollect(viewLifecycleOwner) {
+                            handleStates(it.first, it.second, savedInstanceState)
+                        }
                     } else {
                         launchRepeatingCollect(viewLifecycleOwner) {
                             handleStates(it, null, savedInstanceState)
@@ -120,17 +125,15 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                 }
 
             swipeRefreshLayout.apply {
-                setOnRefreshListener {
-                    mainViewModel.getEntities()
-                }
+                setOnRefreshListener { mainViewModel.getEntities() }
                 setColorSchemeResources(android.R.color.white)
                 setProgressBackgroundColorSchemeColor(
                     MaterialColors.getColor(view, R.attr.colorPrimary)
                 )
             }
 
-            imageButtonExpandAll.setOnClickListener { toggleAll(expand = true) }
-            imageButtonCollapseAll.setOnClickListener { toggleAll(expand = false) }
+            imageButtonExpandAll.setOnClickListener { toggleAll(true) }
+            imageButtonCollapseAll.setOnClickListener { toggleAll(false) }
 
             val comparator = Comparator<ListItem> { left, right ->
                 left.entity.title.compareTo(right.entity.title, true)
@@ -140,7 +143,7 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
 
             floatingActionButton.setOnClickListener {
                 mainViewModel.currentEntity = null
-                addEditDialog.show(childFragmentManager)
+                addEditDialogClass.constructors.first().call().show(parentFragmentManager)
             }
         }
     }

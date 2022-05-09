@@ -59,13 +59,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="18dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="18dp"
             tools:ignore="ContentDescription">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="5dp"
                 android:background="?android:attr/listDivider" />
 
             <TextView
@@ -74,12 +73,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="16sp"
-                tools:text="@tools:sample/full_names" />
+                tools:text="@tools:sample/cities"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
                 android:gravity="end"
                 android:orientation="horizontal">
 

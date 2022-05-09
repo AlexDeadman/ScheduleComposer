@@ -45,6 +45,7 @@ class LoginFragment : Fragment() {
                         is Sending -> {
                             tiEditTextUsername.isEnabled = false
                             tiEditTextPassword.isEnabled = false
+                            buttonLogin.isEnabled = false
                             progressBar.visibility = View.VISIBLE
                             textViewError.visibility = View.INVISIBLE
                         }
@@ -56,6 +57,7 @@ class LoginFragment : Fragment() {
                         is Error -> {
                             tiEditTextUsername.isEnabled = true
                             tiEditTextPassword.isEnabled = true
+                            buttonLogin.isEnabled = true
                             progressBar.visibility = View.INVISIBLE
 
                             textViewError.apply {

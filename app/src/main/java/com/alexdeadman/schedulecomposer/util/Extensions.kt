@@ -17,19 +17,16 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-fun Any?.toStringOrDash() = this?.toString() ?: "—"
+fun Any?.toStringOrDash(): String = this?.toString() ?: "—"
 
-fun String.ellipsize(n: Int) = if (this.length < n) this else this.take(n).plus("...")
+fun String.ellipsize(n: Int): String = if (this.length < n) this else this.take(n).plus("...")
 
-fun Editable?.toStringOrNull() = if (this.isNullOrBlank()) null else this.toString()
+fun Editable?.toStringOrNull(): String? = if (this.isNullOrBlank()) null else this.toString()
 
 fun Fragment.provideViewModel(
     factory: ViewModelFactory,
     clazz: KClass<out AbstractEntityViewModel>,
-): AbstractEntityViewModel = ViewModelProvider(
-    requireActivity(),
-    factory.withClass(clazz)
-)[clazz.java]
+): AbstractEntityViewModel = ViewModelProvider(requireActivity(), factory)[clazz.java]
 
 fun DialogFragment.show(manager: FragmentManager) {
     show(manager, null)
@@ -50,12 +47,10 @@ fun TextInputLayout.validate(validators: Collection<(String) -> Pair<Boolean, St
     validate("", validators) {}
 }
 
-fun TextInputLayout.isValid(): Boolean {
-    return valid().also {
-        if (!it) editText?.run {
-            requestFocus()
-            (context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
-        }
+fun TextInputLayout.isValid(): Boolean = valid().also {
+    if (!it) editText?.run {
+        requestFocus()
+        val systemService = context?.getSystemService(Context.INPUT_METHOD_SERVICE)
+        (systemService as InputMethodManager).showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
     }
 }

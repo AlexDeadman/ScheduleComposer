@@ -1,31 +1,24 @@
 package com.alexdeadman.schedulecomposer.dialog.addedit
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.RelativeLayout
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FieldsLecturerBinding
-import com.alexdeadman.schedulecomposer.databinding.ThemedButtonBinding
 import com.alexdeadman.schedulecomposer.model.entity.Lecturer
 import com.alexdeadman.schedulecomposer.util.isValid
-import com.alexdeadman.schedulecomposer.util.state.ListState
-import com.alexdeadman.schedulecomposer.util.toStringOrNull
 import com.alexdeadman.schedulecomposer.util.validate
-import com.alexdeadman.schedulecomposer.viewmodel.DisciplinesViewModel
+import com.alexdeadman.schedulecomposer.viewmodel.AbstractEntityViewModel
 import com.alexdeadman.schedulecomposer.viewmodel.LecturersViewModel
-import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-import nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+import kotlin.reflect.KClass
 
 @AndroidEntryPoint
 class LecturerDialog : AbstractAddEditDialog<FieldsLecturerBinding>() {
 
     override val entityTitleId = R.string.lecturer
     override val mainViewModelClass = LecturersViewModel::class
-    override val relatedViewModelClass = DisciplinesViewModel::class
+    override val relatedViewModelClass: KClass<out AbstractEntityViewModel>? = null
 
     override fun createBinding(inflater: LayoutInflater) = FieldsLecturerBinding.inflate(inflater)
 
@@ -33,14 +26,6 @@ class LecturerDialog : AbstractAddEditDialog<FieldsLecturerBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         fieldsBinding.apply {
-
-//            currentEntity?.let {
-//                (it.attributes as Lecturer.LecturerAttributes).run {
-//                    tiEditTextName.setText(firstName)
-//                    tiEditTextSurname.setText(surname)
-//                    tiEditTextPatronymic.setText(patronymic)
-//                }
-//            }
 
             val regex = """\s*[a-zA-Zа-яА-ЯёЁ-]*\s*""".toRegex()
 
@@ -51,68 +36,44 @@ class LecturerDialog : AbstractAddEditDialog<FieldsLecturerBinding>() {
             )
 
             val tiLayouts = listOf(tiLayoutSurname, tiLayoutName, tiLayoutPatronymic)
+            val tiEditTexts = tiLayouts.map { it.editText!! }
 
-            tiLayouts.take(2).forEach { it.validate(validators) }
-            tiLayoutPatronymic.validate(validators.drop(1))
-
-            val relatives = relatedViewModel!!.state.value.let {
-                if (it is ListState.Loaded) it.result.data
-                else emptyList()
+            tiLayouts.run {
+                take(2).forEach { it.validate(validators) }
+                last().validate(validators.drop(1))
             }
 
-            toggleGroupDisciplines.apply {
-                selectableAmount = relatives.size
-                setOnSelectListener {
-                    if (selectedButtons.size != 0) {
-                        textViewDisciplinesError.visibility = View.INVISIBLE
-                    }
+            if (currentEntity != null) {
+                (currentEntity as Lecturer).attributes.let { attr ->
+                    tiEditTexts
+                        .zip(listOf(attr.surname, attr.firstName, attr.patronymic))
+                        .forEach { it.first.setText(it.second) }
                 }
             }
 
-            for (relative in relatives.sortedBy { it.title }) {
-                toggleGroupDisciplines.addView(
-                    ThemedButtonBinding.inflate(layoutInflater).root.apply {
-                        applyToTexts {
-                            it.apply {
-                                maxLines = 1
-                                ellipsize = TextUtils.TruncateAt.END
-                            }
-                        }
-                        text = relative.title
-                    },
-                    resources.run {
-                        RelativeLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            getDimensionPixelSize(R.dimen.themed_button_height)
-                        ).apply { topMargin = getDimensionPixelSize(R.dimen.themed_button_margin) }
-                    }
-                )
-            }
+            binding.apply {
+                buttonAddEdit.setOnClickListener {
+                    if (tiLayouts.all { it.isValid() }) {
+                        progressBar.visibility = View.VISIBLE
+                        isCancelable = false
+                        buttonAddEdit.isEnabled = false
+                        tiEditTexts.forEach { it.isEnabled = false }
 
-            val selectedButtons = toggleGroupDisciplines.selectedButtons
+                        view.postDelayed({ dismiss() }, 2000)
 
-            binding.buttonAddEdit.setOnClickListener {
-                if (tiLayouts.all(TextInputLayout::isValid)) {
-                    if (selectedButtons.isNotEmpty()) {
-                        binding.progressBar.visibility = View.VISIBLE
-
-                        val selectedTitles = selectedButtons.map(ThemedButton::text)
-                        Lecturer(
-                            currentEntity?.id ?: -1,
-                            Lecturer.LecturerAttributes(
-                                tiEditTextName.text.toString().trim(),
-                                tiEditTextSurname.text.toString().trim(),
-                                tiEditTextPatronymic.text.toStringOrNull()?.trim(),
-                                relatives.filter { it.title in selectedTitles }.map { it.id }
-                            )
-                        ).let {
-                            mainViewModel.run {
-                                if (isNew) postEntity(it)
-                                else putEntity(it)
-                            }
-                        }
-                    } else {
-                        textViewDisciplinesError.visibility = View.VISIBLE
+//                    Lecturer(
+//                        currentEntity?.id ?: -1,
+//                        Lecturer.LecturerAttributes(
+//                            tiEditTextName.text.toString().trim(),
+//                            tiEditTextSurname.text.toString().trim(),
+//                            tiEditTextPatronymic.text.toStringOrNull()?.trim(),
+//                        )
+//                    ).let {
+//                        mainViewModel.run {
+//                            if (isNew) postEntity(it)
+//                            else putEntity(it)
+//                        }
+//                    }
                     }
                 }
             }
