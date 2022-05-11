@@ -1,9 +1,11 @@
 package com.alexdeadman.schedulecomposer.di
 
+import com.alexdeadman.schedulecomposer.service.Api
 import com.alexdeadman.schedulecomposer.service.HeadersInterceptor
-import com.alexdeadman.schedulecomposer.service.ScApi
 import com.alexdeadman.schedulecomposer.service.UrlInterceptor
 import com.alexdeadman.schedulecomposer.viewmodel.ViewModelFactory
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,36 +21,32 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUrlInterceptor(): UrlInterceptor = UrlInterceptor()
-
-    @Provides
-    @Singleton
-    fun provideHeadersInterceptor(): HeadersInterceptor = HeadersInterceptor()
-
-    @Provides
-    @Singleton
-    fun provideHttpClient(
-        urlInterceptor: UrlInterceptor,
-        headersInterceptor: HeadersInterceptor,
-    ): OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(urlInterceptor)
-        .addInterceptor(headersInterceptor)
+    fun provideHttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(UrlInterceptor())
+        .addInterceptor(HeadersInterceptor())
 //        .addInterceptor(PlutoInterceptor())
         .build()
 
     @Provides
     @Singleton
-    fun provideRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
+    fun provideGson(): Gson = GsonBuilder().serializeNulls().create()
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .baseUrl("http://template/") // required
         .client(client)
         .build()
 
     @Provides
     @Singleton
-    fun provideScApi(retrofit: Retrofit): ScApi = retrofit.create(ScApi::class.java)
+    fun provideScApi(retrofit: Retrofit): Api = retrofit.create(Api::class.java)
 
     @Provides
     @Singleton
-    fun provideViewModelFactory(scApi: ScApi): ViewModelFactory = ViewModelFactory(scApi)
+    fun provideViewModelFactory(
+        gson: Gson,
+        api: Api,
+    ): ViewModelFactory = ViewModelFactory(gson, api)
 }

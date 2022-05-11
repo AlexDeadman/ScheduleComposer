@@ -7,7 +7,7 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
-interface ScApi {
+interface Api {
 
     companion object {
         private const val CLASSROOMS = "/api/classrooms/"

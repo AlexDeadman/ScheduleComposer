@@ -11,11 +11,10 @@ import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FragmentLoginBinding
 import com.alexdeadman.schedulecomposer.util.isValid
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
-import com.alexdeadman.schedulecomposer.util.state.LoginState.*
+import com.alexdeadman.schedulecomposer.util.state.SendingState
 import com.alexdeadman.schedulecomposer.util.validate
 import com.alexdeadman.schedulecomposer.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -38,35 +37,34 @@ class LoginFragment : Fragment() {
         binding.apply {
             val viewModel: LoginViewModel by viewModels()
 
-            viewModel.state
-                .filterNotNull()
-                .launchRepeatingCollect(viewLifecycleOwner) { state ->
-                    when (state) {
-                        is Sending -> {
-                            tiEditTextUsername.isEnabled = false
-                            tiEditTextPassword.isEnabled = false
-                            buttonLogin.isEnabled = false
-                            progressBar.visibility = View.VISIBLE
-                            textViewError.visibility = View.INVISIBLE
-                        }
-                        is Success -> {
-                            findNavController().navigate(
-                                R.id.action_loginFragment_to_mainFragment
-                            )
-                        }
-                        is Error -> {
-                            tiEditTextUsername.isEnabled = true
-                            tiEditTextPassword.isEnabled = true
-                            buttonLogin.isEnabled = true
-                            progressBar.visibility = View.INVISIBLE
+            viewModel.state.launchRepeatingCollect(viewLifecycleOwner) { state ->
+                when (state) {
+                    is SendingState.Default -> {}
+                    is SendingState.Sending -> {
+                        tiEditTextUsername.isEnabled = false
+                        tiEditTextPassword.isEnabled = false
+                        buttonLogin.isEnabled = false
+                        progressBar.visibility = View.VISIBLE
+                        textViewError.visibility = View.INVISIBLE
+                    }
+                    is SendingState.Success -> {
+                        findNavController().navigate(
+                            R.id.action_loginFragment_to_mainFragment
+                        )
+                    }
+                    is SendingState.Error -> {
+                        tiEditTextUsername.isEnabled = true
+                        tiEditTextPassword.isEnabled = true
+                        buttonLogin.isEnabled = true
+                        progressBar.visibility = View.INVISIBLE
 
-                            textViewError.apply {
-                                text = getString(state.messageStringId)
-                                visibility = View.VISIBLE
-                            }
+                        textViewError.apply {
+                            text = getString(state.messageStringId)
+                            visibility = View.VISIBLE
                         }
                     }
                 }
+            }
 
             tiLayoutUsername.validate(listOf(
                 { it.isNotBlank() to getString(R.string.required_field) },

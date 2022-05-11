@@ -15,7 +15,7 @@ import com.alexdeadman.schedulecomposer.util.ellipsize
 import com.alexdeadman.schedulecomposer.util.key.BundleKeys
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
-import com.alexdeadman.schedulecomposer.util.state.ListState.*
+import com.alexdeadman.schedulecomposer.util.state.ListState
 import com.alexdeadman.schedulecomposer.viewmodel.*
 import com.bin.david.form.data.CellRange
 import com.bin.david.form.data.format.draw.TextDrawFormat
@@ -77,23 +77,24 @@ class ScheduleFragment : Fragment() {
                 provideViewModel(viewModelFactory, it)
             }
 
-            combine(viewModels.map { it.state.filterNotNull() }) { stateArray ->
+            combine(viewModels.map { it.listStateFlow.filterNotNull() }) { stateArray ->
                 stateArray.toList()
             }.launchRepeatingCollect(viewLifecycleOwner) { stateList ->
                 when (val scheduleState = stateList.first()) {
-                    is Loaded, is NoItems -> {
-                        if (stateList.any { it is Error }) {
-                            viewModels.first().state.value = Error(R.string.unknown_error)
+                    is ListState.Loaded, is ListState.NoItems -> {
+                        if (stateList.any { it is ListState.Error }) {
+                            viewModels.first().listStateFlow.value = ListState.Error(R.string.unknown_error)
                             return@launchRepeatingCollect
                         }
 
                         val results = stateList.map {
-                            if (it is Loaded) it.result.data
+                            if (it is ListState.Loaded) it.result.data
                             else emptyList()
                         }
 
                         val syllabus = requireArguments()
                             .getParcelable<Syllabus>(BundleKeys.SYLLABUS)!!
+
                         val groups = results[1]
                             .map { it as Group }
                             .filter { it.relationships!!.syllabus.data.id == syllabus.id }
@@ -110,14 +111,15 @@ class ScheduleFragment : Fragment() {
                         val disciplines = results[2]
                             .map { it as Discipline }
                             .filter { it.relationships!!.syllabus.data.id == syllabus.id }
+
                         val classrooms = results[3].map { it as Classroom }
                         val lecturers = results[4].map { it as Lecturer }
 
-                        val scheduleItems = schedules.map { sch ->
-                            val rel = sch.relationships!!
+                        val scheduleItems = schedules.map { schedule ->
+                            val rel = schedule.relationships!!
                             ScheduleItem(
                                 requireContext(),
-                                sch,
+                                schedule,
                                 groups.find { it.id == rel.group.data.id }?.title,
                                 disciplines.find { it.id == rel.discipline.data.id }?.title,
                                 lecturers.find { it.id == rel.lecturer.data.id }?.shortTitle,
@@ -139,19 +141,19 @@ class ScheduleFragment : Fragment() {
                         var dayInd = -1
                         val dayColumnData = Array(rowCount) {
                             if (periodColumnData[it] == 1) dayInd++
-                            val half = it / dayCount / periodCount // 0 or 1
+                            val half = it / dayCount / periodCount
                             getString(dayNameIds[dayInd - half * dayCount])
                         }
 
                         val classroomTitles = classrooms.map { it.title }.sorted()
                         val classroomColumnsData = Array(classroomTitles.size) { columnInd ->
                             Array(rowCount) { rowInd ->
-                                scheduleItems.find { sch ->
+                                scheduleItems.find { item ->
                                     listOf(
-                                        sch.week == weekColumnData[rowInd],
-                                        sch.day == dayColumnData[rowInd],
-                                        sch.period == periodColumnData[rowInd],
-                                        sch.classroom == classroomTitles[columnInd]
+                                        item.week == weekColumnData[rowInd],
+                                        item.day == dayColumnData[rowInd],
+                                        item.period == periodColumnData[rowInd],
+                                        item.classroom == classroomTitles[columnInd]
                                     ).all { it }
                                 }
                             }
@@ -180,10 +182,9 @@ class ScheduleFragment : Fragment() {
                                     .onEach { it.isAutoMerge = true }
                                     .map { column -> column.parseRanges().map { it as IntArray } }
 
-                                userCellRange = columnsRanges.map { column ->
+                                userCellRange = columnsRanges.mapIndexed { index, column ->
                                     column.map { range ->
-                                        val columnIndex = columnsRanges.indexOf(column)
-                                        CellRange(range[0], range[1], columnIndex, columnIndex)
+                                        CellRange(range[0], range[1], index, index)
                                     }
                                 }.flatten()
                             }
@@ -199,12 +200,14 @@ class ScheduleFragment : Fragment() {
                             }
 
                             setSelectFormat { canvas, rect, _, config ->
-                                val paint = config.paint.apply {
-                                    color = MaterialColors.getColor(view, R.attr.colorPrimary)
-                                    style = Paint.Style.STROKE
-                                    strokeWidth = 6f
-                                }
-                                canvas.drawRect(rect, paint)
+                                canvas.drawRect(
+                                    rect,
+                                    config.paint.apply {
+                                        color = MaterialColors.getColor(view, R.attr.colorPrimary)
+                                        style = Paint.Style.STROKE
+                                        strokeWidth = 6f
+                                    }
+                                )
                             }
 
                             visibility = View.VISIBLE
@@ -212,7 +215,7 @@ class ScheduleFragment : Fragment() {
 
                         textViewMassage.visibility = View.GONE
                     }
-                    is Error -> {
+                    is ListState.Error -> {
                         smartTable.visibility = View.GONE
                         textViewMassage.apply {
                             visibility = View.VISIBLE

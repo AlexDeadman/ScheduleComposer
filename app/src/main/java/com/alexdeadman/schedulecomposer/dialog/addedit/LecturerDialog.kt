@@ -3,10 +3,14 @@ package com.alexdeadman.schedulecomposer.dialog.addedit
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FieldsLecturerBinding
 import com.alexdeadman.schedulecomposer.model.entity.Lecturer
 import com.alexdeadman.schedulecomposer.util.isValid
+import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
+import com.alexdeadman.schedulecomposer.util.state.SendingState
+import com.alexdeadman.schedulecomposer.util.toStringOrNull
 import com.alexdeadman.schedulecomposer.util.validate
 import com.alexdeadman.schedulecomposer.viewmodel.AbstractEntityViewModel
 import com.alexdeadman.schedulecomposer.viewmodel.LecturersViewModel
@@ -52,28 +56,46 @@ class LecturerDialog : AbstractAddEditDialog<FieldsLecturerBinding>() {
             }
 
             binding.apply {
+                mainViewModel.sendingStateFlow.launchRepeatingCollect(viewLifecycleOwner) { state ->
+                    when (state) {
+                        is SendingState.Default -> {}
+                        is SendingState.Sending -> {
+                            progressBar.visibility = View.VISIBLE
+                            isCancelable = false
+                            buttonAddEdit.isEnabled = false
+                            tiEditTexts.forEach { it.isEnabled = false }
+                        }
+                        is SendingState.Success -> dismiss()
+                        is SendingState.Error -> {
+                            progressBar.visibility = View.INVISIBLE
+                            isCancelable = true
+                            buttonAddEdit.isEnabled = true
+                            tiEditTexts.forEach { it.isEnabled = true }
+
+                            Toast.makeText(
+                                context,
+                                getString(state.messageStringId),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+
                 buttonAddEdit.setOnClickListener {
                     if (tiLayouts.all { it.isValid() }) {
-                        progressBar.visibility = View.VISIBLE
-                        isCancelable = false
-                        buttonAddEdit.isEnabled = false
-                        tiEditTexts.forEach { it.isEnabled = false }
-
-                        view.postDelayed({ dismiss() }, 2000)
-
-//                    Lecturer(
-//                        currentEntity?.id ?: -1,
-//                        Lecturer.LecturerAttributes(
-//                            tiEditTextName.text.toString().trim(),
-//                            tiEditTextSurname.text.toString().trim(),
-//                            tiEditTextPatronymic.text.toStringOrNull()?.trim(),
-//                        )
-//                    ).let {
-//                        mainViewModel.run {
-//                            if (isNew) postEntity(it)
-//                            else putEntity(it)
-//                        }
-//                    }
+                        Lecturer(
+                            currentEntity?.id ?: -1,
+                            Lecturer.LecturerAttributes(
+                                tiEditTextName.text.toString().trim(),
+                                tiEditTextSurname.text.toString().trim(),
+                                tiEditTextPatronymic.text.toStringOrNull()?.trim(),
+                            )
+                        ).let {
+                            mainViewModel.run {
+                                if (currentEntity == null) postEntity(it)
+                                else putEntity(it)
+                            }
+                        }
                     }
                 }
             }

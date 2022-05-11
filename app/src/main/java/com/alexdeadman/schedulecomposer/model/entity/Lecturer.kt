@@ -8,7 +8,7 @@ data class Lecturer(
     override var type: String,
     override var id: Int,
     override var attributes: LecturerAttributes,
-) : Entity<Lecturer.LecturerAttributes>{
+) : Entity<Lecturer.LecturerAttributes> {
 
     constructor(id: Int, attributes: LecturerAttributes) : this("Lecturer", id, attributes)
 

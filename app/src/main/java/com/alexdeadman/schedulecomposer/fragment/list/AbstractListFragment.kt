@@ -15,7 +15,7 @@ import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
 import com.alexdeadman.schedulecomposer.util.show
 import com.alexdeadman.schedulecomposer.util.state.ListState
-import com.alexdeadman.schedulecomposer.util.state.ListState.*
+import com.alexdeadman.schedulecomposer.util.state.SendingState
 import com.alexdeadman.schedulecomposer.viewmodel.AbstractEntityViewModel
 import com.alexdeadman.schedulecomposer.viewmodel.ViewModelFactory
 import com.google.android.material.color.MaterialColors
@@ -86,7 +86,8 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                     binding.imageButtonEdit
                 }) { _, _, _, item ->
                     mainViewModel.currentEntity = item.entity
-                    addEditDialogClass.constructors.first().call().show(childFragmentManager)
+                    addEditDialogClass.constructors
+                        .first().call().show(childFragmentManager)
                 }
                 addClickListener({ binding: ListItemBinding ->
                     binding.imageButtonDelete
@@ -108,11 +109,11 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
 
             mainViewModel.comparator?.let { itemListImpl.withComparator(it, true) }
 
-            mainViewModel.state
+            mainViewModel.listStateFlow
                 .filterNotNull()
-                .apply {
+                .run {
                     if (relatedViewModel != null) {
-                        combine(relatedViewModel!!.state.filterNotNull()) { main, related ->
+                        combine(relatedViewModel!!.listStateFlow.filterNotNull()) { main, related ->
                             main to related
                         }.launchRepeatingCollect(viewLifecycleOwner) {
                             handleStates(it.first, it.second, savedInstanceState)
@@ -123,6 +124,13 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                         }
                     }
                 }
+
+            mainViewModel.sendingStateFlow.launchRepeatingCollect(viewLifecycleOwner) {
+                if (it is SendingState.Success) {
+                    progressBar.visibility = View.VISIBLE
+                    mainViewModel.getEntities()
+                }
+            }
 
             swipeRefreshLayout.apply {
                 setOnRefreshListener { mainViewModel.getEntities() }
@@ -143,7 +151,8 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
 
             floatingActionButton.setOnClickListener {
                 mainViewModel.currentEntity = null
-                addEditDialogClass.constructors.first().call().show(parentFragmentManager)
+                addEditDialogClass.constructors
+                    .first().call().show(parentFragmentManager)
             }
         }
     }
@@ -155,9 +164,9 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
     ) {
         binding.apply {
             when (mainState) {
-                is Loaded -> {
-                    if (relatedState != null && relatedState is Error) {
-                        mainViewModel.state.value = Error(R.string.unknown_error)
+                is ListState.Loaded -> {
+                    if (relatedState != null && relatedState is ListState.Error) {
+                        mainViewModel.listStateFlow.value = ListState.Error(R.string.unknown_error)
                         return
                     }
 
@@ -166,7 +175,7 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
 
                     FastAdapterDiffUtil[itemAdapter] = mainState.result.data.map { entity ->
                         val relatives = relatedState?.let {
-                            if (it is Loaded) it.result.data
+                            if (it is ListState.Loaded) it.result.data
                             else emptyList()
                         }
                         ListItem(entity, relatives)
@@ -174,7 +183,7 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
 
                     fastAdapter.withSavedInstanceState(savedInstanceState)
                 }
-                is NoItems -> {
+                is ListState.NoItems -> {
                     itemAdapter.clear()
                     textViewMassage.apply {
                         visibility = View.VISIBLE
@@ -182,7 +191,7 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                     }
                     floatingActionButton.visibility = View.VISIBLE
                 }
-                is Error -> {
+                is ListState.Error -> {
                     itemAdapter.clear()
                     textViewMassage.apply {
                         visibility = View.VISIBLE
