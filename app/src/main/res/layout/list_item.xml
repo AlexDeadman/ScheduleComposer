@@ -73,9 +73,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="16sp"
-                tools:text="@tools:sample/cities"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:text="@tools:sample/cities"
+                tools:visibility="visible" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -94,9 +94,9 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_marginVertical="2dp"
-                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="2dp"
                     android:background="?android:attr/listDivider" />
 
                 <ImageButton

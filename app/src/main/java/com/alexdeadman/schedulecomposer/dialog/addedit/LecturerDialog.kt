@@ -93,7 +93,10 @@ class LecturerDialog : AbstractAddEditDialog<FieldsLecturerBinding>() {
                         ).let {
                             mainViewModel.run {
                                 if (currentEntity == null) postEntity(it)
-                                else putEntity(it)
+                                else {
+                                    if(currentEntity != it) putEntity(it)
+                                    else dismiss()
+                                }
                             }
                         }
                     }

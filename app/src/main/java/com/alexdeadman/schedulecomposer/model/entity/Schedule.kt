@@ -31,7 +31,14 @@ data class Schedule(
         var discipline: Int? = null,
         var group: Int? = null,
         var classroom: Int? = null,
-    ) : Attributes
+    ) : Attributes {
+        constructor(
+            semester: Int,
+            evenWeek: Boolean,
+            weekDay: Int,
+            period: Int,
+        ) : this(semester, -1, evenWeek, weekDay, period)
+    }
 
     data class ScheduleRelationships(
         var lecturer: Lecturer,

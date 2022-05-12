@@ -10,6 +10,7 @@
     <string name="lecturer">преподавателя</string>
     <string name="title_settings">Настройки</string>
     <string name="title_schedule">Расписание</string>
+    <string name="schedule">расписания</string>
     <string name="title_disciplines">Дисциплины</string>
     <string name="discipline">дисциплины</string>
     <string name="title_groups">Группы</string>
@@ -90,7 +91,6 @@
     <string name="friday">Пт</string>
     <string name="saturday">Сб</string>
     <string name="unknown">\???</string>
-
     <string name="column_semester">Семестер</string>
     <string name="column_group">Группа</string>
     <string name="column_week">Неделя</string>
@@ -104,4 +104,8 @@
     <string name="select_year">Выберите год</string>
     <string name="select_semester">Выберите семестр</string>
     <string name="refresh">Обновить</string>
+    <string name="si_group">Группа:</string>
+    <string name="si_discipline">Дисциплина:</string>
+    <string name="si_lecturer">Преподаватель:</string>
+    <string name="si_type">Тип:</string>
 </resources>

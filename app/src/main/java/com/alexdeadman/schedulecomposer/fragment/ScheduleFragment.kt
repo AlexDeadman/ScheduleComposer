@@ -7,14 +7,17 @@ import androidx.fragment.app.Fragment
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapter.ScheduleItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentScheduleBinding
+import com.alexdeadman.schedulecomposer.dialog.addedit.ScheduleDialog
 import com.alexdeadman.schedulecomposer.model.entity.*
 import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.columnNameIds
 import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.dayNameIds
+import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.typeIds
 import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.weekNameIds
 import com.alexdeadman.schedulecomposer.util.ellipsize
 import com.alexdeadman.schedulecomposer.util.key.BundleKeys
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
+import com.alexdeadman.schedulecomposer.util.show
 import com.alexdeadman.schedulecomposer.util.state.ListState
 import com.alexdeadman.schedulecomposer.viewmodel.*
 import com.bin.david.form.data.CellRange
@@ -64,7 +67,7 @@ class ScheduleFragment : Fragment() {
                     isShowXSequence = false
                     isShowYSequence = false
                 }
-                setZoom(true, 1f, 0.3f)
+                setZoom(true, 1f, 0.25f)
             }
 
             viewModels = listOf(
@@ -83,7 +86,8 @@ class ScheduleFragment : Fragment() {
                 when (val scheduleState = stateList.first()) {
                     is ListState.Loaded, is ListState.NoItems -> {
                         if (stateList.any { it is ListState.Error }) {
-                            viewModels.first().listStateFlow.value = ListState.Error(R.string.unknown_error)
+                            viewModels.first().listStateFlow.value =
+                                ListState.Error(R.string.unknown_error)
                             return@launchRepeatingCollect
                         }
 
@@ -115,11 +119,19 @@ class ScheduleFragment : Fragment() {
                         val classrooms = results[3].map { it as Classroom }
                         val lecturers = results[4].map { it as Lecturer }
 
+                        val types = typeIds.map { getString(it) }
+                        val weekNames = weekNameIds.map { getString(it) }
+                        val dayNames = dayNameIds.map { getString(it) }
+
                         val scheduleItems = schedules.map { schedule ->
                             val rel = schedule.relationships!!
+                            val attr = schedule.attributes
                             ScheduleItem(
-                                requireContext(),
                                 schedule,
+                                types[attr.type - 1],
+                                weekNames[if (attr.evenWeek) 0 else 1],
+                                dayNames[attr.weekDay - 1],
+                                attr.period,
                                 groups.find { it.id == rel.group.data.id }?.title,
                                 disciplines.find { it.id == rel.discipline.data.id }?.title,
                                 lecturers.find { it.id == rel.lecturer.data.id }?.shortTitle,
@@ -133,7 +145,7 @@ class ScheduleFragment : Fragment() {
                         val rowCount = weekTypeCount * dayCount * periodCount
 
                         val weekColumnData = Array(rowCount) {
-                            getString(weekNameIds[it / dayCount / periodCount])
+                            weekNames[it / dayCount / periodCount]
                         }
 
                         val periodColumnData = Array(rowCount) { it % periodCount + 1 }
@@ -142,7 +154,7 @@ class ScheduleFragment : Fragment() {
                         val dayColumnData = Array(rowCount) {
                             if (periodColumnData[it] == 1) dayInd++
                             val half = it / dayCount / periodCount
-                            getString(dayNameIds[dayInd - half * dayCount])
+                            dayNames[dayInd - half * dayCount]
                         }
 
                         val classroomTitles = classrooms.map { it.title }.sorted()
@@ -191,10 +203,34 @@ class ScheduleFragment : Fragment() {
 
                             tableData.columns.run {
                                 take(3).forEach { it.isFixed = true }
-                                drop(3).forEach {
-                                    it.setOnColumnItemClickListener { column, _, _, position ->
-                                        val item = column.datas.getOrNull(position) as ScheduleItem?
-                                        textViewScheduleItem.text = item?.title
+                                drop(3).forEach { column ->
+                                    column.setOnColumnItemClickListener { col, _, _, pos ->
+
+                                        val item = col.datas.getOrNull(pos) as ScheduleItem?
+                                        viewModels.first().currentEntity =
+                                            item?.schedule ?: Schedule(
+                                                -1,
+                                                Schedule.ScheduleAttributes(
+                                                    semester,
+                                                    weekNames.indexOf(weekColumnData[pos]) == 0,
+                                                    dayNames.indexOf(dayColumnData[pos]) + 1,
+                                                    periodColumnData[pos]
+                                                )
+                                            )
+
+                                        if (item != null) {
+                                            item.let {
+                                                textViewSiGroup.text = it.group
+                                                textViewSiDiscipline.text = it.discipline
+                                                textViewSiLecturer.text = it.lecturer
+                                                textViewSiType.text = it.type
+                                            }
+                                            imageButtonAdd.visibility = View.GONE
+                                            linearLayoutSi.visibility = View.VISIBLE
+                                        } else {
+                                            imageButtonAdd.visibility = View.VISIBLE
+                                            linearLayoutSi.visibility = View.GONE
+                                        }
                                     }
                                 }
                             }
@@ -225,6 +261,11 @@ class ScheduleFragment : Fragment() {
                 }
                 progressBar.visibility = View.GONE
             }
+
+            listOf(imageButtonAdd, imageButtonEdit).forEach {
+                it.setOnClickListener { ScheduleDialog().show(childFragmentManager) }
+            }
+
         }
     }
 

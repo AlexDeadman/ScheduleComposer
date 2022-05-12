@@ -61,7 +61,7 @@ abstract class AbstractAddEditDialog<T : ViewBinding> : BottomSheetDialogFragmen
 
         currentEntity = mainViewModel.currentEntity
 
-        if (currentEntity == null) {
+        if (currentEntity == null || currentEntity?.id == -1) {
             R.string.add_entity to R.string.add
         } else {
             R.string.edit_entity to R.string.edit
