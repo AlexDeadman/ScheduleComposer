@@ -37,7 +37,7 @@
     <string name="theme">Тема</string>
     <string name="ph_classroom_details">Тип: %1$s\nКоличество мест: %2$s</string>
     <string name="ph_direction_details">Название: %s</string>
-    <string name="ph_discipline_details">Название: %1$s\n\nКод: %2$s\nЦикл: %3$s\nВсего часов: %4$s\nЛек: %5$s\nПрак: %6$s\nЛаб: %7$s\nСРС: %8$s\nКонс: %9$s\n\nУчебный план: %10$s</string>
+    <string name="ph_discipline_details">Название: %1$s\n\nКод: %2$s\nЦикл: %3$s\nВсего часов: %4$s\nЛекции: %5$s\nПрактики: %6$s\nЛабораторные: %7$s\nСРС: %8$s\nКонсультации: %9$s\n\nУчебный план: %10$s</string>
     <string name="ph_lecturer_details">Дисциплины:\n%s</string>
     <string name="ph_group_details">Количество студентов: %1$s\n\nУчебный план: %2$s</string>
     <string name="ph_syllabus_details">Название специальности: %1$s\nКод специальности: %2$s\n\nНаправление: %3$s</string>
@@ -78,28 +78,45 @@
     <string name="specialty_name">Название специальности</string>
     <string name="field_direction">Направление</string>
     <string name="table_empty">Таблица пуста</string>
-    <string name="even">Чёт</string>
-    <string name="odd">Нечёт</string>
+
+    <string name="even_short">Чёт</string>
+    <string name="odd_short">Нечёт</string>
+
+    <string name="even">Чётная</string>
+    <string name="odd">Нечётная</string>
+
     <string name="lection">Лекция</string>
     <string name="lab">Лабораторная</string>
     <string name="practice">Практика</string>
     <string name="isw">СРС</string>
-    <string name="monday">Пн</string>
-    <string name="tuesday">Вт</string>
-    <string name="wednesday">Ср</string>
-    <string name="thursday">Чт</string>
-    <string name="friday">Пт</string>
-    <string name="saturday">Сб</string>
+
+    <string name="mon">Пн</string>
+    <string name="tue">Вт</string>
+    <string name="wed">Ср</string>
+    <string name="thu">Чт</string>
+    <string name="fri">Пт</string>
+    <string name="sat">Сб</string>
+
+    <string name="monday">Понедельник</string>
+    <string name="tuesday">Вторник</string>
+    <string name="wednesday">Среда</string>
+    <string name="thursday">Четверг</string>
+    <string name="friday">Пятница</string>
+    <string name="saturday">Суббота</string>
+
     <string name="unknown">\???</string>
-    <string name="column_semester">Семестер</string>
-    <string name="column_group">Группа</string>
+
     <string name="column_week">Неделя</string>
     <string name="column_day">День</string>
     <string name="column_period">Пара</string>
+
+    <string name="column_semester">Семестер</string>
+    <string name="column_group">Группа</string>
     <string name="column_discipline">Дисциплина</string>
     <string name="column_classroom">Аудитория</string>
     <string name="column_lecturer">Преподаватель</string>
-    <string name="column_type">Тип</string>
+    <string name="column_type">Тип занятия</string>
+
     <string name="select_syllabus">Выберите учебный план</string>
     <string name="select_year">Выберите год</string>
     <string name="select_semester">Выберите семестр</string>
@@ -108,4 +125,14 @@
     <string name="si_discipline">Дисциплина:</string>
     <string name="si_lecturer">Преподаватель:</string>
     <string name="si_type">Тип:</string>
+    <string name="field_week">Неделя:</string>
+    <string name="field_day">День:</string>
+    <string name="field_period">Пара:</string>
+    <string name="field_classroom">Аудитория:</string>
+    <string name="field_group">Группа</string>
+    <string name="field_discipline">Дисциплина</string>
+    <string name="field_lecturer">Преподаватель</string>
+    <string name="field_type">Тип занятия</string>
+    <string name="exit_confirmation">Вы уверены, что хотите выйти?</string>
+    <string name="delete_confirmation">Вы уверены, что хотите удалить \"%s\" ?</string>
 </resources>

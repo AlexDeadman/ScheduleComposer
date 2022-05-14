@@ -41,11 +41,10 @@
             tools:ignore="ContentDescription">
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginVertical="5dp"
-                android:layout_marginHorizontal="10dp"
-                android:id="@+id/linear_layout_si"
+                android:id="@+id/linear_layout_schedule_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 tools:visibility="visible">
@@ -62,11 +61,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="@string/si_group"
-                            android:textAlignment="viewEnd"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/text_view_si_group"
+                            android:id="@+id/text_view_group"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -83,11 +81,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="@string/si_discipline"
-                            android:textAlignment="viewEnd"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/text_view_si_discipline"
+                            android:id="@+id/text_view_discipline"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -103,11 +100,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="@string/si_lecturer"
-                            android:textAlignment="viewEnd"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/text_view_si_lecturer"
+                            android:id="@+id/text_view_lecturer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -124,11 +120,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:text="@string/si_type"
-                            android:textAlignment="viewEnd"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/text_view_si_type"
+                            android:id="@+id/text_view_type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -154,9 +149,9 @@
                         android:src="@drawable/ic_edit" />
 
                     <View
-                        android:layout_marginVertical="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginVertical="15dp"
                         android:background="?android:attr/listDivider" />
 
                     <ImageButton

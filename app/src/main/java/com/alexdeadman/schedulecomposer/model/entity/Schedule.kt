@@ -11,7 +11,10 @@ data class Schedule(
     override var relationships: ScheduleRelationships? = null,
 ) : Entity<Schedule.ScheduleAttributes>, Relatable<Schedule.ScheduleRelationships> {
 
-    constructor(id: Int, attributes: ScheduleAttributes) : this("Schedule", id, attributes)
+    constructor(
+        attributes: ScheduleAttributes,
+        relationships: ScheduleRelationships?,
+    ) : this("Schedule", -1, attributes, relationships)
 
     override val title get() = "Schedule"
     override val iconId get() = R.drawable.ic_schedule
@@ -31,6 +34,7 @@ data class Schedule(
         var discipline: Int? = null,
         var group: Int? = null,
         var classroom: Int? = null,
+        var syllabus: Int? = null,
     ) : Attributes {
         constructor(
             semester: Int,
@@ -41,17 +45,28 @@ data class Schedule(
     }
 
     data class ScheduleRelationships(
+        var syllabus: Syllabus,
         var lecturer: Lecturer,
         var discipline: Discipline,
         var group: Group,
         var classroom: Classroom,
     ) : Relationships {
+
+        constructor(syllabusId: Int, classroomId: Int) : this(
+            Syllabus(Data(syllabusId)),
+            Lecturer(Data(-1)),
+            Discipline(Data(-1)),
+            Group(Data(-1)),
+            Classroom(Data(classroomId)),
+        )
+
+        data class Data(var id: Int)
+
+        data class Syllabus(var data: Data)
         data class Lecturer(var data: Data)
         data class Discipline(var data: Data)
         data class Group(var data: Data)
         data class Classroom(var data: Data)
-
-        data class Data(var id: Int)
     }
 
     companion object {
@@ -60,9 +75,21 @@ data class Schedule(
             R.string.column_day,
             R.string.column_period,
         )
+        val weekNameIdsShort = listOf(
+            R.string.even_short,
+            R.string.odd_short,
+        )
         val weekNameIds = listOf(
             R.string.even,
             R.string.odd,
+        )
+        val dayNameIdsShort = listOf(
+            R.string.mon,
+            R.string.tue,
+            R.string.wed,
+            R.string.thu,
+            R.string.fri,
+            R.string.sat,
         )
         val dayNameIds = listOf(
             R.string.monday,

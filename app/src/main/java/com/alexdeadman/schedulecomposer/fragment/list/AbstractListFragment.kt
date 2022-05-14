@@ -9,7 +9,7 @@ import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapter.ListItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentListBinding
 import com.alexdeadman.schedulecomposer.databinding.ListItemBinding
-import com.alexdeadman.schedulecomposer.dialog.ConfirmDialog
+import com.alexdeadman.schedulecomposer.dialog.ConfirmationDialog
 import com.alexdeadman.schedulecomposer.dialog.addedit.AbstractAddEditDialog
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
@@ -31,7 +31,7 @@ import javax.inject.Inject
 import kotlin.reflect.KClass
 
 
-abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationListener {
+abstract class AbstractListFragment : Fragment(), ConfirmationDialog.ConfirmationListener {
 
     protected abstract val mainViewModelClass: KClass<out AbstractEntityViewModel>
     protected abstract val relatedViewModelClass: KClass<out AbstractEntityViewModel>?
@@ -40,7 +40,8 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
-    private val confirmDialog = ConfirmDialog()
+    override var confirmationMessage: String? = null
+    private val confirmationDialog = ConfirmationDialog()
 
     private lateinit var itemListImpl: ComparableItemListImpl<ListItem>
     private lateinit var itemAdapter: ItemAdapter<ListItem>
@@ -92,8 +93,11 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                 addClickListener({ binding: ListItemBinding ->
                     binding.imageButtonDelete
                 }) { _, _, _, item ->
-                    mainViewModel.currentEntity = item.entity
-                    confirmDialog.show(childFragmentManager)
+                    item.entity.let {
+                        mainViewModel.currentEntity = it
+                        confirmationMessage = getString(R.string.delete_confirmation, it.title)
+                    }
+                    confirmationDialog.show(childFragmentManager)
                 }
             }
 
@@ -217,6 +221,10 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
         mainViewModel.comparator = comparator
     }
 
+    override fun onConfirm() {
+        mainViewModel.run { deleteEntity(currentEntity!!.id) }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_search, menu)
 
@@ -241,12 +249,6 @@ abstract class AbstractListFragment : Fragment(), ConfirmDialog.ConfirmationList
                     clearFocus()
                 }
             }
-        }
-    }
-
-    override fun onConfirm() {
-        mainViewModel.run {
-            deleteEntity(currentEntity!!.id)
         }
     }
 

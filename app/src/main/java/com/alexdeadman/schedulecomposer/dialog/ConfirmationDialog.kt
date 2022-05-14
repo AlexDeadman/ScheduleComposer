@@ -7,9 +7,10 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.alexdeadman.schedulecomposer.R
 
-class ConfirmDialog : DialogFragment() {
+class ConfirmationDialog : DialogFragment() {
 
     interface ConfirmationListener {
+        var confirmationMessage: String?
         fun onConfirm()
     }
 
@@ -27,7 +28,7 @@ class ConfirmDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.confirm_action)
-            .setMessage(R.string.are_you_sure)
+            .setMessage(listener.confirmationMessage ?: getString(R.string.are_you_sure))
             .setPositiveButton(R.string.yes) { _, _ -> listener.onConfirm() }
             .setNegativeButton(R.string.cancel, null)
             .create()

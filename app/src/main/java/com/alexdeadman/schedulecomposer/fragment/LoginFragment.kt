@@ -41,8 +41,8 @@ class LoginFragment : Fragment() {
                 when (state) {
                     is SendingState.Default -> {}
                     is SendingState.Sending -> {
-                        tiEditTextUsername.isEnabled = false
-                        tiEditTextPassword.isEnabled = false
+                        tiLayoutUsername.isEnabled = false
+                        tiLayoutPassword.isEnabled = false
                         buttonLogin.isEnabled = false
                         progressBar.visibility = View.VISIBLE
                         textViewError.visibility = View.INVISIBLE
@@ -53,8 +53,8 @@ class LoginFragment : Fragment() {
                         )
                     }
                     is SendingState.Error -> {
-                        tiEditTextUsername.isEnabled = true
-                        tiEditTextPassword.isEnabled = true
+                        tiLayoutUsername.isEnabled = true
+                        tiLayoutPassword.isEnabled = true
                         buttonLogin.isEnabled = true
                         progressBar.visibility = View.INVISIBLE
 

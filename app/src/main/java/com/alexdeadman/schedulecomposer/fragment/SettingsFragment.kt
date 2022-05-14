@@ -9,13 +9,15 @@ import com.alexdeadman.schedulecomposer.App.Companion.preferences
 import com.alexdeadman.schedulecomposer.BuildConfig
 import com.alexdeadman.schedulecomposer.MainActivity
 import com.alexdeadman.schedulecomposer.R
-import com.alexdeadman.schedulecomposer.dialog.ConfirmDialog
+import com.alexdeadman.schedulecomposer.dialog.ConfirmationDialog
 import com.alexdeadman.schedulecomposer.util.key.PreferenceKeys
 import com.alexdeadman.schedulecomposer.util.show
 
 class SettingsFragment : PreferenceFragmentCompat(),
-    ConfirmDialog.ConfirmationListener,
+    ConfirmationDialog.ConfirmationListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
+
+    override var confirmationMessage: String? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_screen, rootKey)
@@ -26,10 +28,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
             findPreference<Preference>(PreferenceKeys.LOGGED_IN_AS)?.summary =
                 preferences.getString(PreferenceKeys.USERNAME, "Unknown")
 
-            val confirmDialog = ConfirmDialog()
+            confirmationMessage = getString(R.string.exit_confirmation)
+            val confirmationDialog = ConfirmationDialog()
 
             findPreference<Preference>(PreferenceKeys.LOGOUT)?.setOnPreferenceClickListener {
-                confirmDialog.show(childFragmentManager)
+                confirmationDialog.show(childFragmentManager)
                 return@setOnPreferenceClickListener true
             }
 

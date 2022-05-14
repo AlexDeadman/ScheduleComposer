@@ -15,7 +15,7 @@ interface Api {
         private const val DISCIPLINES = "/api/disciplines/"
         private const val GROUPS = "/api/groups/"
         private const val LECTURERS = "/api/lecturers/"
-        private const val SCHEDULES = "/api/schedule/"
+        private const val SCHEDULE = "/api/schedule/"
         private const val SYLLABUSES = "/api/syllabuses/"
     }
 
@@ -96,16 +96,16 @@ interface Api {
 
     //
 
-    @GET(SCHEDULES)
+    @GET(SCHEDULE)
     suspend fun getSchedule(): DataList<Schedule>
 
-    @POST(SCHEDULES)
+    @POST(SCHEDULE)
     suspend fun postSchedule(@Body rb: RequestBody)
 
-    @PUT("$SCHEDULES{id}/")
+    @PUT("$SCHEDULE{id}/")
     suspend fun putSchedule(@Path("id") id: Int, @Body rb: RequestBody)
 
-    @DELETE("$SCHEDULES{id}/")
+    @DELETE("$SCHEDULE{id}/")
     suspend fun deleteSchedule(@Path("id") id: Int): Response<Unit>
 
     //

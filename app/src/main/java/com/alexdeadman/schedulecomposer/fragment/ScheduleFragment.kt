@@ -7,18 +7,20 @@ import androidx.fragment.app.Fragment
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.adapter.ScheduleItem
 import com.alexdeadman.schedulecomposer.databinding.FragmentScheduleBinding
+import com.alexdeadman.schedulecomposer.dialog.ConfirmationDialog
 import com.alexdeadman.schedulecomposer.dialog.addedit.ScheduleDialog
 import com.alexdeadman.schedulecomposer.model.entity.*
 import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.columnNameIds
-import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.dayNameIds
+import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.dayNameIdsShort
 import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.typeIds
-import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.weekNameIds
+import com.alexdeadman.schedulecomposer.model.entity.Schedule.Companion.weekNameIdsShort
 import com.alexdeadman.schedulecomposer.util.ellipsize
 import com.alexdeadman.schedulecomposer.util.key.BundleKeys
 import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
 import com.alexdeadman.schedulecomposer.util.provideViewModel
 import com.alexdeadman.schedulecomposer.util.show
 import com.alexdeadman.schedulecomposer.util.state.ListState
+import com.alexdeadman.schedulecomposer.util.state.SendingState
 import com.alexdeadman.schedulecomposer.viewmodel.*
 import com.bin.david.form.data.CellRange
 import com.bin.david.form.data.format.draw.TextDrawFormat
@@ -31,12 +33,16 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class ScheduleFragment : Fragment() {
+class ScheduleFragment : Fragment(), ConfirmationDialog.ConfirmationListener {
 
     private var _binding: FragmentScheduleBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModels: List<AbstractEntityViewModel>
+    private val mainViewModel get() = viewModels.first()
+
+    override var confirmationMessage: String? = null
+    private val confirmationDialog = ConfirmationDialog()
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -86,8 +92,8 @@ class ScheduleFragment : Fragment() {
                 when (val scheduleState = stateList.first()) {
                     is ListState.Loaded, is ListState.NoItems -> {
                         if (stateList.any { it is ListState.Error }) {
-                            viewModels.first().listStateFlow.value =
-                                ListState.Error(R.string.unknown_error)
+                            mainViewModel.listStateFlow
+                                .value = ListState.Error(R.string.unknown_error)
                             return@launchRepeatingCollect
                         }
 
@@ -96,21 +102,21 @@ class ScheduleFragment : Fragment() {
                             else emptyList()
                         }
 
+                        val semester = requireArguments().getInt(BundleKeys.SEMESTER)
                         val syllabus = requireArguments()
                             .getParcelable<Syllabus>(BundleKeys.SYLLABUS)!!
 
-                        val groups = results[1]
-                            .map { it as Group }
-                            .filter { it.relationships!!.syllabus.data.id == syllabus.id }
 
-                        val semester = requireArguments().getInt(BundleKeys.SEMESTER)
-                        val groupIds = groups.map { it.id }
                         val schedules = results[0]
                             .map { it as Schedule }
                             .filter {
                                 it.attributes.semester == semester &&
-                                    it.relationships!!.group.data.id in groupIds
+                                    it.relationships!!.syllabus.data.id == syllabus.id
                             }
+
+                        val groups = results[1]
+                            .map { it as Group }
+                            .filter { it.relationships!!.syllabus.data.id == syllabus.id }
 
                         val disciplines = results[2]
                             .map { it as Discipline }
@@ -120,8 +126,8 @@ class ScheduleFragment : Fragment() {
                         val lecturers = results[4].map { it as Lecturer }
 
                         val types = typeIds.map { getString(it) }
-                        val weekNames = weekNameIds.map { getString(it) }
-                        val dayNames = dayNameIds.map { getString(it) }
+                        val weekNames = weekNameIdsShort.map { getString(it) }
+                        val dayNames = dayNameIdsShort.map { getString(it) }
 
                         val scheduleItems = schedules.map { schedule ->
                             val rel = schedule.relationships!!
@@ -207,29 +213,31 @@ class ScheduleFragment : Fragment() {
                                     column.setOnColumnItemClickListener { col, _, _, pos ->
 
                                         val item = col.datas.getOrNull(pos) as ScheduleItem?
-                                        viewModels.first().currentEntity =
-                                            item?.schedule ?: Schedule(
-                                                -1,
-                                                Schedule.ScheduleAttributes(
-                                                    semester,
-                                                    weekNames.indexOf(weekColumnData[pos]) == 0,
-                                                    dayNames.indexOf(dayColumnData[pos]) + 1,
-                                                    periodColumnData[pos]
-                                                )
+                                        mainViewModel.currentEntity = item?.schedule ?: Schedule(
+                                            Schedule.ScheduleAttributes(
+                                                semester,
+                                                weekNames.indexOf(weekColumnData[pos]) == 0,
+                                                dayNames.indexOf(dayColumnData[pos]) + 1,
+                                                periodColumnData[pos]
+                                            ),
+                                            Schedule.ScheduleRelationships(
+                                                syllabus.id,
+                                                classrooms.find { it.title == col.columnName }!!.id
                                             )
+                                        )
 
                                         if (item != null) {
                                             item.let {
-                                                textViewSiGroup.text = it.group
-                                                textViewSiDiscipline.text = it.discipline
-                                                textViewSiLecturer.text = it.lecturer
-                                                textViewSiType.text = it.type
+                                                textViewGroup.text = it.group
+                                                textViewDiscipline.text = it.discipline
+                                                textViewLecturer.text = it.lecturer
+                                                textViewType.text = it.type
                                             }
                                             imageButtonAdd.visibility = View.GONE
-                                            linearLayoutSi.visibility = View.VISIBLE
+                                            linearLayoutScheduleItem.visibility = View.VISIBLE
                                         } else {
                                             imageButtonAdd.visibility = View.VISIBLE
-                                            linearLayoutSi.visibility = View.GONE
+                                            linearLayoutScheduleItem.visibility = View.GONE
                                         }
                                     }
                                 }
@@ -249,6 +257,9 @@ class ScheduleFragment : Fragment() {
                             visibility = View.VISIBLE
                         }
 
+                        imageButtonAdd.visibility = View.GONE
+                        linearLayoutScheduleItem.visibility = View.GONE
+
                         textViewMassage.visibility = View.GONE
                     }
                     is ListState.Error -> {
@@ -262,11 +273,22 @@ class ScheduleFragment : Fragment() {
                 progressBar.visibility = View.GONE
             }
 
+            mainViewModel.sendingStateFlow.launchRepeatingCollect(viewLifecycleOwner) {
+                if (it is SendingState.Success) {
+                    progressBar.visibility = View.VISIBLE
+                    mainViewModel.getEntities()
+                }
+            }
+
             listOf(imageButtonAdd, imageButtonEdit).forEach {
                 it.setOnClickListener { ScheduleDialog().show(childFragmentManager) }
             }
-
+            imageButtonDelete.setOnClickListener { confirmationDialog.show(childFragmentManager) }
         }
+    }
+
+    override fun onConfirm() {
+        mainViewModel.run { deleteEntity(currentEntity!!.id) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -276,7 +298,7 @@ class ScheduleFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_refresh) {
             binding.progressBar.visibility = View.VISIBLE
-            viewModels.first().getEntities()
+            mainViewModel.getEntities()
         }
         return super.onOptionsItemSelected(item)
     }

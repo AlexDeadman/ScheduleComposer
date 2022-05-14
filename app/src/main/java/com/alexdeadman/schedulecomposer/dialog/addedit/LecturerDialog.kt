@@ -3,13 +3,10 @@ package com.alexdeadman.schedulecomposer.dialog.addedit
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import com.alexdeadman.schedulecomposer.R
 import com.alexdeadman.schedulecomposer.databinding.FieldsLecturerBinding
 import com.alexdeadman.schedulecomposer.model.entity.Lecturer
 import com.alexdeadman.schedulecomposer.util.isValid
-import com.alexdeadman.schedulecomposer.util.launchRepeatingCollect
-import com.alexdeadman.schedulecomposer.util.state.SendingState
 import com.alexdeadman.schedulecomposer.util.toStringOrNull
 import com.alexdeadman.schedulecomposer.util.validate
 import com.alexdeadman.schedulecomposer.viewmodel.AbstractEntityViewModel
@@ -40,65 +37,34 @@ class LecturerDialog : AbstractAddEditDialog<FieldsLecturerBinding>() {
             )
 
             val tiLayouts = listOf(tiLayoutSurname, tiLayoutName, tiLayoutPatronymic)
-            val tiEditTexts = tiLayouts.map { it.editText!! }
+
+            freezingViews = tiLayouts
 
             tiLayouts.run {
                 take(2).forEach { it.validate(validators) }
                 last().validate(validators.drop(1))
             }
 
-            if (currentEntity != null) {
-                (currentEntity as Lecturer).attributes.let { attr ->
-                    tiEditTexts
-                        .zip(listOf(attr.surname, attr.firstName, attr.patronymic))
-                        .forEach { it.first.setText(it.second) }
-                }
+            (currentEntity as Lecturer?)?.attributes?.let { attr ->
+                tiLayouts
+                    .map { it.editText!! }
+                    .zip(listOf(attr.surname, attr.firstName, attr.patronymic))
+                    .forEach { it.first.setText(it.second) }
             }
 
             binding.apply {
-                mainViewModel.sendingStateFlow.launchRepeatingCollect(viewLifecycleOwner) { state ->
-                    when (state) {
-                        is SendingState.Default -> {}
-                        is SendingState.Sending -> {
-                            progressBar.visibility = View.VISIBLE
-                            isCancelable = false
-                            buttonAddEdit.isEnabled = false
-                            tiEditTexts.forEach { it.isEnabled = false }
-                        }
-                        is SendingState.Success -> dismiss()
-                        is SendingState.Error -> {
-                            progressBar.visibility = View.INVISIBLE
-                            isCancelable = true
-                            buttonAddEdit.isEnabled = true
-                            tiEditTexts.forEach { it.isEnabled = true }
-
-                            Toast.makeText(
-                                context,
-                                getString(state.messageStringId),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
-
                 buttonAddEdit.setOnClickListener {
                     if (tiLayouts.all { it.isValid() }) {
-                        Lecturer(
-                            currentEntity?.id ?: -1,
-                            Lecturer.LecturerAttributes(
-                                tiEditTextName.text.toString().trim(),
-                                tiEditTextSurname.text.toString().trim(),
-                                tiEditTextPatronymic.text.toStringOrNull()?.trim(),
+                        send(
+                            Lecturer(
+                                currentEntity?.id ?: -1,
+                                Lecturer.LecturerAttributes(
+                                    tiEditTextName.text.toString().trim(),
+                                    tiEditTextSurname.text.toString().trim(),
+                                    tiEditTextPatronymic.text.toStringOrNull()?.trim(),
+                                )
                             )
-                        ).let {
-                            mainViewModel.run {
-                                if (currentEntity == null) postEntity(it)
-                                else {
-                                    if(currentEntity != it) putEntity(it)
-                                    else dismiss()
-                                }
-                            }
-                        }
+                        )
                     }
                 }
             }

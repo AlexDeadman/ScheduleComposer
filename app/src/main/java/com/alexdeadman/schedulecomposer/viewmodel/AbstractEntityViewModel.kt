@@ -41,7 +41,6 @@ abstract class AbstractEntityViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             listStateFlow.value = try {
                 val result = get()
-                sendingStateFlow.value = SendingState.Default()
                 if (result.data.isEmpty()) ListState.NoItems()
                 else ListState.Loaded(result)
             } catch (e: Exception) {
@@ -58,8 +57,6 @@ abstract class AbstractEntityViewModel(
                 SendingState.Success()
             } catch (e: Exception) {
                 SendingState.Error(R.string.unknown_error)
-            } finally {
-                SendingState.Default()
             }
         }
     }
