@@ -11,4 +11,6 @@ ScheduleComposer is graduation project, android app developed for colleges/unive
 * [FastAdapter](https://github.com/mikepenz/FastAdapter) - simplifys creating adapters for RecyclerViews
 * [SmartTable](https://github.com/huangyanbin/smartTable) - for schedule tables
 ## Demonstration 
-[![ScheduleComposer Demonstration](https://img.youtube.com/vi/HM58HuU6FBo/maxresdefault.jpg)](https://www.youtube.com/watch?v=HM58HuU6FBo)
+https://www.youtube.com/watch?v=HM58HuU6FBo
+
+[![ScheduleComposer Demonstration](https://img.youtube.com/vi/HM58HuU6FBo/hqdefault.jpg)](https://www.youtube.com/watch?v=HM58HuU6FBo)
